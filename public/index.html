@@ -24,6 +24,7 @@
         integrity="sha384-ODmDIVzN+pFdexxHEHFBQH3/9/vQ9uori45z4JjnFsRydbmQbmL5t1tQ0culUzyK"
         crossorigin="anonymous"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/BrowserFS/2.0.0/browserfs.min.js" integrity="sha512-mz0EI+Ay1uIJP7rZEX8C/JlTAcHRIQ8Sny4vxmmj8MSzDJgG9NxxY2pUmOGv1lO7imFIFMyjjCzEXEywNgaUdQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+        <script type="text/javascript" src="multi-input.js" defer></script>
         <script type="text/javascript" src="script.js" defer></script>
 </head>
 
@@ -219,7 +220,7 @@
                     <select class="form-select" name="jiraCategoryInputs" id="jiraCategoryDrop">
                         <option value="Epic" selected="selected">Epic</option>
                         <option value="Story">Story</option>
-                        <option value="Run">Run?</option>
+                        <option value="Sequencing">Sequencing</option>
                     </select>
                 </div>
             </div>
@@ -230,6 +231,40 @@
                     <input class="form-control" type="text" id="inputAssignEpic">
                 </div>
             </div>
+
+            <div class="mb-3 row">
+                <label class="col-sm-2 col-form-label" for="linkedIssuesDrop">Linked Issues:</label>
+                <div class="col-sm-3">
+                    <select class="form-select" name="linkedIssuesInputs" id="linkedIssuesDrop">
+                        <option value="blocks" selected="selected">Blocks</option>
+                        <option value="Is Blocked By">Is Blocked By</option>
+                        <option value="clones">Clones</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="mb-3 row">
+                <label class="col-sm-2 col-form-label" for="inputLinkedIssue">Issue:</label>
+                <div class="col-sm-3">
+                    <multi-input>
+                        <input list="speakers">
+                        <datalist id="speakers">
+                          <option value="Banquo"></option>
+                          <option value="Bishop Stokesly of London"></option>
+                          <option value="Caesar’s Second Watchman"></option>
+                          <option value="Celia"></option>
+                          <option value="Cleopatra"></option>
+                          <option value="Dogberry"></option>
+                          <option value="Falstaff"></option>
+                          <option value="First Servant"></option>
+                          <option value="Hamlet"></option>
+                          <option value="Juliet"></option>
+                          <option value="Macbeth"></option>
+                        </datalist>
+                      </multi-input>
+                </div>
+            </div>
+
 
             <div class="mb-3 row">
                 <label class="col-form-label col-sm-2" for="inputExperimentalist">Assignee:</label>

@@ -221,12 +221,12 @@ async function submitForm(e) {
 
         const json = { 
             id: jiraTicketID,
-             category: jiraCategory,
-              tags: inputTagsArray,
-              info: sequencingInfo,
-              user: experimentalist,
-              watchers: stakeholders,
-              assign: assignToEpic
+            category: jiraCategory,
+            tags: inputTagsArray,
+            info: sequencingInfo,
+            user: experimentalist, // assignee
+            watchers: stakeholders, 
+            assign: assignToEpic
             }
         const body = JSON.stringify(json);
 
@@ -252,7 +252,7 @@ async function submitForm(e) {
             info: sequencingInfo,
             category: jiraCategory,
             tags: inputTagsArray,
-            user: experimentalist,
+            user: experimentalist, // assignee
             watchers: stakeholders,
             assign: assignToEpic
         }
