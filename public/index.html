@@ -197,8 +197,7 @@
                 </div>
             </div>
 
-            <div class="mb-3 row">
-                <p></p>
+            <!-- <div class="mb-3 row">
                 <label class="col-form-label col-sm-2" for="inputTag">Add Tag:</label>
                 <div class="col-sm-3">
                     <input class="form-control" type="text" id="inputTag">
@@ -212,30 +211,53 @@
             <div class="mb-3 row">
                 <div id="tagListBox" style="display:flex; padding:5px;">
                 </div>
+            </div> -->
+
+            <div class="mb-3 row">
+                <label class="col-form-label col-sm-2" for="inputTag">Add Tag:</label>
+                <div class="col-sm-6">
+                    <multi-input id="inputTags">
+                        <input list="tags">
+                        <datalist id="tags">
+                            <!-- May need to add more -->
+                          <option value="Sequencing Run"></option>
+                          <option value="Needs To Be Analyzed"></option>
+                          <option value="MiSeq"></option>
+                          <option value="Nanopore"></option>
+                          <option value="PacBio"></option>
+                        </datalist>
+                      </multi-input>
+                </div>
             </div>
 
             <div class="mb-3 row">
                 <label class="col-sm-2 col-form-label" for="jiraCategoryDrop">Category:</label>
                 <div class="col-sm-3">
                     <select class="form-select" name="jiraCategoryInputs" id="jiraCategoryDrop">
-                        <option value="Epic" selected="selected">Epic</option>
+                        <option value="Sequencing" selected="selected">Sequencing</option>
+                        <option value="Task">Task</option>
                         <option value="Story">Story</option>
-                        <option value="Sequencing">Sequencing</option>
+                        <option value="Epic">Epic</option>
+                    </select>
+                </div>
+                <label class="col-sm-2 col-form-label" for="inputAssignEpic">Assign to Epic:</label>
+                <div class="col-sm-3">
+                    <!-- <input class="form-control" type="text" id="inputAssignEpic"> -->
+                    <select class="form-select" name="inputAssignEpic" id="inputAssignEpic">
+                        <!-- Need to fill with list of Epics -->
+                        <option value="epic1" selected="selected">Epic1</option>
+                        <option value="epic2">Epic2</option>
+                        <option value="epic3">Epic3</option>
                     </select>
                 </div>
             </div>
 
-            <div class="mb-3 row">
-                <label class="col-sm-2 col-form-label" for="inputAssignEpic">Assign to Epic:</label>
-                <div class="col-sm-3">
-                    <input class="form-control" type="text" id="inputAssignEpic">
-                </div>
-            </div>
 
             <div class="mb-3 row">
                 <label class="col-sm-2 col-form-label" for="linkedIssuesDrop">Linked Issues:</label>
                 <div class="col-sm-3">
                     <select class="form-select" name="linkedIssuesInputs" id="linkedIssuesDrop">
+                        <!-- May need to add more options -->
                         <option value="blocks" selected="selected">Blocks</option>
                         <option value="Is Blocked By">Is Blocked By</option>
                         <option value="clones">Clones</option>
@@ -245,21 +267,16 @@
 
             <div class="mb-3 row">
                 <label class="col-sm-2 col-form-label" for="inputLinkedIssue">Issue:</label>
-                <div class="col-sm-3">
-                    <multi-input>
-                        <input list="speakers">
-                        <datalist id="speakers">
-                          <option value="Banquo"></option>
-                          <option value="Bishop Stokesly of London"></option>
-                          <option value="Caesar’s Second Watchman"></option>
-                          <option value="Celia"></option>
-                          <option value="Cleopatra"></option>
-                          <option value="Dogberry"></option>
-                          <option value="Falstaff"></option>
-                          <option value="First Servant"></option>
-                          <option value="Hamlet"></option>
-                          <option value="Juliet"></option>
-                          <option value="Macbeth"></option>
+                <div class="col-sm-6">
+                    <multi-input id="inputLinkedIssue">
+                        <input list="issues">
+                        <datalist id="issues">
+                            <!-- Need to fill with available issues -->
+                          <option value="Issue1"></option>
+                          <option value="Issue2"></option>
+                          <option value="Issue3"></option>
+                          <option value="Issue4"></option>
+                          <option value="Issue5"></option>
                         </datalist>
                       </multi-input>
                 </div>

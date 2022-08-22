@@ -1,4 +1,8 @@
-//const { response } = require("express");
+console.log('d3', d3.version)
+
+// d3.csv('nanoporeFolders.csv', (data) => {
+//     console.log(data)
+// });
 
 let typeOfSeq = 'MISEQ';
 let jiraTicketID = '';
@@ -17,18 +21,20 @@ let libPrepKit = "";
 let indexKit = "";
 let chemistry = "";
 let inputTagsArray = [];
+let howLinkIssue = '';
+let inputLinkedIssuesArray = [];
 let allJiraTickets = [];
 let allUsers = [];
 let assignToEpic = '';
+//const tagListBoxEl = document.getElementById("tagListBox")
 
-const tagListBoxEl = document.getElementById("tagListBox")
+// need to load epics and issues into options
+function loadOptions() {
 
+    return;
+}
 
-console.log('d3', d3.version)
-
-// d3.csv('nanoporeFolders.csv', (data) => {
-//     console.log(data)
-// });
+loadOptions()
 
 // async function getAllJiraTicketIDs() {
 
@@ -58,34 +64,38 @@ console.log('d3', d3.version)
 //     }).catch((error) => ("Something went wrong!", error));
 // }
 // getUsers()
-function addTag() {
-    const tag = document.getElementById("inputTag").value;
-    inputTagsArray.push(tag)
 
-    displayTodo();
+/*
+* Old tag system
+*/
+// function addTag() {
+//     const tag = document.getElementById("inputTag").value;
+//     inputTagsArray.push(tag)
 
-}
+//     displayTodo();
 
-function deleteTodo(ind) {
+// }
+
+// function deleteTodo(ind) {
     
-    inputTagsArray.splice(ind, 1);
-    displayTodo();
+//     inputTagsArray.splice(ind, 1);
+//     displayTodo();
 
-   }
+//    }
 
-function displayTodo() {
-    let htmlCode = '';
+// function displayTodo() {
+//     let htmlCode = '';
 
-    inputTagsArray.forEach((item, ind) => {
-        htmlCode += `<div style="display:flex; padding:5px; border-radius:25%; background-color:#696969"> <p style="padding-right: 5px;">` + item + `</p> <button onclick='deleteTodo(` + ind +`)' class='btn btn-danger'>Delete</button></div>`
-    })
+//     inputTagsArray.forEach((item, ind) => {
+//         htmlCode += `<div style="display:flex; padding:5px; border-radius:25%; background-color:#696969"> <p style="padding-right: 5px;">` + item + `</p> <button onclick='deleteTodo(` + ind +`)' class='btn btn-danger'>Delete</button></div>`
+//     })
 
-    tagListBoxEl.innerHTML = htmlCode
+//     tagListBoxEl.innerHTML = htmlCode
 
-    // const htmlElement = document.createElement('div')
-    // htmlElement.appendChild(document.createElement('p'))
+//     // const htmlElement = document.createElement('div')
+//     // htmlElement.appendChild(document.createElement('p'))
 
-}
+// }
 
 async function submitForm(e) {
     // e.preventDefault()
@@ -108,7 +118,10 @@ async function submitForm(e) {
     indexKit = document.getElementById('indexKitDrop').value
     chemistry = document.getElementById('chemistryDrop').value
     jiraCategory = document.getElementById('jiraCategoryDrop').value
-    assignToEpic = document.getElementById('inputAssignEpic')
+    assignToEpic = document.getElementById('inputAssignEpic').value
+    howLinkIssue = document.getElementById('linkedIssuesDrop').value
+    inputLinkedIssuesArray = document.getElementById("inputLinkedIssue").getValues() // should check if empty?
+    inputTagsArray = document.getElementById("inputTags").getValues() // also may need to check if empty
     // console.log(document.getElementById('inputSamples').value.split(/\r?\n/))
 
     // set set samples from table
@@ -226,7 +239,10 @@ async function submitForm(e) {
             info: sequencingInfo,
             user: experimentalist, // assignee
             watchers: stakeholders, 
-            assign: assignToEpic
+            assign: assignToEpic,
+            howLink: howLinkIssue,
+            linkIssue: inputLinkedIssuesArray
+
             }
         const body = JSON.stringify(json);
 
@@ -254,7 +270,9 @@ async function submitForm(e) {
             tags: inputTagsArray,
             user: experimentalist, // assignee
             watchers: stakeholders,
-            assign: assignToEpic
+            assign: assignToEpic,
+            howLink: howLinkIssue,
+            linkIssue: inputLinkedIssuesArray
         }
         const body = JSON.stringify(json);
 
