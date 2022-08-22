@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+
+<head>
+    <meta charset="UTF-8">
+    <title>Miseq Sample Sheet Maker</title>
+    <!-- <script type="text/javascript" src="./node_modules/d3/build/d3.js"></script> -->
+    <script src="http://code.jquery.com/jquery-1.10.1.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/7.6.1/d3.min.js"
+        integrity="sha512-MefNfAGJ/pEy89xLOFs3V6pYPs6AmUhXJrRlydI/9wZuGrqxmrdQ80zKHUcyadAcpH67teDZcBeS6oMJLPtTqw=="
+        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <link rel="stylesheet" href="https://unpkg.com/x-data-spreadsheet@latest/dist/xspreadsheet.css" />
+    <script src="https://unpkg.com/x-data-spreadsheet@latest/dist/xspreadsheet.js"></script>
+    <!-- CSS only -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-gH2yIJqKdNHPEq0n4Mqa/HGKIhSkIHeL5AyhkYV8i59U5AR6csBvApHHNl/vI1Bx" crossorigin="anonymous">
+    <!-- JavaScript Bundle with Popper -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-A3rJD856KowSb7dwlZdYEkO39Gagi7vIsF0jrRAoQmDKKtQBHUuLZ9AsSv4jD4Xa"
+        crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.5/dist/umd/popper.min.js"
+        integrity="sha384-Xe+8cL9oJa6tN/veChSP7q+mnSPaj5Bcu9mPX5F5xIGE0DVittaqT5lorf0EI7Vk"
+        crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/js/bootstrap.min.js"
+        integrity="sha384-ODmDIVzN+pFdexxHEHFBQH3/9/vQ9uori45z4JjnFsRydbmQbmL5t1tQ0culUzyK"
+        crossorigin="anonymous"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/BrowserFS/2.0.0/browserfs.min.js" integrity="sha512-mz0EI+Ay1uIJP7rZEX8C/JlTAcHRIQ8Sny4vxmmj8MSzDJgG9NxxY2pUmOGv1lO7imFIFMyjjCzEXEywNgaUdQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+        <script type="text/javascript" src="script.js" defer></script>
+</head>
+
+<body>
+    
+    <nav class="navbar navbar-expand-lg" style="background-color: #e3f2fd;">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="/">Samplesheet Portal</a>
+        </div>
+    </nav>
+    <br>
+    <div class="container" id="dataFormDiv">
+
+        <h4>Select Sequencing Machine:</h4>
+        <br>
+        <div class="mb-3 row" id="sequencingTypeDiv">
+            <div class="col-sm-2">
+                <input class="form-check-input" type="radio" id="miseq" name="inputTypeOfSeq" value="MISEQ" checked>
+                <label class="form-check-label" for="miseq">MiSeq</label>
+            </div>
+            <div class="col-sm-3">
+                <input disabled class="form-check-input" type="radio" id="oxfordNanopore" name="inputTypeOfSeq"
+                    value="NANO">
+                <label class="form-check-label" for="oxfordNanopore">Oxford Nanopore</label>
+            </div>
+            <div class="col-sm-2">
+                <input disabled class="form-check-input" type="radio" id="pacbio" name="inputTypeOfSeq" value="PACBIO">
+                <label class="form-check-label" for="pacbio">PacBio</label>
+            </div>
+        </div>
+
+        <hr />
+        <h5>Fill in Sample Sheet Requirements:</h5>
+        <br>
+        <div class="container" id="miSeqSampleSheetDiv">
+
+            <div class="container" id="miSeqTable"></div>
+            <br>
+
+            <div class="mb-3 row">
+                <label class="col-sm-2 col-form-label" for="experimentName">Experiment Name:</label>
+                <div class="col-sm-5">
+                    <input class="form-control" type="text" id="experimentName">
+                </div>
+            </div>
+
+            <div class="mb-3 row">
+                <label class="col-sm-2 col-form-label bold" for="inputReads1">Reads 1:</label>
+                <div class="col-sm-1">
+                    <input class="form-control" type="text" id="inputReads1" value="151" style="text-align: right">
+                </div>
+                <div class="col-sm-3"></div>
+                <label class="col-sm-2 col-form-label" for="inputReads2">Reads 2:</label>
+                <div class="col-sm-1">
+                    <input class="form-control" type="text" id="inputReads2" value="151" style="text-align: right">
+                </div>
+            </div>
+
+            <!-- <div class="mb-3 row">
+                                <label class="col-sm-2 col-form-label" for="inputReads2">Reads 2:</label>
+                                <div class="col-sm-1">
+                                    <input class="form-control" type="text" id="inputReads2" value="151">
+                                </div>
+                            </div> -->
+
+            <div class="mb-3 row">
+                <label class="col-sm-2 col-form-label" for="moduleDrop">Module:</label>
+                <div class="col-sm-3">
+                    <select class="form-select" name="moduleInputs" id="moduleDrop">
+                        <option value="GenerateFASTQ" selected="selected">GenerateFASTQ</option>
+                        <option value="module2">module2</option>
+                        <option value="module3">module3</option>
+                        <option value="module4">module4</option>
+                    </select>
+                </div>
+                <div class="col-sm-1"></div>
+                <label class="col-sm-2 col-form-label" for="workflowDrop">Workflow:</label>
+                <div class="col-sm-3">
+                    <select class="form-select" name="workflowInputs" id="workflowDrop">
+                        <option value="GenerateFASTQ" selected="selected">GenerateFASTQ</option>
+                        <option value="workflow2">workflow2</option>
+                        <option value="workflow3">workflow3</option>
+                        <option value="workflow4">workflow4</option>
+                    </select>
+                </div>
+            </div>
+
+            <!-- <div class="mb-3 row">
+                                <label class="col-sm-2 col-form-label" for="workflowDrop">Workflow:</label>
+                                <div class="col-sm-4">
+                                    <select class="form-select" name="workflowInputs" id="workflowDrop">
+                                        <option value="GenerateFASTQ" selected="selected">GenerateFASTQ</option>
+                                        <option value="workflow2">workflow2</option>
+                                        <option value="workflow3">workflow3</option>
+                                        <option value="workflow4">workflow4</option>
+                                    </select>
+                                </div>
+                            </div> -->
+
+            <div class="mb-3 row">
+                <label class="col-sm-2 col-form-label" for="libraryDrop">Library Prep Kit:</label>
+                <div class="col-sm-3">
+                    <select class="form-select" name="libraryInputs" id="libraryDrop">
+                        <option value="Custom" selected="selected">Custom</option>
+                        <option value="library2">library2</option>
+                        <option value="library3">library3</option>
+                        <option value="library4">library4</option>
+                    </select>
+                </div>
+                <div class="col-sm-1"></div>
+                <label class="col-sm-2 col-form-label" for="indexKitDrop">Index Kit:</label>
+                <div class="col-sm-3">
+                    <select class="form-select" name="indexKitInputs" id="indexKitDrop">
+                        <option value="Custom" selected="selected">Custom</option>
+                        <option value="indexKit2">indexKit2</option>
+                        <option value="indexKit3">indexKit3</option>
+                        <option value="indexKit4">indexKit4</option>
+                    </select>
+                </div>
+            </div>
+
+            <!-- <div class="mb-3 row">
+                                <label class="col-sm-2 col-form-label" for="indexKitDrop">Index Kit:</label>
+                                <div class="col-sm-4">
+                                    <select class="form-select" name="indexKitInputs" id="indexKitDrop">
+                                        <option value="Custom" selected="selected">Custom</option>
+                                        <option value="indexKit2">indexKit2</option>
+                                        <option value="indexKit3">indexKit3</option>
+                                        <option value="indexKit4">indexKit4</option>
+                                    </select>
+                                </div>
+                            </div> -->
+
+            <div class="mb-3 row">
+                <label class="col-sm-2 col-form-label" for="chemistryDrop">Chemistry:</label>
+                <div class="col-sm-3">
+                    <select class="form-select" name="chemistryInputs" id="chemistryDrop">
+                        <option value="Amplicon" selected="selected">Amplicon</option>
+                        <option value="chemistry2">chemistry2</option>
+                        <option value="chemistry3">chemistry3</option>
+                        <option value="chemistry4">chemistry4</option>
+                    </select>
+                </div>
+            </div>
+
+        </div>
+
+        <hr />
+        <h5>Additional information:</h5>
+        <br>
+        <div class="mb-3 row" id="moreSeqInfo">
+            <label class="col-sm-2 col-form-label" for="inputSequencingInfo">Sequencing Info:</label><br>
+            <div class="col-sm-9">
+                <textarea class="form-control" id="inputSequencingInfo" rows="4" cols="50"></textarea>
+            </div>
+        </div>
+
+        <div id="projectInfo">
+            <div class="row mb-3">
+                <div class="col-sm-2">
+                    <label class="form-label" for="inputJiraTicketID">Jira Ticket ID:</label>
+                </div>
+                <div class="col-sm-3">
+                    <input class="form-control" type="text" id="inputJiraTicketID">
+                </div>
+                <div class="col-sm-6">
+                    <div id="inputJiraTicketHelpBlock" class="form-text">
+                        If left empty a Jira Ticket will automatically be created and assigned to you.
+                    </div>
+                </div>
+            </div>
+
+            <div class="mb-3 row">
+                <p></p>
+                <label class="col-form-label col-sm-2" for="inputTag">Add Tag:</label>
+                <div class="col-sm-3">
+                    <input class="form-control" type="text" id="inputTag">
+                </div>
+                <div class="col-sm-2">
+                    <button class="btn btn-primary" onclick="addTag()">Add Tag</button>
+                </div>
+                
+            </div>
+
+            <div class="mb-3 row">
+                <div id="tagListBox" style="display:flex; padding:5px;">
+                </div>
+            </div>
+
+            <div class="mb-3 row">
+                <label class="col-sm-2 col-form-label" for="jiraCategoryDrop">Category:</label>
+                <div class="col-sm-3">
+                    <select class="form-select" name="jiraCategoryInputs" id="jiraCategoryDrop">
+                        <option value="Epic" selected="selected">Epic</option>
+                        <option value="Story">Story</option>
+                        <option value="Run">Run?</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="mb-3 row">
+                <label class="col-sm-2 col-form-label" for="inputAssignEpic">Assign to Epic:</label>
+                <div class="col-sm-3">
+                    <input class="form-control" type="text" id="inputAssignEpic">
+                </div>
+            </div>
+
+            <div class="mb-3 row">
+                <label class="col-form-label col-sm-2" for="inputExperimentalist">Assignee:</label>
+                <div class="col-sm-3">
+                    <input class="form-control" type="text" id="inputExperimentalist">
+                </div>
+                <div class="col-sm-1"></div>
+                <label class="col-sm-2 col-form-label" for="inputStakeholder">Watchers:</label>
+                <div class="col-sm-3">
+                    <input class="form-control" type="text" id="inputStakeholder">
+                </div>
+            </div>
+
+            <!-- <div class="mb-3 row">
+                <label class="col-sm-2 col-form-label" for="inputStakeholder">Stakeholder:</label>
+                <div class="col-sm-3">
+                    <input class="form-control" type="text" id="inputStakeholder">
+                </div>
+            </div> -->
+
+        </div>
+        
+        <button class="btn btn-primary" onclick="submitForm(event)">Submit</button>
+    </div>
+    <div id="liveAlertPlaceholder" style="position: fixed; top: 25px;  margin-right: 25%; margin-left: 25%; left: 0; right: 0;"></div>
+</body>
+
+</html>
