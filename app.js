@@ -67,6 +67,16 @@ app.get('/getUsers', (req, res) => {
   })
 })
 
+// needs board to get epics from (likley to be preset)
+app.get('/getEpics', (req, res) => {
+  jira.getEpics('38', 0, 50, 'false').then(result => {
+    console.log(result)
+    res.send(result);
+  }).catch(err => {
+    console.log('Get Epics Err', err)
+  })
+})
+
 app.post('/makeIssue', bodyParser.json(), (req, res) => {
   console.log(req.body)
 

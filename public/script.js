@@ -28,9 +28,36 @@ let allUsers = [];
 let assignToEpic = '';
 //const tagListBoxEl = document.getElementById("tagListBox")
 
-// need to load epics and issues into options
-function loadOptions() {
+// loading stuff to html
+let prexistingEpics = [];
+const selectAssignEpic = document.getElementById("inputAssignEpic");
 
+
+// need to load epics and issues into options
+async function loadOptions() {
+    await fetch('/getEpics', {
+                method: 'GET',
+                headers: {
+                    "Content-Type": "application/json"
+                }
+            }).then(response => {
+                console.log('Response Epics: ', response)
+                return response.json();
+            }).then(json => {
+                console.log('Response Json', json)
+                json.values.forEach(x => {
+                    prexistingEpics.push(x.key)
+                })
+            });
+
+    let htmlCode = '<option disabled selected value> -- select an option -- </option>';
+
+    prexistingEpics.forEach(item => {
+        htmlCode += `<option value="` + item +  `">` + item + `</option>`
+    })
+
+    selectAssignEpic.innerHTML = htmlCode     
+    
     return;
 }
 
