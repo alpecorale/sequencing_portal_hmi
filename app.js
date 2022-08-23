@@ -58,13 +58,22 @@ app.get('/', (req, res) => {
   
 })
 
+// dont know group name or have admin privlidges?
 app.get('/getUsers', (req, res) => {
-  // can add group name... also default max is 50
+
+  // returns status 404
   jira.getUsers().then(result => {
+    console.log(result)
     res.send(result);
   }).catch(err => {
     console.log(err)
   })
+  // or
+  // jira.getUsersInGroup('groupname').then(result => {
+  //   res.send(result);
+  // }).catch(err => {
+  //   console.log(err)
+  // })
 })
 
 // needs board to get epics from (likley to be preset)
@@ -274,12 +283,16 @@ const Data = multer({ storage: storage });
 app.post('/addAttachment2', Data.any('files'), (req, res, next) => {
 
   console.log("Req: ", req)
-  jira.addAttachmentOnIssue(req.body.jiraId, fs.createReadStream(req.files[0].path)).then(result => {
-    console.log('Result', result)
-    res.send(result);
-  }).catch(err => {
-    console.log(err)
+
+  req.files.forEach(x => {
+    jira.addAttachmentOnIssue(req.body.jiraId, fs.createReadStream(x.path)).then(result => {
+      console.log('Result', result)
+      res.send(result);
+    }).catch(err => {
+      console.log(err)
+    })
   })
+  
 
   if (res.status(200)) {
     console.log("Your file has been uploaded successfully.");

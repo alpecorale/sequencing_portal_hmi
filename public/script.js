@@ -1,3 +1,5 @@
+// const { csv } = require("d3");
+
 console.log('d3', d3.version)
 
 // d3.csv('nanoporeFolders.csv', (data) => {
@@ -26,6 +28,9 @@ let inputLinkedIssuesArray = [];
 let allJiraTickets = [];
 let allUsers = [];
 let assignToEpic = '';
+let addXXXFile = '';
+let addYYYFile = '';
+
 //const tagListBoxEl = document.getElementById("tagListBox")
 
 // loading stuff to html
@@ -160,6 +165,8 @@ async function submitForm(e) {
     
 
     console.log("submit called")
+
+    console.log("see file XXX")
     // get values from form
     expName = document.getElementById('experimentName').value
     jiraTicketID = document.getElementById('inputJiraTicketID').value
@@ -178,6 +185,8 @@ async function submitForm(e) {
     howLinkIssue = document.getElementById('linkedIssuesDrop').value
     inputLinkedIssuesArray = document.getElementById("inputLinkedIssue").getValues() // should check if empty?
     inputTagsArray = document.getElementById("inputTags").getValues() // also may need to check if empty
+    addXXXFile = document.getElementById('inputXXXFile').files[0]
+    addYYYFile = document.getElementById('inputYYYFile').files[0]
     // console.log(document.getElementById('inputSamples').value.split(/\r?\n/))
 
     // set set samples from table
@@ -275,6 +284,10 @@ async function submitForm(e) {
 
     // make dynamic sample sheet
     makeDynamicSampleSheet()
+
+    // add added files to csvFileToPass
+    csvFileToPass.append('file', addXXXFile)
+    csvFileToPass.append('file', addYYYFile)
 
     // attach document and update issue if Jira ticket Id exists
     // otherwise create a JiraTicket for the run
