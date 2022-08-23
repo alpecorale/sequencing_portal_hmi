@@ -32,31 +32,60 @@ let assignToEpic = '';
 let prexistingEpics = [];
 const selectAssignEpic = document.getElementById("inputAssignEpic");
 
+let prexistingIssues = [];
+const selectLinkedIssues = document.getElementById("issues");
+
 
 // need to load epics and issues into options
 async function loadOptions() {
-    await fetch('/getEpics', {
-                method: 'GET',
-                headers: {
-                    "Content-Type": "application/json"
-                }
-            }).then(response => {
-                console.log('Response Epics: ', response)
-                return response.json();
-            }).then(json => {
-                console.log('Response Json', json)
-                json.values.forEach(x => {
-                    prexistingEpics.push(x.key)
-                })
-            });
 
-    let htmlCode = '<option disabled selected value> -- select an option -- </option>';
+    //only gets Epics from one board (can pass as variable but currently hardcoded)
+    await fetch('/getEpics', {
+        method: 'GET',
+        headers: {
+            "Content-Type": "application/json"
+        }
+    }).then(response => {
+        console.log('Response Epics: ', response)
+        return response.json();
+    }).then(json => {
+        console.log('Response Json', json)
+        json.values.forEach(x => {
+            prexistingEpics.push(x.key)
+        })
+    });
+
+    let htmlCodeEpics = '<option disabled selected value> -- select an option -- </option>';
 
     prexistingEpics.forEach(item => {
-        htmlCode += `<option value="` + item +  `">` + item + `</option>`
+        htmlCodeEpics += `<option value="` + item +  `">` + item + `</option>`
     })
 
-    selectAssignEpic.innerHTML = htmlCode     
+    selectAssignEpic.innerHTML = htmlCodeEpics
+
+    //only gets Issues from one board (can pass as variable but currently hardcoded)
+    await fetch('/getIssues', {
+        method: 'GET',
+        headers: {
+            "Content-Type": "application/json"
+        }
+    }).then(response => {
+        console.log('Response Issues: ', response)
+        return response.json();
+    }).then(json => {
+        console.log('Response Json', json)
+        json.issues.forEach(x => {
+            prexistingIssues.push(x.key)
+        })
+    });
+
+    let htmlCodeIssues = '';
+
+    prexistingIssues.forEach(item => {
+        htmlCodeIssues += `<option value="` + item +  `">` + item + `</option>`
+    })
+
+    selectLinkedIssues.innerHTML = htmlCodeIssues    
     
     return;
 }

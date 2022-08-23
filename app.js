@@ -70,10 +70,20 @@ app.get('/getUsers', (req, res) => {
 // needs board to get epics from (likley to be preset)
 app.get('/getEpics', (req, res) => {
   jira.getEpics('38', 0, 50, 'false').then(result => {
-    console.log(result)
+    // console.log(result)
     res.send(result);
   }).catch(err => {
     console.log('Get Epics Err', err)
+  })
+})
+
+// needs board to get epics from (likley to be preset)
+app.get('/getIssues', (req, res) => {
+  jira.getIssuesForBoard('38', 0, 50).then(result => {
+    // console.log(result)
+    res.send(result);
+  }).catch(err => {
+    console.log('Get Issues Err', err)
   })
 })
 
