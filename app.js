@@ -37,10 +37,40 @@ app.use((req, res, next) => {
     next();
 })
 
-// const execSync = require('child_process').execSync
-// import { execSync } from 'child_process';
-// const output = execSync('ls', {encoding: 'utf-8'});
-// console.log('Output was: \n', output)
+const { exec } = require("child_process");
+
+exec("pwd", (error, stdout, stderr) => {
+  if (error) {
+      console.log(`error: ${error.message}`);
+      return;
+  }
+  if (stderr) {
+      console.log(`stderr: ${stderr}`);
+      return;
+  }
+  console.log(`stdout: ${stdout}`);
+});
+
+
+const { spawn } = require("child_process");
+
+// const ls = spawn("ls", ["-la"]);
+
+// ls.stdout.on("data", data => {
+//     console.log(`stdout: ${data}`);
+// });
+
+// ls.stderr.on("data", data => {
+//     console.log(`stderr: ${data}`);
+// });
+
+// ls.on('error', (error) => {
+//     console.log(`error: ${error.message}`);
+// });
+
+// ls.on("close", code => {
+//     console.log(`child process exited with code ${code}`);
+// });
 
 let jira = new JiraApi({
   protocol: "http",
@@ -279,6 +309,7 @@ const storage = multer.diskStorage({
       cb(null, file.originalname);
   },
 });
+
 const Data = multer({ storage: storage });
 app.post('/addAttachment2', Data.any('files'), (req, res, next) => {
 

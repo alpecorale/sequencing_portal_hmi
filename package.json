@@ -4,6 +4,7 @@
     "body-parser": "^1.20.0",
     "bootstrap": "^5.2.0",
     "bootstrap-icons": "^1.9.1",
+    "child_process": "^1.0.2",
     "cors": "^2.8.5",
     "d3": "^7.6.1",
     "dotenv": "^16.0.1",
