@@ -60,7 +60,7 @@ async function loadOptions() {
         })
     });
 
-    let htmlCodeEpics = '<option disabled selected value> -- select an option -- </option>';
+    let htmlCodeEpics = `<option selected="selected" value="">None</option>`;
 
     prexistingEpics.forEach(item => {
         htmlCodeEpics += `<option value="` + item +  `">` + item + `</option>`
@@ -166,7 +166,6 @@ async function submitForm(e) {
 
     console.log("submit called")
 
-    console.log("see file XXX")
     // get values from form
     expName = document.getElementById('experimentName').value
     jiraTicketID = document.getElementById('inputJiraTicketID').value
@@ -179,8 +178,10 @@ async function submitForm(e) {
     workflow = document.getElementById('workflowDrop').value
     libPrepKit = document.getElementById('libraryDrop').value
     indexKit = document.getElementById('indexKitDrop').value
-    chemistry = document.getElementById('chemistryDrop').value
+    chemistry = document.
+    getElementById('chemistryDrop').value
     jiraCategory = document.getElementById('jiraCategoryDrop').value
+    jiraProject = document.getElementById('jiraProjectDrop').value
     assignToEpic = document.getElementById('inputAssignEpic').value
     howLinkIssue = document.getElementById('linkedIssuesDrop').value
     inputLinkedIssuesArray = document.getElementById("inputLinkedIssue").getValues() // should check if empty?
@@ -296,19 +297,26 @@ async function submitForm(e) {
         csvFileToPass.append('jiraId', jiraTicketID)
 
         // attach document to jira issue
-        await fetch("/addAttachment2", {
+        await fetch("/addAttachment2Issue", {
             method: "POST",
             body: csvFileToPass,
         }).catch((error) => ("Something went wrong!", error));
 
+        // attach document to jira issue
+        await fetch("/downloadSampleSheet", {
+            method: "POST",
+            body: sampleSheetToPass,
+        }).catch((error) => ("Something went wrong!", error));
+
         const json = { 
             id: jiraTicketID,
+            project: jiraProject,
             category: jiraCategory,
             tags: inputTagsArray,
             info: sequencingInfo,
             user: experimentalist, // assignee
             watchers: stakeholders, 
-            assign: assignToEpic,
+            assignEpic: assignToEpic,
             howLink: howLinkIssue,
             linkIssue: inputLinkedIssuesArray
 
@@ -335,11 +343,12 @@ async function submitForm(e) {
 
         const json = { 
             info: sequencingInfo,
+            project: jiraProject,
             category: jiraCategory,
             tags: inputTagsArray,
             user: experimentalist, // assignee
             watchers: stakeholders,
-            assign: assignToEpic,
+            assignEpic: assignToEpic,
             howLink: howLinkIssue,
             linkIssue: inputLinkedIssuesArray
         }
@@ -366,9 +375,15 @@ async function submitForm(e) {
         csvFileToPass.append('jiraId', returnedIssueKey)
 
         // attach document to jira issue
-        await fetch("/addAttachment2", {
+        await fetch("/addAttachment2Issue", {
             method: "POST",
             body: csvFileToPass,
+        }).catch((error) => ("Something went wrong!", error));
+
+        // attach samplesheet to folder
+        await fetch("/downloadSampleSheet", {
+            method: "POST",
+            body: sampleSheetToPass,
         }).catch((error) => ("Something went wrong!", error));
     }
     
@@ -387,47 +402,55 @@ async function submitForm(e) {
     //location.reload()
 }
 
+let sampleSheetToPass = new FormData()
 
 function makeMiseqSampleSheet() {
-    let csv = '[Header]\n';
-    csv += "Local Run Manager Analysis Id," + lrmaId + '\n'
-    csv += "Experiment Name," + expName + '\n'
-    csv += "Date," + date.toISOString().split('T')[0] + '\n'
-    csv += "Module," + module + '\n'
-    csv += "Workflow," + workflow + '\n'
-    csv += "Library Prep Kit," + libPrepKit + '\n'
-    csv += "Index Kit," + indexKit + '\n'
-    csv += "Chemistry," + chemistry + '\n'
+    let csvSampleSheetMiSeq = '[Header]\n';
+    csvSampleSheetMiSeq += "Local Run Manager Analysis Id," + lrmaId + '\n'
+    csvSampleSheetMiSeq += "Experiment Name," + expName + '\n'
+    csvSampleSheetMiSeq += "Date," + date.toISOString().split('T')[0] + '\n'
+    csvSampleSheetMiSeq += "Module," + module + '\n'
+    csvSampleSheetMiSeq += "Workflow," + workflow + '\n'
+    csvSampleSheetMiSeq += "Library Prep Kit," + libPrepKit + '\n'
+    csvSampleSheetMiSeq += "Index Kit," + indexKit + '\n'
+    csvSampleSheetMiSeq += "Chemistry," + chemistry + '\n'
 
-    csv += "\n[Reads]\n"
-    csv += reads1 + '\n'
-    csv += reads2 + '\n'
+    csvSampleSheetMiSeq += "\n[Reads]\n"
+    csvSampleSheetMiSeq += reads1 + '\n'
+    csvSampleSheetMiSeq += reads2 + '\n'
 
-    csv += "\n[Settings]\n"
+    csvSampleSheetMiSeq += "\n[Settings]\n"
 
-    csv += "\n[Data]\n"
+    csvSampleSheetMiSeq += "\n[Data]\n"
 
 
     samples.forEach((x, index) => {
 
-        csv += x.join(',') + "\n"
+        csvSampleSheetMiSeq += x.join(',') + "\n"
         // if (index == 0) {
         //     csv += x.join(',') + "\n";
         // }
         //csv += date.toLocaleDateString('sv').replaceAll('-', ''); + '_' + x.join('_') +"\n";
     })
-    let csvData = new Blob([csv], { type: 'text/csv' });
+    let fileName = expName + 'SampleSheet.csv'
+    let csvSampleSheetMiSeqData = new Blob([csv], { type: 'text/csv' });
 
-    let csvUrl = URL.createObjectURL(csvData);
+    
+    sampleSheetToPass.append('file', new File([csvSampleSheetMiSeqData], fileName))
+
+    // old way of downloading sample sheet directly to user
+    // let csvUrl = URL.createObjectURL(csvSampleSheetMiSeqData);
  
-    let hiddenElement = document.createElement('a');
-    hiddenElement.href = csvUrl;
-    hiddenElement.target = '_blank';
-    hiddenElement.download = 'PortalCreatedSampleSheet.csv'; // edit this to properly name the sample sheet
-    hiddenElement.click();
+    // let hiddenElement = document.createElement('a');
+    // hiddenElement.href = csvUrl;
+    // hiddenElement.target = '_blank';
+    // hiddenElement.download = 'PortalCreatedSampleSheet.csv'; // edit this to properly name the sample sheet
+    // hiddenElement.click();
 
     return;
 }
+
+let csvFileToPass = new FormData()
 
 function makeDynamicSampleSheet() {
     let csv = 'expName,date,module,seqInfo,experimentalist,watchers\n';
@@ -441,7 +464,7 @@ function makeDynamicSampleSheet() {
 
     let fileName = expName + 'Info.csv'
     let csvDataDynamic = new Blob([csv], { type: 'text/csv' });
-    csvFileToPass = new FormData()
+    
     csvFileToPass.append('file', new File([csvDataDynamic], fileName))
 
     return;

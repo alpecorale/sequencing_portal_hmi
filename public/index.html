@@ -243,6 +243,18 @@
             </div>
 
             <div class="mb-3 row">
+                <label class="col-sm-2 col-form-label" for="jiraProjectDrop">Project:</label>
+                <div class="col-sm-3">
+                    <select class="form-select" name="jiraProjectInputs" id="jiraProjectDrop">
+                        <option value="TES" selected="selected">Test Roadmap</option>
+                        <option value="NT">New Targets</option>
+                        <option value="PAC">PacBio</option>
+                        <option value="BFX">Bioinformatics</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="mb-3 row">
                 <label class="col-sm-2 col-form-label" for="jiraCategoryDrop">Category:</label>
                 <div class="col-sm-3">
                     <select class="form-select" name="jiraCategoryInputs" id="jiraCategoryDrop">
@@ -258,9 +270,6 @@
                     <select class="form-select" name="inputAssignEpic" id="inputAssignEpic">
                         <!-- Need to fill with list of Epics -->
                         <!-- <option disabled selected value> -- select an option -- </option> -->
-                        <!-- <option value="epic1" selected="selected">Epic1</option>
-                        <option value="epic2">Epic2</option>
-                        <option value="epic3">Epic3</option> -->
                     </select>
                 </div>
             </div>
@@ -271,8 +280,9 @@
                 <div class="col-sm-3">
                     <select class="form-select" name="linkedIssuesInputs" id="linkedIssuesDrop">
                         <!-- May need to add more options -->
-                        <option value="blocks" selected="selected">Blocks</option>
-                        <option value="Is Blocked By">Is Blocked By</option>
+                        <option value="" selected="selected">None</option>
+                        <option value="blocks">Blocks</option>
+                        <option value="blockedBy">Is Blocked By</option>
                         <option value="clones">Clones</option>
                     </select>
                 </div>
@@ -297,14 +307,14 @@
 
 
             <div class="mb-3 row">
-                <label class="col-form-label col-sm-2" for="inputXXXFile">Attach XXX:</label>
+                <label class="col-form-label col-sm-2" for="inputXXXFile">Attach References:</label>
                 <div class="col-sm-3">
-                    <input class="form-control" type="file" accept=".pdf" id="inputXXXFile">
+                    <input class="form-control" type="file" id="inputXXXFile" multiple>
                 </div>
                 <div class="col-sm-1"></div>
                 <label class="col-sm-2 col-form-label" for="inputYYYFile">Other Attachmenets:</label>
                 <div class="col-sm-3">
-                    <input class="form-control" type="file" id="inputYYYFile">
+                    <input class="form-control" type="file" id="inputYYYFile" multiple>
                 </div>
             </div>
 

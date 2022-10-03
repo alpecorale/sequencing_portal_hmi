@@ -116,9 +116,12 @@ app.get('/getEpics', (req, res) => {
   })
 })
 
+//pacbio is board '38'
+//tes is board '102'
+
 // needs board to get epics from (likley to be preset)
 app.get('/getIssues', (req, res) => {
-  jira.getIssuesForBoard('38', 0, 50).then(result => {
+  jira.getIssuesForBoard('102', 0, 50).then(result => {
     // console.log(result)
     res.send(result);
   }).catch(err => {
@@ -132,7 +135,8 @@ app.post('/makeIssue', bodyParser.json(), (req, res) => {
   jira.addNewIssue({
     fields: {
       project: {
-        key: "TES"
+        key: req.body.project
+        //key: "TES"
       },
       summary: "Portal Jira Testing (Delete)",
       description: req.body.info,
@@ -300,7 +304,9 @@ app.put('/updateIssue', bodyParser.json(), (req, res) => {
 //   })
 // })
 
-
+/*
+* Multer temp Storage location 1
+*/
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
       cb(null, "./public/data/uploads");
@@ -311,16 +317,25 @@ const storage = multer.diskStorage({
 });
 
 const Data = multer({ storage: storage });
-app.post('/addAttachment2', Data.any('files'), (req, res, next) => {
+
+/*
+* Used for temporary attachment uploads (saves them in ./public/data/uploads)
+* adds them as an attachment to prexisting issue
+* Need cronjob to clear directory periodically or after successfull upload
+*/
+app.post('/addAttachment2Issue', Data.any('files'), (req, res, next) => {
 
   console.log("Req: ", req)
 
+  // might want to move this section to seperate fxn/promise w/ await
+  // also might want to uncomment the return idk
   req.files.forEach(x => {
     jira.addAttachmentOnIssue(req.body.jiraId, fs.createReadStream(x.path)).then(result => {
       console.log('Result', result)
       res.send(result);
     }).catch(err => {
       console.log(err)
+      //return
     })
   })
   
@@ -330,9 +345,57 @@ app.post('/addAttachment2', Data.any('files'), (req, res, next) => {
     console.log(req.files);
     res.json({ message: "Successfully uploaded files" });
     res.end();
+
+    // use exec() to remove file from the staging upload space
+
+
   }
 
 })
+
+// ***** Make function that stores the downloaded sample sheet file
+// ***** to a seperate location that will have a cron job sweeping it
+// ***** (Later - make seperate locations for miseq and nanopore sample sheets to go to) 
+//
+//
+
+/*
+* Multer temp Storage location 1
+*/
+const storageSampleSheet = multer.diskStorage({
+  destination: (req, file, cb) => {
+      cb(null, "./SampleSheets");
+  },
+  filename: (req, file, cb) => {
+      cb(null, file.originalname);
+  },
+});
+
+const SampleSheetData = multer({ storage: storageSampleSheet });
+
+/*
+* Used for temporary attachment uploads (saves them in ./public/data/uploads)
+* adds them as an attachment to prexisting issue
+* Need cronjob to clear directory periodically or after successfull upload
+*/
+app.post('/downloadSampleSheet', SampleSheetData.any('files'), (req, res, next) => {
+
+  console.log("Req: ", req)  
+
+  if (res.status(200)) {
+    console.log("Your file has been uploaded successfully.");
+    console.log(req.files);
+    res.json({ message: "Successfully uploaded files" });
+    res.end();
+
+    // use exec() to remove file from the staging upload space
+
+
+  }
+
+})
+
+
 
 // untested with this jira api
 // app.get('/getTicketIds', (req, res) => {
