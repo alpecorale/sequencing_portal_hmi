@@ -108,7 +108,7 @@ app.get('/getUsers', (req, res) => {
 
 // needs board to get epics from (likley to be preset)
 app.get('/getEpics', (req, res) => {
-  jira.getEpics('38', 0, 50, 'false').then(result => {
+  jira.getEpics('107', 0, 200, 'false').then(result => {
     // console.log(result)
     res.send(result);
   }).catch(err => {
@@ -118,10 +118,11 @@ app.get('/getEpics', (req, res) => {
 
 //pacbio is board '38'
 //tes is board '102'
+//Test-Global-Seq-Board '107'
 
 // needs board to get epics from (likley to be preset)
 app.get('/getIssues', (req, res) => {
-  jira.getIssuesForBoard('102', 0, 50).then(result => {
+  jira.getIssuesForBoard('107', 0, 200).then(result => {
     // console.log(result)
     res.send(result);
   }).catch(err => {
@@ -129,14 +130,17 @@ app.get('/getIssues', (req, res) => {
   })
 })
 
+/*
+* cmd to make an issue
+*/
 app.post('/makeIssue', bodyParser.json(), (req, res) => {
   console.log(req.body)
 
   jira.addNewIssue({
     fields: {
       project: {
-        key: req.body.project
-        //key: "TES"
+        //key: req.body.project uncomment when ready
+        key: "TES"
       },
       summary: "Portal Jira Testing (Delete)",
       description: req.body.info,
@@ -144,7 +148,7 @@ app.post('/makeIssue', bodyParser.json(), (req, res) => {
         name: "Task"
       },
       assignee: {
-        //name: req.body.user
+        //name: req.body.user //its a list now so not sure how to handle that
         name: 'apecorale'
       },
       function(error, issue) {
@@ -252,7 +256,7 @@ app.put('/updateIssue', bodyParser.json(), (req, res) => {
 
   jira.updateIssue(req.body.id, {
     fields: {
-      description: req.body.info,
+      description: req.body.info, // find way to add text to description/not replace completely
       //labels: ["triaged"]
     },
     update: {
@@ -380,8 +384,6 @@ const SampleSheetData = multer({ storage: storageSampleSheet });
 */
 app.post('/downloadSampleSheet', SampleSheetData.any('files'), (req, res, next) => {
 
-  console.log("Req: ", req)  
-
   if (res.status(200)) {
     console.log("Your file has been uploaded successfully.");
     console.log(req.files);
@@ -397,14 +399,17 @@ app.post('/downloadSampleSheet', SampleSheetData.any('files'), (req, res, next) 
 
 
 
-// untested with this jira api
-// app.get('/getTicketIds', (req, res) => {
-//   jira.getIssue({issueKey: "BFX-74"}).then(result => {
-//     res.send(result);
-//   }).catch(err => {
-//     console.log(err)
-//   })
-// })
+/*
+* Get specific ticket
+* call using /getTicket?issue_key=KEY-1
+*/
+app.get('/getTicket', (req, res) => {
+  jira.getIssue(req.query.issue_key).then(result => {
+    res.send(result);
+  }).catch(err => {
+    console.log(err)
+  })
+})
 
 
 app.listen(process.env.PORT || port, hostname, () => console.log("listening on port 3001"));

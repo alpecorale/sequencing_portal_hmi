@@ -2,7 +2,7 @@
 
 <head>
     <meta charset="UTF-8">
-    <title>Miseq Sample Sheet Maker</title>
+    <title>Jira & Sample Sheet Portal</title>
     <!-- <script type="text/javascript" src="./node_modules/d3/build/d3.js"></script> -->
     <script src="http://code.jquery.com/jquery-1.10.1.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/7.6.1/d3.min.js"
@@ -23,13 +23,15 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/js/bootstrap.min.js"
         integrity="sha384-ODmDIVzN+pFdexxHEHFBQH3/9/vQ9uori45z4JjnFsRydbmQbmL5t1tQ0culUzyK"
         crossorigin="anonymous"></script>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/BrowserFS/2.0.0/browserfs.min.js" integrity="sha512-mz0EI+Ay1uIJP7rZEX8C/JlTAcHRIQ8Sny4vxmmj8MSzDJgG9NxxY2pUmOGv1lO7imFIFMyjjCzEXEywNgaUdQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-        <script type="text/javascript" src="multi-input.js" defer></script>
-        <script type="text/javascript" src="script.js" defer></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/BrowserFS/2.0.0/browserfs.min.js"
+        integrity="sha512-mz0EI+Ay1uIJP7rZEX8C/JlTAcHRIQ8Sny4vxmmj8MSzDJgG9NxxY2pUmOGv1lO7imFIFMyjjCzEXEywNgaUdQ=="
+        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script type="text/javascript" src="multi-input.js" defer></script>
+    <script type="text/javascript" src="script.js" defer></script>
 </head>
 
 <body>
-    
+
     <nav class="navbar navbar-expand-lg" style="background-color: #e3f2fd;">
         <div class="container-fluid">
             <a class="navbar-brand" href="/">Samplesheet Portal</a>
@@ -38,178 +40,237 @@
     <br>
     <div class="container" id="dataFormDiv">
 
-        <h4>Select Sequencing Machine:</h4>
-        <br>
-        <div class="mb-3 row" id="sequencingTypeDiv">
-            <div class="col-sm-2">
-                <input class="form-check-input" type="radio" id="miseq" name="inputTypeOfSeq" value="MISEQ" checked>
-                <label class="form-check-label" for="miseq">MiSeq</label>
-            </div>
-            <div class="col-sm-3">
-                <input disabled class="form-check-input" type="radio" id="oxfordNanopore" name="inputTypeOfSeq"
-                    value="NANO">
-                <label class="form-check-label" for="oxfordNanopore">Oxford Nanopore</label>
-            </div>
-            <div class="col-sm-2">
-                <input disabled class="form-check-input" type="radio" id="pacbio" name="inputTypeOfSeq" value="PACBIO">
-                <label class="form-check-label" for="pacbio">PacBio</label>
-            </div>
-        </div>
-
-        <hr />
-        <h5>Fill in Sample Sheet Requirements:</h5>
-        <br>
-        <div class="container" id="miSeqSampleSheetDiv">
-
-            <div class="container" id="miSeqTable"></div>
+        <!--Sequencing Selection Div-->
+        <div id="sequencingSelectionDiv">
+            <h4>Select Sequencing Machine:</h4>
             <br>
-
-            <div class="mb-3 row">
-                <label class="col-sm-2 col-form-label" for="experimentName">Experiment Name:</label>
-                <div class="col-sm-5">
-                    <input class="form-control" type="text" id="experimentName">
-                </div>
-            </div>
-
-            <div class="mb-3 row">
-                <label class="col-sm-2 col-form-label bold" for="inputReads1">Reads 1:</label>
-                <div class="col-sm-1">
-                    <input class="form-control" type="text" id="inputReads1" value="151" style="text-align: right">
-                </div>
-                <div class="col-sm-3"></div>
-                <label class="col-sm-2 col-form-label" for="inputReads2">Reads 2:</label>
-                <div class="col-sm-1">
-                    <input class="form-control" type="text" id="inputReads2" value="151" style="text-align: right">
-                </div>
-            </div>
-
-            <!-- <div class="mb-3 row">
-                                <label class="col-sm-2 col-form-label" for="inputReads2">Reads 2:</label>
-                                <div class="col-sm-1">
-                                    <input class="form-control" type="text" id="inputReads2" value="151">
-                                </div>
-                            </div> -->
-
-            <div class="mb-3 row">
-                <label class="col-sm-2 col-form-label" for="moduleDrop">Module:</label>
-                <div class="col-sm-3">
-                    <select class="form-select" name="moduleInputs" id="moduleDrop">
-                        <option value="GenerateFASTQ" selected="selected">GenerateFASTQ</option>
-                        <option value="module2">module2</option>
-                        <option value="module3">module3</option>
-                        <option value="module4">module4</option>
-                    </select>
-                </div>
-                <div class="col-sm-1"></div>
-                <label class="col-sm-2 col-form-label" for="workflowDrop">Workflow:</label>
-                <div class="col-sm-3">
-                    <select class="form-select" name="workflowInputs" id="workflowDrop">
-                        <option value="GenerateFASTQ" selected="selected">GenerateFASTQ</option>
-                        <option value="workflow2">workflow2</option>
-                        <option value="workflow3">workflow3</option>
-                        <option value="workflow4">workflow4</option>
-                    </select>
-                </div>
-            </div>
-
-            <!-- <div class="mb-3 row">
-                                <label class="col-sm-2 col-form-label" for="workflowDrop">Workflow:</label>
-                                <div class="col-sm-4">
-                                    <select class="form-select" name="workflowInputs" id="workflowDrop">
-                                        <option value="GenerateFASTQ" selected="selected">GenerateFASTQ</option>
-                                        <option value="workflow2">workflow2</option>
-                                        <option value="workflow3">workflow3</option>
-                                        <option value="workflow4">workflow4</option>
-                                    </select>
-                                </div>
-                            </div> -->
-
-            <div class="mb-3 row">
-                <label class="col-sm-2 col-form-label" for="libraryDrop">Library Prep Kit:</label>
-                <div class="col-sm-3">
-                    <select class="form-select" name="libraryInputs" id="libraryDrop">
-                        <option value="Custom" selected="selected">Custom</option>
-                        <option value="library2">library2</option>
-                        <option value="library3">library3</option>
-                        <option value="library4">library4</option>
-                    </select>
-                </div>
-                <div class="col-sm-1"></div>
-                <label class="col-sm-2 col-form-label" for="indexKitDrop">Index Kit:</label>
-                <div class="col-sm-3">
-                    <select class="form-select" name="indexKitInputs" id="indexKitDrop">
-                        <option value="Custom" selected="selected">Custom</option>
-                        <option value="indexKit2">indexKit2</option>
-                        <option value="indexKit3">indexKit3</option>
-                        <option value="indexKit4">indexKit4</option>
-                    </select>
-                </div>
-            </div>
-
-            <!-- <div class="mb-3 row">
-                                <label class="col-sm-2 col-form-label" for="indexKitDrop">Index Kit:</label>
-                                <div class="col-sm-4">
-                                    <select class="form-select" name="indexKitInputs" id="indexKitDrop">
-                                        <option value="Custom" selected="selected">Custom</option>
-                                        <option value="indexKit2">indexKit2</option>
-                                        <option value="indexKit3">indexKit3</option>
-                                        <option value="indexKit4">indexKit4</option>
-                                    </select>
-                                </div>
-                            </div> -->
-
-            <div class="mb-3 row">
-                <label class="col-sm-2 col-form-label" for="chemistryDrop">Chemistry:</label>
-                <div class="col-sm-3">
-                    <select class="form-select" name="chemistryInputs" id="chemistryDrop">
-                        <option value="Amplicon" selected="selected">Amplicon</option>
-                        <option value="chemistry2">chemistry2</option>
-                        <option value="chemistry3">chemistry3</option>
-                        <option value="chemistry4">chemistry4</option>
-                    </select>
-                </div>
-            </div>
-
-        </div>
-
-        <hr />
-        <h5>Additional information:</h5>
-        <br>
-        <div class="mb-3 row" id="moreSeqInfo">
-            <label class="col-sm-2 col-form-label" for="inputSequencingInfo">Sequencing Info:</label><br>
-            <div class="col-sm-9">
-                <textarea class="form-control" id="inputSequencingInfo" rows="4" cols="50"></textarea>
-            </div>
-        </div>
-
-        <div id="projectInfo">
-            <div class="row mb-3">
+            <div class="mb-3 row" id="sequencingTypeDiv">
                 <div class="col-sm-2">
-                    <label class="form-label" for="inputJiraTicketID">Jira Ticket ID:</label>
+                    <!-- <button class="btn btn-primary" onclick="goToMiSeq(event)">Create MiSeq Samplesheet</button> -->
+                    <input class="form-check-input" type="radio" id="miseq" name="inputTypeOfSeq" value="MISEQ" checked>
+                    <label class="form-check-label" for="miseq">MiSeq</label>
                 </div>
                 <div class="col-sm-3">
-                    <input class="form-control" type="text" id="inputJiraTicketID">
+                    <!-- <button class="btn btn-primary" onclick="goToNanopore(event)">Create Nanopore Samplesheet</button> -->
+                    <input class="form-check-input" type="radio" id="oxfordNanopore" name="inputTypeOfSeq" value="NANO">
+                    <label class="form-check-label" for="oxfordNanopore">Oxford Nanopore</label>
                 </div>
-                <div class="col-sm-6">
-                    <div id="inputJiraTicketHelpBlock" class="form-text">
-                        If left empty a Jira Ticket will automatically be created and assigned to you.
+                <div class="col-sm-3">
+                    <!-- <button class="btn btn-primary" onclick="skipSampleSheet(event)">Skip Sample Sheet</button> -->
+                    <input class="form-check-input" type="radio" id="noSampleSheet" name="inputTypeOfSeq"
+                        value="NOSAMP">
+                    <label class="form-check-label" for="noSampleSheet">No Samplesheet</label>
+                </div>
+                <!-- <div class="col-sm-2">
+                     <input disabled class="form-check-input" type="radio" id="pacbio" name="inputTypeOfSeq"
+                        value="PACBIO">
+                    <label class="form-check-label" for="pacbio">PacBio</label>
+                </div> -->
+            </div>
+            <hr />
+        </div>
+
+        <!--Sample Sheet Div-->
+        <div id="sampleSheetDiv">
+            <!--MiSeq-->
+            <div class="container" id="miSeqSampleSheetDiv" style="display: block;">
+
+                <h3>MiSeq Sample Sheet Requirements:</h3>
+                <br>
+
+                <div class="container" id="miSeqTable"></div>
+                <br>
+
+                <div class="mb-3 row">
+                    <label class="col-sm-2 col-form-label" for="experimentName">Experiment Name:</label>
+                    <div class="col-sm-5">
+                        <input class="form-control" type="text" id="experimentName">
                     </div>
                 </div>
+
+                <div class="mb-3 row">
+                    <label class="col-sm-2 col-form-label bold" for="inputReads1">Reads 1:</label>
+                    <div class="col-sm-1">
+                        <input class="form-control" type="text" id="inputReads1" value="151" style="text-align: right">
+                    </div>
+                    <div class="col-sm-3"></div>
+                    <label class="col-sm-2 col-form-label" for="inputReads2">Reads 2:</label>
+                    <div class="col-sm-1">
+                        <input class="form-control" type="text" id="inputReads2" value="151" style="text-align: right">
+                    </div>
+                </div>
+
+                <!-- <div class="mb-3 row">
+                                                <label class="col-sm-2 col-form-label" for="inputReads2">Reads 2:</label>
+                                                <div class="col-sm-1">
+                                                    <input class="form-control" type="text" id="inputReads2" value="151">
+                                                </div>
+                                            </div> -->
+
+                <div class="mb-3 row">
+                    <label class="col-sm-2 col-form-label" for="moduleDrop">Module:</label>
+                    <div class="col-sm-3">
+                        <select class="form-select" name="moduleInputs" id="moduleDrop">
+                            <option value="GenerateFASTQ" selected="selected">GenerateFASTQ</option>
+                            <option value="module2">module2</option>
+                            <option value="module3">module3</option>
+                            <option value="module4">module4</option>
+                        </select>
+                    </div>
+                    <div class="col-sm-1"></div>
+                    <label class="col-sm-2 col-form-label" for="workflowDrop">Workflow:</label>
+                    <div class="col-sm-3">
+                        <select class="form-select" name="workflowInputs" id="workflowDrop">
+                            <option value="GenerateFASTQ" selected="selected">GenerateFASTQ</option>
+                            <option value="workflow2">workflow2</option>
+                            <option value="workflow3">workflow3</option>
+                            <option value="workflow4">workflow4</option>
+                        </select>
+                    </div>
+                </div>
+
+                <!-- <div class="mb-3 row">
+                                                <label class="col-sm-2 col-form-label" for="workflowDrop">Workflow:</label>
+                                                <div class="col-sm-4">
+                                                    <select class="form-select" name="workflowInputs" id="workflowDrop">
+                                                        <option value="GenerateFASTQ" selected="selected">GenerateFASTQ</option>
+                                                        <option value="workflow2">workflow2</option>
+                                                        <option value="workflow3">workflow3</option>
+                                                        <option value="workflow4">workflow4</option>
+                                                    </select>
+                                                </div>
+                                            </div> -->
+
+                <div class="mb-3 row">
+                    <label class="col-sm-2 col-form-label" for="libraryDrop">Library Prep Kit:</label>
+                    <div class="col-sm-3">
+                        <select class="form-select" name="libraryInputs" id="libraryDrop">
+                            <option value="Custom" selected="selected">Custom</option>
+                            <option value="library2">library2</option>
+                            <option value="library3">library3</option>
+                            <option value="library4">library4</option>
+                        </select>
+                    </div>
+                    <div class="col-sm-1"></div>
+                    <label class="col-sm-2 col-form-label" for="indexKitDrop">Index Kit:</label>
+                    <div class="col-sm-3">
+                        <select class="form-select" name="indexKitInputs" id="indexKitDrop">
+                            <option value="Custom" selected="selected">Custom</option>
+                            <option value="indexKit2">indexKit2</option>
+                            <option value="indexKit3">indexKit3</option>
+                            <option value="indexKit4">indexKit4</option>
+                        </select>
+                    </div>
+                </div>
+
+                <!-- <div class="mb-3 row">
+                                                <label class="col-sm-2 col-form-label" for="indexKitDrop">Index Kit:</label>
+                                                <div class="col-sm-4">
+                                                    <select class="form-select" name="indexKitInputs" id="indexKitDrop">
+                                                        <option value="Custom" selected="selected">Custom</option>
+                                                        <option value="indexKit2">indexKit2</option>
+                                                        <option value="indexKit3">indexKit3</option>
+                                                        <option value="indexKit4">indexKit4</option>
+                                                    </select>
+                                                </div>
+                                            </div> -->
+
+                <div class="mb-3 row">
+                    <label class="col-sm-2 col-form-label" for="chemistryDrop">Chemistry:</label>
+                    <div class="col-sm-3">
+                        <select class="form-select" name="chemistryInputs" id="chemistryDrop">
+                            <option value="Amplicon" selected="selected">Amplicon</option>
+                            <option value="chemistry2">chemistry2</option>
+                            <option value="chemistry3">chemistry3</option>
+                            <option value="chemistry4">chemistry4</option>
+                        </select>
+                    </div>
+                </div>
+
             </div>
 
-            <div class="mb-3 row">
-                <label class="col-form-label col-sm-2" for="inputExperimentalist">Assignee:</label>
-                <div class="col-sm-3">
-                    <input class="form-control" type="text" id="inputExperimentalist">
-                </div>
-                <div class="col-sm-1"></div>
-                <label class="col-sm-2 col-form-label" for="inputStakeholder">Watchers:</label>
-                <div class="col-sm-3">
-                    <input class="form-control" type="text" id="inputStakeholder">
-                </div>
+            <!--Nanopore-->
+            <div class="container" id="nanoporeSampleSheetDiv" style="display: none;">
+                <h3>Nanopore Sample Sheet Requirements:</h3>
+                <br>
             </div>
 
-            <!-- <div class="mb-3 row">
+            <hr />
+        </div>
+
+        <!--Jira Info Div-->
+        <div id="jiraInfoDiv">
+
+            <h3>Ticket Information:</h3>
+            <br>
+
+            <!-- <div id="chooseJiraPath">
+                <p>Jira Ticket Id:</p>
+                <div>
+                    <input type="text" />
+                    <button class="btn btn-primary" onclick="goToJiraTicket()">Go</button>
+                </div>
+                <hr />
+                <button class="btn btn-primary" onclick="createJiraTicket()">Create Ticket</button>
+            </div> -->
+
+            <div id="projectInfo">
+
+                <div class="row mb-3">
+                    <div class="col-sm-2">
+                        <label class="form-label" for="inputJiraTicketID">Jira Ticket ID:</label>
+                    </div>
+
+                    <div class="col-sm-3">
+                        <input class="form-control" list="listIssues" id="inputJiraTicketID" >
+                        <datalist id="listIssues">
+                            <!--Filled up on load-->
+                        </datalist>
+                        <!-- <input class="form-control" type="text" id="inputJiraTicketID"> -->
+                    </div>
+                    <div class="col-sm-6">
+                        <div id="inputJiraTicketHelpBlock" class="form-text">
+                            If left empty a Jira Ticket will automatically be created and assigned to you.
+                        </div>
+                    </div>
+                </div>
+
+                <div class="mb-3 row" id="moreSeqInfo">
+                    <label class="col-sm-2 col-form-label" for="inputSequencingInfo">Comments:</label><br>
+                    <div class="col-sm-9">
+                        <textarea class="form-control" id="inputSequencingInfo" rows="4" cols="50"></textarea>
+                    </div>
+                </div>
+
+                <div class="mb-3 row">
+                    <label class="col-form-label col-sm-2" for="inputExperimentalist">Assignee:</label>
+                    <div class="col-sm-4">
+                        <multi-input id="inputExperimentalist">
+                            <input list="assigneesList">
+                            <datalist id="assigneesList">
+                                <option value="apecorale"></option>
+                                <option value="azheng"></option>
+                                <option value="dprbylinski"></option>
+                            </datalist>
+                        </multi-input>
+                        
+                    </div>
+                    <div class="col-sm-1"></div>
+                    <label class="col-sm-1 col-form-label" for="inputStakeholder">Watchers:</label>
+                    <div class="col-sm-4">
+                        <multi-input id="inputStakeholder">
+                            <input list="assigneesList2">
+                            <datalist id="assigneesList2">
+                                <option value="apecorale"></option>
+                                <option value="azheng"></option>
+                                <option value="dprbylinski"></option>
+                            </datalist>
+                        </multi-input>
+                        
+                    </div>
+                </div>
+
+                <!-- <div class="mb-3 row">
                 <label class="col-form-label col-sm-2" for="inputTag">Add Tag:</label>
                 <div class="col-sm-3">
                     <input class="form-control" type="text" id="inputTag">
@@ -225,111 +286,118 @@
                 </div>
             </div> -->
 
-            <div class="mb-3 row">
-                <label class="col-form-label col-sm-2" for="inputTag">Add Tag:</label>
-                <div class="col-sm-6">
-                    <multi-input id="inputTags">
-                        <input list="tags">
-                        <datalist id="tags">
-                            <!-- May need to add more -->
-                          <option value="Sequencing Run"></option>
-                          <option value="Needs To Be Analyzed"></option>
-                          <option value="MiSeq"></option>
-                          <option value="Nanopore"></option>
-                          <option value="PacBio"></option>
-                        </datalist>
-                      </multi-input>
+                <div class="mb-3 row">
+                    <label class="col-form-label col-sm-2" for="inputTag">Add Tag:</label>
+                    <div class="col-sm-6">
+                        <multi-input id="inputTags">
+                            <input list="tags">
+                            <datalist id="tags">
+                                <!-- May need to add more -->
+                                <option value="Sequencing Run"></option>
+                                <option value="Needs To Be Analyzed"></option>
+                                <option value="MiSeq"></option>
+                                <option value="Nanopore"></option>
+                                <option value="PacBio"></option>
+                            </datalist>
+                        </multi-input>
+                    </div>
                 </div>
-            </div>
 
-            <div class="mb-3 row">
-                <label class="col-sm-2 col-form-label" for="jiraProjectDrop">Project:</label>
-                <div class="col-sm-3">
-                    <select class="form-select" name="jiraProjectInputs" id="jiraProjectDrop">
-                        <option value="TES" selected="selected">Test Roadmap</option>
-                        <option value="NT">New Targets</option>
-                        <option value="PAC">PacBio</option>
-                        <option value="BFX">Bioinformatics</option>
-                    </select>
+                <div id="projectRow">
+                    <div class="mb-3 row">
+                        <label class="col-sm-2 col-form-label" for="jiraProjectDrop">Project:</label>
+                        <div class="col-sm-3">
+                            <select class="form-select" name="jiraProjectInputs" id="jiraProjectDrop">
+                                <option value="TES" selected="selected">Test Roadmap</option>
+                                <option value="NT">New Targets</option>
+                                <option value="PAC">PacBio</option>
+                                <option value="BFX">Bioinformatics</option>
+                            </select>
+                        </div>
+                    </div>
                 </div>
-            </div>
 
-            <div class="mb-3 row">
-                <label class="col-sm-2 col-form-label" for="jiraCategoryDrop">Category:</label>
-                <div class="col-sm-3">
-                    <select class="form-select" name="jiraCategoryInputs" id="jiraCategoryDrop">
-                        <option value="Sequencing" selected="selected">Sequencing</option>
-                        <option value="Task">Task</option>
-                        <option value="Story">Story</option>
-                        <option value="Epic">Epic</option>
-                    </select>
+                <div class="mb-3 row">
+                    <label class="col-sm-2 col-form-label" for="jiraCategoryDrop">Category:</label>
+                    <div class="col-sm-3">
+                        <select class="form-select" name="jiraCategoryInputs" id="jiraCategoryDrop">
+                            <option value="Sequencing" selected="selected">Sequencing</option>
+                            <option value="Task">Task</option>
+                            <option value="Story">Story</option>
+                            <option value="Epic">Epic</option>
+                        </select>
+                    </div>
+                    <div class="col-sm-1"></div>
+                    <label class="col-sm-2 col-form-label" for="inputAssignEpic">Assign to Epic:</label>
+                    <div class="col-sm-3">
+                        <!-- <input class="form-control" type="text" id="inputAssignEpic"> -->
+                        <select class="form-select" name="inputAssignEpic" id="inputAssignEpic">
+                            <!-- Need to fill with list of Epics -->
+                            <!-- <option disabled selected value> -- select an option -- </option> -->
+                        </select>
+                    </div>
                 </div>
-                <label class="col-sm-2 col-form-label" for="inputAssignEpic">Assign to Epic:</label>
-                <div class="col-sm-3">
-                    <!-- <input class="form-control" type="text" id="inputAssignEpic"> -->
-                    <select class="form-select" name="inputAssignEpic" id="inputAssignEpic">
-                        <!-- Need to fill with list of Epics -->
-                        <!-- <option disabled selected value> -- select an option -- </option> -->
-                    </select>
-                </div>
-            </div>
-
-
-            <div class="mb-3 row">
-                <label class="col-sm-2 col-form-label" for="linkedIssuesDrop">Linked Issues:</label>
-                <div class="col-sm-3">
-                    <select class="form-select" name="linkedIssuesInputs" id="linkedIssuesDrop">
-                        <!-- May need to add more options -->
-                        <option value="" selected="selected">None</option>
-                        <option value="blocks">Blocks</option>
-                        <option value="blockedBy">Is Blocked By</option>
-                        <option value="clones">Clones</option>
-                    </select>
-                </div>
-            </div>
-
-            <div class="mb-3 row">
-                <label class="col-sm-2 col-form-label" for="inputLinkedIssue">Issue:</label>
-                <div class="col-sm-6">
-                    <multi-input id="inputLinkedIssue">
-                        <input list="issues">
-                        <datalist id="issues">
-                            <!-- Need to fill with available issues -->
-                          <!-- <option value="Issue1"></option>
-                          <option value="Issue2"></option>
-                          <option value="Issue3"></option>
-                          <option value="Issue4"></option>
-                          <option value="Issue5"></option> -->
-                        </datalist>
-                      </multi-input>
-                </div>
-            </div>
 
 
-            <div class="mb-3 row">
-                <label class="col-form-label col-sm-2" for="inputXXXFile">Attach References:</label>
-                <div class="col-sm-3">
-                    <input class="form-control" type="file" id="inputXXXFile" multiple>
+                <div class="mb-3 row">
+                    <label class="col-sm-2 col-form-label" for="linkedIssuesDrop">Linked Issues:</label>
+                    <div class="col-sm-3">
+                        <select class="form-select" name="linkedIssuesInputs" id="linkedIssuesDrop">
+                            <!-- May need to add more options -->
+                            <option value="" selected="selected">None</option>
+                            <option value="blocks">Blocks</option>
+                            <option value="blockedBy">Is Blocked By</option>
+                            <option value="clones">Clones</option>
+                        </select>
+                    </div>
                 </div>
-                <div class="col-sm-1"></div>
-                <label class="col-sm-2 col-form-label" for="inputYYYFile">Other Attachmenets:</label>
-                <div class="col-sm-3">
-                    <input class="form-control" type="file" id="inputYYYFile" multiple>
-                </div>
-            </div>
 
-            <!-- <div class="mb-3 row">
+                <div class="mb-3 row">
+                    <label class="col-sm-2 col-form-label" for="inputLinkedIssue">Issue:</label>
+                    <div class="col-sm-6">
+                        <multi-input id="inputLinkedIssue">
+                            <input list="issuesList2">
+                            <datalist id="issuesList2">
+
+                                <!-- Need to fill with available issues -->
+                            </datalist>
+                        </multi-input>
+                    </div>
+                </div>
+
+
+                <div class="mb-3 row">
+                    <label class="col-form-label col-sm-2" for="inputXXXFile">Attach References:</label>
+                    <div class="col-sm-3">
+                        <input class="form-control" type="file" id="inputXXXFile" multiple>
+                    </div>
+                    <div class="col-sm-1"></div>
+                    <label class="col-sm-2 col-form-label" for="inputYYYFile">Other Attachmenets:</label>
+                    <div class="col-sm-3">
+                        <input class="form-control" type="file" id="inputYYYFile" multiple>
+                    </div>
+                </div>
+
+                <!-- <div class="mb-3 row">
                 <label class="col-sm-2 col-form-label" for="inputStakeholder">Stakeholder:</label>
                 <div class="col-sm-3">
                     <input class="form-control" type="text" id="inputStakeholder">
                 </div>
             </div> -->
 
+            </div>
         </div>
-        
+
+        <hr />
+
+
         <button class="btn btn-primary" onclick="submitForm(event)">Submit</button>
+
+        <br>
+        <br>
     </div>
-    <div id="liveAlertPlaceholder" style="position: fixed; top: 25px;  margin-right: 25%; margin-left: 25%; left: 0; right: 0;"></div>
+    <div id="liveAlertPlaceholder"
+        style="position: fixed; top: 25px;  margin-right: 25%; margin-left: 25%; left: 0; right: 0;"></div>
 </body>
 
 </html>
