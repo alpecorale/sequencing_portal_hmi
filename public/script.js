@@ -10,7 +10,7 @@ let typeOfSeq = 'MISEQ';
 let jiraTicketID = '';
 let samples = [];
 let sequencingInfo = '';
-let experimentalist = []; // Assignee
+let experimentalist = ''; // Assignee
 let stakeholders = []; // Watchers
 let reads1 = 151; // miseq
 let reads2 = 151; // miseq
@@ -28,8 +28,9 @@ let inputLinkedIssuesArray = [];
 let allJiraTickets = [];
 let allUsers = [];
 let assignToEpic = '';
-let addXXXFile = '';
-let addYYYFile = '';
+let addXXXFile = [];
+let addXXXFileAlt = [];
+let addYYYFile = [];
 
 //const tagListBoxEl = document.getElementById("tagListBox")
 
@@ -41,11 +42,14 @@ let prexistingIssues = [];
 const selectLinkedIssues = document.getElementById("issuesList2");
 const selectJiraTicketDrop = document.getElementById("listIssues")
 
+let prexistingReferences = [];
+const listOfAvailRef = document.getElementById("listAvailReferences")
+
 
 // need to load epics and issues into options
 async function loadOptions() {
 
-    //only gets Epics from one board (can pass as variable but currently hardcoded)
+    // only gets Epics from one board (can pass as variable but currently hardcoded)
     await fetch('/getEpics', {
         method: 'GET',
         headers: {
@@ -69,7 +73,7 @@ async function loadOptions() {
 
     selectAssignEpic.innerHTML = htmlCodeEpics
 
-    //only gets Issues from one board (can pass as variable but currently hardcoded)
+    // only gets Issues from one board (can pass as variable but currently hardcoded)
     await fetch('/getIssues', {
         method: 'GET',
         headers: {
@@ -95,6 +99,29 @@ async function loadOptions() {
 
     selectJiraTicketDrop.innerHTML = htmlCodeIssues
 
+    // get references from directory
+    await fetch('/getListReferences', {
+        method: 'GET',
+        headers: {
+            "Content-Type": "application/json"
+        }
+    }).then(response => {
+        return response.json();
+    }).then(json => {
+        console.log('Response Ref Json', json)
+        json.references.forEach(x => {
+            prexistingReferences.push(x)
+        })
+    });
+
+    let htmlCodeReferences = `<option value=''></option>`
+
+    prexistingReferences.forEach(item => {
+        htmlCodeReferences += `<option value="` + item + `"></option>`
+    })
+
+    listOfAvailRef.innerHTML = htmlCodeReferences
+
     return;
 }
 
@@ -119,7 +146,7 @@ loadOptions()
 /*
 * Event Listener to change between MiSeq and Nanopore sample sheets
 */
-document.body.addEventListener('change',  async function (e) {
+document.body.addEventListener('change', async function (e) {
     let target = e.target;
     switch (target.id) {
         case 'miseq':
@@ -146,21 +173,21 @@ document.body.addEventListener('change',  async function (e) {
                 document.getElementById('projectRow').style.display = "none";
 
                 // getIssue for specific chosen key
-                    await fetch('/getTicket?issue_key=' + e.target.value, {
-                        method: 'GET',
-                        headers: {
-                            "Content-Type": "application/json"
-                        }
-                    }).then(response => {
-                        return response.json();
-                    }).then(json => {
-                        console.log("Get Issue", json)
+                await fetch('/getTicket?issue_key=' + e.target.value, {
+                    method: 'GET',
+                    headers: {
+                        "Content-Type": "application/json"
+                    }
+                }).then(response => {
+                    return response.json();
+                }).then(json => {
+                    console.log("Get Issue", json)
 
-                        // populate preexisting fields with information from Issue
-                        let issueCom = json.fields.
-                        let 
+                    // populate preexisting fields with information from Issue
+                    // let issueCom = json.fields.
+                    // let 
 
-                    });
+                });
 
 
             } else {
@@ -328,7 +355,7 @@ async function handleMiSeqSampleSheet() {
     await makeMiseqSampleSheet()
 
     // make dynamic sample sheet
-    await makeDynamicSampleSheet()
+    // await makeDynamicSampleSheet()
 
     // attach samplesheet to folder
     await fetch("/downloadSampleSheet", {
@@ -349,7 +376,7 @@ async function submitForm(e) {
     // get values from form
     jiraTicketID = document.getElementById('inputJiraTicketID').value
     sequencingInfo = document.getElementById('inputSequencingInfo').value // extra - comments
-    experimentalist = document.getElementById('inputExperimentalist').getValues()
+    experimentalist = document.getElementById('inputExperimentalist').value
     stakeholders = document.getElementById('inputStakeholder').getValues()
     jiraCategory = document.getElementById('jiraCategoryDrop').value
     jiraProject = document.getElementById('jiraProjectDrop').value
@@ -357,8 +384,11 @@ async function submitForm(e) {
     howLinkIssue = document.getElementById('linkedIssuesDrop').value
     inputLinkedIssuesArray = document.getElementById("inputLinkedIssue").getValues() // should check if empty?
     inputTagsArray = document.getElementById("inputTags").getValues() // also may need to check if empty
-    addXXXFile = document.getElementById('inputXXXFile').files[0] // may need to get rid of [0] // references
-    addYYYFile = document.getElementById('inputYYYFile').files[0]
+    addXXXFile = document.getElementById('inputXXXFile').files // references
+    addXXXFileAlt = document.getElementById('inputXXXFileAlt').getValues()
+    addYYYFile = document.getElementById('inputYYYFile').files
+    console.log("REFFF File", addXXXFile)
+    console.log('Experimentalist', experimentalist)
     // console.log(document.getElementById('inputSamples').value.split(/\r?\n/))
 
     // branch based on MiSeq / Nanopore
@@ -379,13 +409,39 @@ async function submitForm(e) {
         alert('Please add a Assignee!', 'danger')
         return;
     }
+    // manually correct categories for specific projects
+    if (jiraProject === 'TES') {
+        jiraCategory = 'Task'
+    }
+    if (jiraProject === 'NT' && jiraCategory === 'Sequencing') {
+        jiraCategory = 'Story'
+    }
 
     // check formating of fields
     sequencingInfo = sequencingInfo.split('-').join('_')
 
-    // add added files to csvFileToPass 
-    csvFileToPass.append('file', addXXXFile) // might need to tweak to account for multiple files
-    csvFileToPass.append('file', addYYYFile)
+
+    // check if any references have been attached in either location
+    if (!addXXXFile && !addXXXFileAlt) {
+        // Throw warning that no reference is attached... need to click out of it to continue
+    }
+
+    // add (all new) added files to csvFileToPass 
+    Array.from(addXXXFile).forEach(x => {
+        csvFileToPass.append('file', x) // might need to tweak to account for multiple files
+        refFilesToPass.append('file', x)
+    })
+
+    Array.from(addYYYFile).forEach(x => {
+        csvFileToPass.append('file', x)
+    })
+
+    //addXXXFileAlt = ['hello.txt', 'hello2.txt'] // for testing purposes
+    // add names of any already uploaded ref to csvFileToPass
+    // csvFileToPass.append('refToGrab', JSON.stringify(addXXXFileAlt))
+    for (var i = 0; i < addXXXFileAlt.length; i++) {
+        csvFileToPass.append('arr[]', addXXXFileAlt[i]);
+    }
 
     // attach document and update issue if Jira ticket Id exists
     // otherwise create a JiraTicket for the run
@@ -399,11 +455,18 @@ async function submitForm(e) {
             body: csvFileToPass,
         }).catch((error) => ("Something went wrong!", error));
 
+        // download References to cluster
+        // going to need to wrap in something to see if Ref needs to be uploaded
+        await fetch("/downloadReference", {
+            method: "POST",
+            body: refFilesToPass,
+        }).catch((error) => ("Something went wrong!", error));
+
         const json = {
             id: jiraTicketID,
             // project: jiraProject, // shouldnt need because already in project
             category: jiraCategory,
-            tags: inputTagsArray, // might need 2 categories for new/old
+            tags: inputTagsArray, // might need 2 categories for new/old -- nvm
             info: sequencingInfo,
             user: experimentalist, // assignee (should already be set (see if more added))
             watchers: stakeholders, // might need to detect changes
@@ -464,14 +527,16 @@ async function submitForm(e) {
 
         // add attachment to this issue
         csvFileToPass.append('jiraId', returnedIssueKey)
-        console.log('Returned Issue Key',returnedIssueKey)
-        console.log('csvFilePass Jira Id', csvFileToPass.jiraId)
-
 
         // attach document to jira issue
         await fetch("/addAttachment2Issue", {
             method: "POST",
             body: csvFileToPass,
+        }).catch((error) => ("Something went wrong!", error));
+
+        await fetch("/downloadReference", {
+            method: "POST",
+            body: refFilesToPass,
         }).catch((error) => ("Something went wrong!", error));
 
     }
@@ -488,7 +553,7 @@ async function submitForm(e) {
     // }).then(json => {console.log('json', json)})
 
     // everything to blank again
-    location.reload()
+    //location.reload()
 }
 
 let sampleSheetToPass = new FormData()
@@ -540,6 +605,7 @@ function makeMiseqSampleSheet() {
 }
 
 let csvFileToPass = new FormData()
+let refFilesToPass = new FormData()
 
 function makeDynamicSampleSheet() {
     let csv = 'expName,date,module,seqInfo,experimentalist,watchers\n';

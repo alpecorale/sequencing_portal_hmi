@@ -222,7 +222,7 @@
                     </div>
 
                     <div class="col-sm-3">
-                        <input class="form-control" list="listIssues" id="inputJiraTicketID" >
+                        <input class="form-control" list="listIssues" id="inputJiraTicketID">
                         <datalist id="listIssues">
                             <!--Filled up on load-->
                         </datalist>
@@ -245,28 +245,33 @@
                 <div class="mb-3 row">
                     <label class="col-form-label col-sm-2" for="inputExperimentalist">Assignee:</label>
                     <div class="col-sm-4">
-                        <multi-input id="inputExperimentalist">
-                            <input list="assigneesList">
-                            <datalist id="assigneesList">
-                                <option value="apecorale"></option>
-                                <option value="azheng"></option>
-                                <option value="dprbylinski"></option>
-                            </datalist>
-                        </multi-input>
-                        
+                        <input list="assigneesList" id="inputExperimentalist">
+
                     </div>
                     <div class="col-sm-1"></div>
                     <label class="col-sm-1 col-form-label" for="inputStakeholder">Watchers:</label>
                     <div class="col-sm-4">
                         <multi-input id="inputStakeholder">
-                            <input list="assigneesList2">
-                            <datalist id="assigneesList2">
+                            <input list="assigneesList">
+                            <datalist id="assigneesList">
                                 <option value="apecorale"></option>
                                 <option value="azheng"></option>
-                                <option value="dprbylinski"></option>
+                                <option value="dprzybylski"></option>
+                                <option value="mrubin"></option>
+                                <option value="thanscom"></option>
+                                <option value="TStMartin"></option>
+                                <option value="sadjei"></option>
+                                <option value="jprout"></option>
+                                <option value="apalladino"></option>
+                                <option value="bbruccoleri"></option>
+                                <option value="phaddadi"></option>
+                                <option value="kgall"></option>
+                                <option value="jvonstetina"></option>
+                                <option value="JWright"></option>
+                                <option value="dselby"></option>
                             </datalist>
                         </multi-input>
-                        
+
                     </div>
                 </div>
 
@@ -293,8 +298,8 @@
                             <input list="tags">
                             <datalist id="tags">
                                 <!-- May need to add more -->
-                                <option value="Sequencing Run"></option>
-                                <option value="Needs To Be Analyzed"></option>
+                                <option value="Sequencing_Run"></option>
+                                <option value="Needs_To_Be_Analyzed"></option>
                                 <option value="MiSeq"></option>
                                 <option value="Nanopore"></option>
                                 <option value="PacBio"></option>
@@ -371,7 +376,22 @@
                     <div class="col-sm-3">
                         <input class="form-control" type="file" id="inputXXXFile" multiple>
                     </div>
-                    <div class="col-sm-1"></div>
+                    <!-- <div class="col-sm-1"></div> -->
+                    
+                    <label class="col-form-label col-sm-2" for="inputXXXFile">Or Select From Previously Uploaded</label>
+                    <div class="col-sm-3">
+                        <multi-input id="inputXXXFileAlt">
+                            <input list="listAvailReferences">
+                            <datalist id="listAvailReferences">
+
+                                <!-- Need to fill with available references -->
+                            </datalist>
+                        </multi-input>
+                    </div>
+
+                </div>
+
+                <div class="mb-3 row">
                     <label class="col-sm-2 col-form-label" for="inputYYYFile">Other Attachmenets:</label>
                     <div class="col-sm-3">
                         <input class="form-control" type="file" id="inputYYYFile" multiple>

@@ -134,23 +134,24 @@ app.get('/getIssues', (req, res) => {
 * cmd to make an issue
 */
 app.post('/makeIssue', bodyParser.json(), (req, res) => {
-  console.log(req.body)
 
   jira.addNewIssue({
     fields: {
       project: {
-        //key: req.body.project uncomment when ready
+        // key: req.body.project // uncomment when ready
         key: "TES"
       },
       summary: "Portal Jira Testing (Delete)",
       description: req.body.info,
       issuetype: {
-        name: "Task"
+        name: req.body.category
+        // name: "Task"
       },
       assignee: {
-        //name: req.body.user //its a list now so not sure how to handle that
+        // name: req.body.user // uncomment when ready
         name: 'apecorale'
       },
+      labels: req.body.tags,
       function(error, issue) {
         console.log("error: ", error);
         console.log("issue: ", issue)
@@ -343,6 +344,16 @@ app.post('/addAttachment2Issue', Data.any('files'), (req, res, next) => {
     })
   })
   
+  // Catches all files already uploaded to references and adds them to jira ticket
+  req.body.arr.forEach(x => {
+    jira.addAttachmentOnIssue(req.body.jiraId, fs.createReadStream('./References/' + x)).then(result => {
+      console.log('Result', result)
+      res.send(result);
+    }).catch(err => {
+      console.log(err)
+      //return
+    })
+  })
 
   if (res.status(200)) {
     console.log("Your file has been uploaded successfully.");
@@ -390,13 +401,63 @@ app.post('/downloadSampleSheet', SampleSheetData.any('files'), (req, res, next) 
     res.json({ message: "Successfully uploaded files" });
     res.end();
 
-    // use exec() to remove file from the staging upload space
+    // use exec() or cron job to move file around cluster
 
 
   }
 
 })
 
+/*
+* Multer temp Storage location 1
+*/
+const storageReferences = multer.diskStorage({
+  destination: (req, file, cb) => {
+      cb(null, "./References");
+  },
+  filename: (req, file, cb) => {
+      cb(null, file.originalname);
+  },
+});
+
+const ReferencesData = multer({ storage: storageReferences });
+
+/*
+* Used for temporary attachment uploads (saves them in ./public/data/uploads)
+* adds them as an attachment to prexisting issue
+* Need cronjob to clear directory periodically or after successfull upload
+*/
+app.post('/downloadReference', ReferencesData.any('files'), (req, res, next) => {
+
+  if (res.status(200)) {
+    console.log("Your file has been uploaded successfully.");
+    console.log(req.files);
+    res.json({ message: "Successfully uploaded files" });
+    res.end();
+
+    // use exec() or cron job to move file around cluster
+
+  }
+
+})
+
+app.get('/getListReferences', (req, res) => {
+  let list = [];
+  exec("cd References; ls", (error, stdout, stderr) => {
+    if (error) {
+        console.log(`error: ${error.message}`);
+        return;
+    }
+    if (stderr) {
+        console.log(`stderr: ${stderr}`);
+        return;
+    }
+    list = stdout.split('\n')
+    list.pop()
+    res.send({references: list})
+  });
+  
+})
 
 
 /*
