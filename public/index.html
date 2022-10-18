@@ -26,7 +26,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/BrowserFS/2.0.0/browserfs.min.js"
         integrity="sha512-mz0EI+Ay1uIJP7rZEX8C/JlTAcHRIQ8Sny4vxmmj8MSzDJgG9NxxY2pUmOGv1lO7imFIFMyjjCzEXEywNgaUdQ=="
         crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-        <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
     <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
     <script type="text/javascript" src="multi-input.js" defer></script>
     <script type="text/javascript" src="script.js" defer></script>
@@ -165,17 +165,6 @@
                     </div>
                 </div>
 
-                <!-- <div class="mb-3 row">
-                                                <label class="col-sm-2 col-form-label" for="indexKitDrop">Index Kit:</label>
-                                                <div class="col-sm-4">
-                                                    <select class="form-select select2Class" name="indexKitInputs" id="indexKitDrop">
-                                                        <option value="Custom" selected="selected">Custom</option>
-                                                        <option value="indexKit2">indexKit2</option>
-                                                        <option value="indexKit3">indexKit3</option>
-                                                        <option value="indexKit4">indexKit4</option>
-                                                    </select>
-                                                </div>
-                                            </div> -->
 
                 <div class="mb-3 row">
                     <label class="col-sm-2 col-form-label" for="chemistryDrop">Chemistry:</label>
@@ -224,11 +213,8 @@
                     </div>
 
                     <div class="col-sm-3">
-                        <input class="form-control" list="listIssues" id="inputJiraTicketID">
-                        <datalist id="listIssues">
-                            <!--Filled up on load-->
-                        </datalist>
-                        <!-- <input class="form-control" type="text" id="inputJiraTicketID"> -->
+                        <select class="form-select select2ClassClear" id="inputJiraTicketID">
+                        </select>
                     </div>
                     <div class="col-sm-6">
                         <div id="inputJiraTicketHelpBlock" class="form-text">
@@ -247,66 +233,59 @@
                 <div class="mb-3 row">
                     <label class="col-form-label col-sm-2" for="inputExperimentalist">Assignee:</label>
                     <div class="col-sm-4">
-                        <input type="text" list="assigneesList" id="inputExperimentalist"
-                            style="background:url('images/arrow_down.png') no-repeat right center;  background-size: 8% 80%">
+                        <select class="form-select select2Class" id="inputExperimentalist">
+                            <option value="apecorale">apecorale</option>
+                            <option value="azheng">azheng</option>
+                            <option value="dprzybylski">dprzybylski</option>
+                            <option value="mrubin">mrubin</option>
+                            <option value="thanscom">thanscom</option>
+                            <option value="TStMartin">TStMartin</option>
+                            <option value="sadjei">sadjei</option>
+                            <option value="jprout">jprout</option>
+                            <option value="apalladino">apalladino</option>
+                            <option value="bbruccoleri">bbruccoleri</option>
+                            <option value="phaddadi">phaddadi</option>
+                            <option value="kgall">kgall</option>
+                            <option value="jvonstetina">jvonstetina</option>
+                            <option value="JWright">JWright</option>
+                            <option value="dselby">dselby</option>
+                        </select>
                     </div>
                     <div class="col-sm-1"></div>
                     <label class="col-sm-1 col-form-label" for="inputStakeholder">Watchers:</label>
                     <div class="col-sm-4">
-                        <multi-input id="inputStakeholder">
-                            <input list="assigneesList">
-                            <datalist id="assigneesList">
-                                <option value="apecorale"></option>
-                                <option value="azheng"></option>
-                                <option value="dprzybylski"></option>
-                                <option value="mrubin"></option>
-                                <option value="thanscom"></option>
-                                <option value="TStMartin"></option>
-                                <option value="sadjei"></option>
-                                <option value="jprout"></option>
-                                <option value="apalladino"></option>
-                                <option value="bbruccoleri"></option>
-                                <option value="phaddadi"></option>
-                                <option value="kgall"></option>
-                                <option value="jvonstetina"></option>
-                                <option value="JWright"></option>
-                                <option value="dselby"></option>
-                            </datalist>
-                        </multi-input>
+                        <select class="form-select select2Class" id="inputStakeholder" multiple="multiple">
+                            <option value="apecorale">apecorale</option>
+                            <option value="azheng">azheng</option>
+                            <option value="dprzybylski">dprzybylski</option>
+                            <option value="mrubin">mrubin</option>
+                            <option value="thanscom">thanscom</option>
+                            <option value="TStMartin">TStMartin</option>
+                            <option value="sadjei">sadjei</option>
+                            <option value="jprout">jprout</option>
+                            <option value="apalladino">apalladino</option>
+                            <option value="bbruccoleri">bbruccoleri</option>
+                            <option value="phaddadi">phaddadi</option>
+                            <option value="kgall">kgall</option>
+                            <option value="jvonstetina">jvonstetina</option>
+                            <option value="JWright">JWright</option>
+                            <option value="dselby">dselby</option>
+                        </select>
 
                     </div>
                 </div>
 
-                <!-- <div class="mb-3 row">
-                <label class="col-form-label col-sm-2" for="inputTag">Add Tag:</label>
-                <div class="col-sm-3">
-                    <input class="form-control" type="text" id="inputTag">
-                </div>
-                <div class="col-sm-2">
-                    <button class="btn btn-primary" onclick="addTag()">Add Tag</button>
-                </div>
-                
-            </div>
-
-            <div class="mb-3 row">
-                <div id="tagListBox" style="display:flex; padding:5px;">
-                </div>
-            </div> -->
 
                 <div class="mb-3 row">
                     <label class="col-form-label col-sm-2" for="inputTag">Add Tag:</label>
                     <div class="col-sm-6">
-                        <multi-input id="inputTags">
-                            <input list="tags">
-                            <datalist id="tags">
-                                <!-- May need to add more -->
-                                <option value="Sequencing_Run"></option>
-                                <option value="Needs_To_Be_Analyzed"></option>
-                                <option value="MiSeq"></option>
-                                <option value="Nanopore"></option>
-                                <option value="PacBio"></option>
-                            </datalist>
-                        </multi-input>
+                        <select class="form-select select2ClassMultiAdd" id="inputTags" multiple="multiple">
+                            <option value="Sequencing_Run">Sequencing Run</option>
+                            <option value="Needs_To_Be_Analyzed">Needs To Be Analyzed</option>
+                            <option value="MiSeq">MiSeq</option>
+                            <option value="Nanopore">Nanopore</option>
+                            <option value="Reference_Added">Reference Added</option>
+                        </select>
                     </div>
                 </div>
 
@@ -338,7 +317,7 @@
                     <label class="col-sm-2 col-form-label" for="inputAssignEpic">Assign to Epic:</label>
                     <div class="col-sm-3">
                         <!-- <input class="form-control" type="text" id="inputAssignEpic"> -->
-                        <select class="form-select select2Class" name="inputAssignEpic" id="inputAssignEpic">
+                        <select class="form-select select2ClassClear" name="inputAssignEpic" id="inputAssignEpic">
                             <!-- Need to fill with list of Epics -->
                             <!-- <option disabled selected value> -- select an option -- </option> -->
                         </select>
@@ -349,9 +328,9 @@
                 <div class="mb-3 row">
                     <label class="col-sm-2 col-form-label" for="linkedIssuesDrop">Linked Issues:</label>
                     <div class="col-sm-3">
-                        <select class="form-select select2Class" name="linkedIssuesInputs" id="linkedIssuesDrop">
+                        <select class="form-select select2ClassClear" name="linkedIssuesInputs" id="linkedIssuesDrop">
                             <!-- May need to add more options -->
-                            <option value="" selected="selected">None</option>
+                            <option value="">None</option>
                             <option value="blocks">Blocks</option>
                             <option value="blockedBy">Is Blocked By</option>
                             <option value="clones">Clones</option>
@@ -362,13 +341,9 @@
                 <div class="mb-3 row">
                     <label class="col-sm-2 col-form-label" for="inputLinkedIssue">Issue:</label>
                     <div class="col-sm-6">
-                        <multi-input id="inputLinkedIssue">
-                            <input list="issuesList2">
-                            <datalist id="issuesList2">
+                        <select class="form-select select2Class" id="inputLinkedIssue" multiple="multiple">
 
-                                <!-- Need to fill with available issues -->
-                            </datalist>
-                        </multi-input>
+                        </select>
                     </div>
                 </div>
 
@@ -382,13 +357,8 @@
 
                     <label class="col-form-label col-sm-2" for="inputXXXFile">Or Select From Previously Uploaded</label>
                     <div class="col-sm-3">
-                        <multi-input id="inputXXXFileAlt">
-                            <input list="listAvailReferences">
-                            <datalist id="listAvailReferences">
-
-                                <!-- Need to fill with available references -->
-                            </datalist>
-                        </multi-input>
+                        <select class="form-select select2Class" id="inputXXXFileAlt" multiple="multiple">
+                        </select>
                     </div>
 
                 </div>
@@ -400,18 +370,10 @@
                     </div>
                 </div>
 
-                <!-- <div class="mb-3 row">
-                <label class="col-sm-2 col-form-label" for="inputStakeholder">Stakeholder:</label>
-                <div class="col-sm-3">
-                    <input class="form-control" type="text" id="inputStakeholder">
-                </div>
-            </div> -->
-
             </div>
         </div>
 
         <hr />
-
 
         <button class="btn btn-primary" onclick="submitForm(event)">Submit</button>
 

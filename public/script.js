@@ -1,8 +1,14 @@
 // const { csv } = require("d3");
 
-$(document).ready(function() {
+$(document).ready(function () {
     $('.select2Class').select2();
-    // $('.select2ClassMulti').select2()
+    $('.select2ClassClear').select2({
+        placeholder: 'None',
+        allowClear: true
+    })
+    $('.select2ClassMultiAdd').select2({
+        tags: true
+    })
 });
 
 console.log('d3', d3.version)
@@ -45,15 +51,15 @@ let prexistingEpics = [];
 const selectAssignEpic = document.getElementById("inputAssignEpic");
 
 let prexistingIssues = [];
-const selectLinkedIssues = document.getElementById("issuesList2");
-const selectJiraTicketDrop = document.getElementById("listIssues")
+const selectLinkedIssues = document.getElementById("inputLinkedIssue");
+const selectJiraTicketDrop = document.getElementById("inputJiraTicketID")
 
 let prexistingReferences = [];
-const listOfAvailRef = document.getElementById("listAvailReferences")
+const listOfAvailRef = document.getElementById("inputXXXFileAlt")
 
 
-// need to load epics and issues into options
-async function loadOptions() {
+// need to load epics into options
+async function loadEpicOptions() {
 
     // only gets Epics from one board (can pass as variable but currently hardcoded)
     await fetch('/getEpics', {
@@ -69,16 +75,21 @@ async function loadOptions() {
         json.values.forEach(x => {
             prexistingEpics.push(x.key)
         })
+
+
     });
 
-    let htmlCodeEpics = `<option selected="selected" value="">None</option>`;
+    let htmlCodeEpics = `<option value=''>None</option>`;
 
     prexistingEpics.forEach(item => {
         htmlCodeEpics += `<option value="` + item + `">` + item + `</option>`
     })
 
     selectAssignEpic.innerHTML = htmlCodeEpics
-
+    return;
+}
+// need to load issues into options
+async function loadIssueOptions() {
     // only gets Issues from one board (can pass as variable but currently hardcoded)
     await fetch('/getIssues', {
         method: 'GET',
@@ -98,13 +109,18 @@ async function loadOptions() {
     let htmlCodeIssues = '';
 
     prexistingIssues.forEach(item => {
-        htmlCodeIssues += `<option value="` + item + `"></option>`
+        htmlCodeIssues += `<option value="` + item + `">` + item + `</option>`
     })
 
     selectLinkedIssues.innerHTML = htmlCodeIssues
 
-    selectJiraTicketDrop.innerHTML = htmlCodeIssues
+    let htmlCodeIssues2 = `<option value=''>None</option>` + htmlCodeIssues;
+    selectJiraTicketDrop.innerHTML = htmlCodeIssues2
 
+    return;
+}
+// need to load references into options
+async function loadRefOptions() {
     // get references from directory
     await fetch('/getListReferences', {
         method: 'GET',
@@ -120,34 +136,21 @@ async function loadOptions() {
         })
     });
 
-    let htmlCodeReferences = `<option value=''></option>`
+    let htmlCodeReferences = ''
 
     prexistingReferences.forEach(item => {
-        htmlCodeReferences += `<option value="` + item + `"></option>`
+        htmlCodeReferences += `<option value="` + item + `">` + item + `</option>`
     })
 
     listOfAvailRef.innerHTML = htmlCodeReferences
 
-    return;
+    return
 }
 
-loadOptions()
-
-// function skipSampleSheet() {
-//     document.getElementById("sequencingSelectionDiv").style.display = "none";
-// }
-
-// function goToMiSeq() {
-//     document.getElementById("sequencingSelectionDiv").style.display = "none";
-//     document.getElementById("sampleSheetDiv").style.display = "block";
-//     document.getElementById("miSeqSampleSheetDiv").style.display = "block";
-// }
-
-// function goToNanopore() {
-//     document.getElementById("sequencingSelectionDiv").style.display = "none";
-//     document.getElementById("sampleSheetDiv").style.display = "block";
-//     document.getElementById("nanoporeSampleSheetDiv").style.display = "block";
-// }
+// call all load functions
+loadEpicOptions()
+loadIssueOptions()
+loadRefOptions()
 
 /*
 * Event Listener to change between MiSeq and Nanopore sample sheets
@@ -383,18 +386,18 @@ async function submitForm(e) {
     jiraTicketID = document.getElementById('inputJiraTicketID').value
     sequencingInfo = document.getElementById('inputSequencingInfo').value // extra - comments
     experimentalist = document.getElementById('inputExperimentalist').value
-    stakeholders = document.getElementById('inputStakeholder').getValues()
+    stakeholders = [...document.getElementById('inputStakeholder').selectedOptions].map(x => x.value)
     jiraCategory = document.getElementById('jiraCategoryDrop').value
     jiraProject = document.getElementById('jiraProjectDrop').value
     assignToEpic = document.getElementById('inputAssignEpic').value
     howLinkIssue = document.getElementById('linkedIssuesDrop').value
-    inputLinkedIssuesArray = document.getElementById("inputLinkedIssue").getValues() // should check if empty?
-    inputTagsArray = document.getElementById("inputTags").getValues() // also may need to check if empty
+    inputLinkedIssuesArray = [...document.getElementById("inputLinkedIssue").selectedOptions].map(x => x.value) // should check if empty?
+    inputTagsArray = [...document.getElementById("inputTags").selectedOptions].map(x => x.value) // also may need to check if empty
     addXXXFile = document.getElementById('inputXXXFile').files // references
-    addXXXFileAlt = document.getElementById('inputXXXFileAlt').getValues()
+    addXXXFileAlt = [...document.getElementById('inputXXXFileAlt').selectedOptions].map(x => x.value)
     addYYYFile = document.getElementById('inputYYYFile').files
     console.log("REFFF File", addXXXFile)
-    console.log('len addXXXFile', addXXXFileAlt.length)
+    console.log('len addXXXFile', addXXXFileAlt)
     console.log('Experimentalist', experimentalist)
     // console.log(document.getElementById('inputSamples').value.split(/\r?\n/))
 
