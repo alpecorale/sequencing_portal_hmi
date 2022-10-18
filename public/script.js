@@ -1,5 +1,10 @@
 // const { csv } = require("d3");
 
+$(document).ready(function() {
+    $('.select2Class').select2();
+    // $('.select2ClassMulti').select2()
+});
+
 console.log('d3', d3.version)
 
 // d3.csv('nanoporeFolders.csv', (data) => {
@@ -31,6 +36,7 @@ let assignToEpic = '';
 let addXXXFile = [];
 let addXXXFileAlt = [];
 let addYYYFile = [];
+let bypassNoRefAttempts = 0;
 
 //const tagListBoxEl = document.getElementById("tagListBox")
 
@@ -388,17 +394,9 @@ async function submitForm(e) {
     addXXXFileAlt = document.getElementById('inputXXXFileAlt').getValues()
     addYYYFile = document.getElementById('inputYYYFile').files
     console.log("REFFF File", addXXXFile)
+    console.log('len addXXXFile', addXXXFileAlt.length)
     console.log('Experimentalist', experimentalist)
     // console.log(document.getElementById('inputSamples').value.split(/\r?\n/))
-
-    // branch based on MiSeq / Nanopore
-    if (document.getElementById("miseq").checked) {
-        await handleMiSeqSampleSheet() // await needed for dynamic samplesheet creation?
-    }
-    if (document.getElementById("oxfordNanopore").checked) {
-        await handleNanoporeSampleSheet()
-    }
-
 
     // check to see all required fields are populated correctly
     // if (!sequencingInfo) {
@@ -416,19 +414,36 @@ async function submitForm(e) {
     if (jiraProject === 'NT' && jiraCategory === 'Sequencing') {
         jiraCategory = 'Story'
     }
+    // check if any references have been attached in either location
+    if (addXXXFile.length === 0 && addXXXFileAlt.length === 0) {
+        // Throw warning that no reference is attached... need to click out of it to continue
+        // Lazy Option -- check if number of attempts is greater than 1
+        // do want to make sure all other fatal checks are done before this if possible...
+        // again not best solution but is just a warning
+        if (bypassNoRefAttempts === 0) {
+            bypassNoRefAttempts++
+            alert('You are submitting without attaching a reference, this is not recommended.', 'warning')
+            return;
+        }
 
+        // Better Option I think I can just use the normal alert box with a continue anyway button?
+
+
+    }
     // check formating of fields
     sequencingInfo = sequencingInfo.split('-').join('_')
 
-
-    // check if any references have been attached in either location
-    if (!addXXXFile && !addXXXFileAlt) {
-        // Throw warning that no reference is attached... need to click out of it to continue
+    // branch based on MiSeq / Nanopore
+    if (document.getElementById("miseq").checked) {
+        await handleMiSeqSampleSheet() // await needed for dynamic samplesheet creation?
+    }
+    if (document.getElementById("oxfordNanopore").checked) {
+        await handleNanoporeSampleSheet()
     }
 
     // add (all new) added files to csvFileToPass 
     Array.from(addXXXFile).forEach(x => {
-        csvFileToPass.append('file', x) // might need to tweak to account for multiple files
+        csvFileToPass.append('file', x)
         refFilesToPass.append('file', x)
     })
 

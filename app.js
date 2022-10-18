@@ -4,14 +4,14 @@ const hostname = 'srv-hpc01';
 const port = 3001;
 
 const express = require('express'),
-    morgan = require('morgan'),
-    app = express(),
-    path = require('path'),
-    bodyParser = require("body-parser"),
-    multer = require("multer"),
-    formidable = require('formidable'),
-    Readable = require('stream'),
-    cors = require('cors');
+  morgan = require('morgan'),
+  app = express(),
+  path = require('path'),
+  bodyParser = require("body-parser"),
+  multer = require("multer"),
+  formidable = require('formidable'),
+  Readable = require('stream'),
+  cors = require('cors');
 require('dotenv').config();
 // const JiraClient = require("jira-connector");
 const JiraApi = require('jira-client');
@@ -23,30 +23,30 @@ const fs = require('fs');
 // Express App
 let public_dir = path.join(__dirname, 'public');
 
-const {response, request} = require("express");
+const { response, request } = require("express");
 const { type } = require('os');
 
 
 app.use(cors());
-app.use(express.urlencoded({extended: true}));
+app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 // might need body parser
 app.use(express.static('public'));
 app.use((req, res, next) => {
-    res.locals.path = req.path;
-    next();
+  res.locals.path = req.path;
+  next();
 })
 
 const { exec } = require("child_process");
 
 exec("pwd", (error, stdout, stderr) => {
   if (error) {
-      console.log(`error: ${error.message}`);
-      return;
+    console.log(`error: ${error.message}`);
+    return;
   }
   if (stderr) {
-      console.log(`stderr: ${stderr}`);
-      return;
+    console.log(`stderr: ${stderr}`);
+    return;
   }
   console.log(`stdout: ${stdout}`);
 });
@@ -83,9 +83,9 @@ let jira = new JiraApi({
 
 
 app.get('/', (req, res) => {
-  res.sendFile(__dirname+'/index.html');
+  res.sendFile(__dirname + '/index.html');
   // res.send("starts new nodejs project")
-  
+
 })
 
 // dont know group name or have admin privlidges?
@@ -155,8 +155,8 @@ app.post('/makeIssue', bodyParser.json(), (req, res) => {
       function(error, issue) {
         console.log("error: ", error);
         console.log("issue: ", issue)
+      }
     }
-  }
   }).then(result => {
     console.log('Result', result)
     res.send(result);
@@ -166,58 +166,58 @@ app.post('/makeIssue', bodyParser.json(), (req, res) => {
 })
 
 // let editBody = {
-  // "historyMetadata": {
-  //   "actor": {
-  //     "avatarUrl": "http://mysystem/avatar/tony.jpg",
-  //     "displayName": "Tony",
-  //     "id": "tony",
-  //     "type": "mysystem-user",
-  //     "url": "http://mysystem/users/tony"
-  //   },
-  //   "extraData": {
-  //     "Iteration": "10a",
-  //     "Step": "4"
-  //   },
-  //   "description": "Updating an Issue Test",
-  //   "generator": {
-  //     "id": "mysystem-1",
-  //     "type": "mysystem-application"
-  //   },
-  //   "cause": {
-  //     "id": "myevent",
-  //     "type": "mysystem-event"
-  //   },
-  //   "activityDescription": "Complete order processing",
-  //   "type": "myplugin:type"
-  // },
-  // update: {
-  //   summary: [
-  //     {
-  //       set: "This is a test Update to an issue"
-  //     }
-  //   ],
-  //   components: [
-  //     {
-  //       set: "Aidan-Component"
-  //     }
-  //   ],
-  //   // timetracking: [
-  //   //   {
-  //   //     edit: {
-  //   //       remainingEstimate: "4d",
-  //   //       originalEstimate: "1w 1d"
-  //   //     }
-  //   //   }
-  //   // ],
-  //   labels: [
-  //     {
-  //       add: "triaged"
-  //     },
-  //     {
-  //       remove: "blocker"
-  //     }
-  //   ]
-  // },
+// "historyMetadata": {
+//   "actor": {
+//     "avatarUrl": "http://mysystem/avatar/tony.jpg",
+//     "displayName": "Tony",
+//     "id": "tony",
+//     "type": "mysystem-user",
+//     "url": "http://mysystem/users/tony"
+//   },
+//   "extraData": {
+//     "Iteration": "10a",
+//     "Step": "4"
+//   },
+//   "description": "Updating an Issue Test",
+//   "generator": {
+//     "id": "mysystem-1",
+//     "type": "mysystem-application"
+//   },
+//   "cause": {
+//     "id": "myevent",
+//     "type": "mysystem-event"
+//   },
+//   "activityDescription": "Complete order processing",
+//   "type": "myplugin:type"
+// },
+// update: {
+//   summary: [
+//     {
+//       set: "This is a test Update to an issue"
+//     }
+//   ],
+//   components: [
+//     {
+//       set: "Aidan-Component"
+//     }
+//   ],
+//   // timetracking: [
+//   //   {
+//   //     edit: {
+//   //       remainingEstimate: "4d",
+//   //       originalEstimate: "1w 1d"
+//   //     }
+//   //   }
+//   // ],
+//   labels: [
+//     {
+//       add: "triaged"
+//     },
+//     {
+//       remove: "blocker"
+//     }
+//   ]
+// },
 //   fields: {
 //     summary: "Completed orders still displaying in pending",
 //     customfield_10000: {
@@ -297,7 +297,7 @@ app.put('/updateIssue', bodyParser.json(), (req, res) => {
 //     }
 //     console.log("inside form", res.json({fields, files}))
 //     res.json({fields, files})
-  
+
 //   })
 //   console.log("Formidable", form)
 
@@ -314,10 +314,10 @@ app.put('/updateIssue', bodyParser.json(), (req, res) => {
 */
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
-      cb(null, "./public/data/uploads");
+    cb(null, "./public/data/uploads");
   },
   filename: (req, file, cb) => {
-      cb(null, file.originalname);
+    cb(null, file.originalname);
   },
 });
 
@@ -332,28 +332,36 @@ app.post('/addAttachment2Issue', Data.any('files'), (req, res, next) => {
 
   console.log("Req: ", req)
 
+
+
   // might want to move this section to seperate fxn/promise w/ await
   // also might want to uncomment the return idk
-  req.files.forEach(x => {
-    jira.addAttachmentOnIssue(req.body.jiraId, fs.createReadStream(x.path)).then(result => {
-      console.log('Result', result)
-      res.send(result);
-    }).catch(err => {
-      console.log(err)
-      //return
+  if (req.files.length !== 0) {
+    req.files.forEach(x => {
+      jira.addAttachmentOnIssue(req.body.jiraId, fs.createReadStream(x.path)).then(result => {
+        console.log('Result', result)
+        res.send(result);
+      }).catch(err => {
+        console.log(err)
+        //return
+      })
     })
-  })
-  
+  }
+
+
   // Catches all files already uploaded to references and adds them to jira ticket
-  req.body.arr.forEach(x => {
-    jira.addAttachmentOnIssue(req.body.jiraId, fs.createReadStream('./References/' + x)).then(result => {
-      console.log('Result', result)
-      res.send(result);
-    }).catch(err => {
-      console.log(err)
-      //return
+  if (req.body.arr) {
+    req.body.arr.forEach(x => {
+      jira.addAttachmentOnIssue(req.body.jiraId, fs.createReadStream('./References/' + x)).then(result => {
+        console.log('Result', result)
+        res.send(result);
+      }).catch(err => {
+        console.log(err)
+        //return
+      })
     })
-  })
+  }
+
 
   if (res.status(200)) {
     console.log("Your file has been uploaded successfully.");
@@ -379,10 +387,10 @@ app.post('/addAttachment2Issue', Data.any('files'), (req, res, next) => {
 */
 const storageSampleSheet = multer.diskStorage({
   destination: (req, file, cb) => {
-      cb(null, "./SampleSheets");
+    cb(null, "./SampleSheets");
   },
   filename: (req, file, cb) => {
-      cb(null, file.originalname);
+    cb(null, file.originalname);
   },
 });
 
@@ -413,10 +421,10 @@ app.post('/downloadSampleSheet', SampleSheetData.any('files'), (req, res, next) 
 */
 const storageReferences = multer.diskStorage({
   destination: (req, file, cb) => {
-      cb(null, "./References");
+    cb(null, "./References");
   },
   filename: (req, file, cb) => {
-      cb(null, file.originalname);
+    cb(null, file.originalname);
   },
 });
 
@@ -445,18 +453,18 @@ app.get('/getListReferences', (req, res) => {
   let list = [];
   exec("cd References; ls", (error, stdout, stderr) => {
     if (error) {
-        console.log(`error: ${error.message}`);
-        return;
+      console.log(`error: ${error.message}`);
+      return;
     }
     if (stderr) {
-        console.log(`stderr: ${stderr}`);
-        return;
+      console.log(`stderr: ${stderr}`);
+      return;
     }
     list = stdout.split('\n')
     list.pop()
-    res.send({references: list})
+    res.send({ references: list })
   });
-  
+
 })
 
 

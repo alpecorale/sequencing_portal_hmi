@@ -26,6 +26,8 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/BrowserFS/2.0.0/browserfs.min.js"
         integrity="sha512-mz0EI+Ay1uIJP7rZEX8C/JlTAcHRIQ8Sny4vxmmj8MSzDJgG9NxxY2pUmOGv1lO7imFIFMyjjCzEXEywNgaUdQ=="
         crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+        <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
     <script type="text/javascript" src="multi-input.js" defer></script>
     <script type="text/javascript" src="script.js" defer></script>
 </head>
@@ -110,7 +112,7 @@
                 <div class="mb-3 row">
                     <label class="col-sm-2 col-form-label" for="moduleDrop">Module:</label>
                     <div class="col-sm-3">
-                        <select class="form-select" name="moduleInputs" id="moduleDrop">
+                        <select class="form-select select2Class" name="moduleInputs" id="moduleDrop">
                             <option value="GenerateFASTQ" selected="selected">GenerateFASTQ</option>
                             <option value="module2">module2</option>
                             <option value="module3">module3</option>
@@ -120,7 +122,7 @@
                     <div class="col-sm-1"></div>
                     <label class="col-sm-2 col-form-label" for="workflowDrop">Workflow:</label>
                     <div class="col-sm-3">
-                        <select class="form-select" name="workflowInputs" id="workflowDrop">
+                        <select class="form-select select2Class" name="workflowInputs" id="workflowDrop">
                             <option value="GenerateFASTQ" selected="selected">GenerateFASTQ</option>
                             <option value="workflow2">workflow2</option>
                             <option value="workflow3">workflow3</option>
@@ -132,7 +134,7 @@
                 <!-- <div class="mb-3 row">
                                                 <label class="col-sm-2 col-form-label" for="workflowDrop">Workflow:</label>
                                                 <div class="col-sm-4">
-                                                    <select class="form-select" name="workflowInputs" id="workflowDrop">
+                                                    <select class="form-select select2Class" name="workflowInputs" id="workflowDrop">
                                                         <option value="GenerateFASTQ" selected="selected">GenerateFASTQ</option>
                                                         <option value="workflow2">workflow2</option>
                                                         <option value="workflow3">workflow3</option>
@@ -144,7 +146,7 @@
                 <div class="mb-3 row">
                     <label class="col-sm-2 col-form-label" for="libraryDrop">Library Prep Kit:</label>
                     <div class="col-sm-3">
-                        <select class="form-select" name="libraryInputs" id="libraryDrop">
+                        <select class="form-select select2Class" name="libraryInputs" id="libraryDrop">
                             <option value="Custom" selected="selected">Custom</option>
                             <option value="library2">library2</option>
                             <option value="library3">library3</option>
@@ -154,7 +156,7 @@
                     <div class="col-sm-1"></div>
                     <label class="col-sm-2 col-form-label" for="indexKitDrop">Index Kit:</label>
                     <div class="col-sm-3">
-                        <select class="form-select" name="indexKitInputs" id="indexKitDrop">
+                        <select class="form-select select2Class" name="indexKitInputs" id="indexKitDrop">
                             <option value="Custom" selected="selected">Custom</option>
                             <option value="indexKit2">indexKit2</option>
                             <option value="indexKit3">indexKit3</option>
@@ -166,7 +168,7 @@
                 <!-- <div class="mb-3 row">
                                                 <label class="col-sm-2 col-form-label" for="indexKitDrop">Index Kit:</label>
                                                 <div class="col-sm-4">
-                                                    <select class="form-select" name="indexKitInputs" id="indexKitDrop">
+                                                    <select class="form-select select2Class" name="indexKitInputs" id="indexKitDrop">
                                                         <option value="Custom" selected="selected">Custom</option>
                                                         <option value="indexKit2">indexKit2</option>
                                                         <option value="indexKit3">indexKit3</option>
@@ -178,7 +180,7 @@
                 <div class="mb-3 row">
                     <label class="col-sm-2 col-form-label" for="chemistryDrop">Chemistry:</label>
                     <div class="col-sm-3">
-                        <select class="form-select" name="chemistryInputs" id="chemistryDrop">
+                        <select class="form-select select2Class" name="chemistryInputs" id="chemistryDrop">
                             <option value="Amplicon" selected="selected">Amplicon</option>
                             <option value="chemistry2">chemistry2</option>
                             <option value="chemistry3">chemistry3</option>
@@ -245,8 +247,8 @@
                 <div class="mb-3 row">
                     <label class="col-form-label col-sm-2" for="inputExperimentalist">Assignee:</label>
                     <div class="col-sm-4">
-                        <input list="assigneesList" id="inputExperimentalist">
-
+                        <input type="text" list="assigneesList" id="inputExperimentalist"
+                            style="background:url('images/arrow_down.png') no-repeat right center;  background-size: 8% 80%">
                     </div>
                     <div class="col-sm-1"></div>
                     <label class="col-sm-1 col-form-label" for="inputStakeholder">Watchers:</label>
@@ -312,7 +314,7 @@
                     <div class="mb-3 row">
                         <label class="col-sm-2 col-form-label" for="jiraProjectDrop">Project:</label>
                         <div class="col-sm-3">
-                            <select class="form-select" name="jiraProjectInputs" id="jiraProjectDrop">
+                            <select class="form-select select2Class" name="jiraProjectInputs" id="jiraProjectDrop">
                                 <option value="TES" selected="selected">Test Roadmap</option>
                                 <option value="NT">New Targets</option>
                                 <option value="PAC">PacBio</option>
@@ -325,7 +327,7 @@
                 <div class="mb-3 row">
                     <label class="col-sm-2 col-form-label" for="jiraCategoryDrop">Category:</label>
                     <div class="col-sm-3">
-                        <select class="form-select" name="jiraCategoryInputs" id="jiraCategoryDrop">
+                        <select class="form-select select2Class" name="jiraCategoryInputs" id="jiraCategoryDrop">
                             <option value="Sequencing" selected="selected">Sequencing</option>
                             <option value="Task">Task</option>
                             <option value="Story">Story</option>
@@ -336,7 +338,7 @@
                     <label class="col-sm-2 col-form-label" for="inputAssignEpic">Assign to Epic:</label>
                     <div class="col-sm-3">
                         <!-- <input class="form-control" type="text" id="inputAssignEpic"> -->
-                        <select class="form-select" name="inputAssignEpic" id="inputAssignEpic">
+                        <select class="form-select select2Class" name="inputAssignEpic" id="inputAssignEpic">
                             <!-- Need to fill with list of Epics -->
                             <!-- <option disabled selected value> -- select an option -- </option> -->
                         </select>
@@ -347,7 +349,7 @@
                 <div class="mb-3 row">
                     <label class="col-sm-2 col-form-label" for="linkedIssuesDrop">Linked Issues:</label>
                     <div class="col-sm-3">
-                        <select class="form-select" name="linkedIssuesInputs" id="linkedIssuesDrop">
+                        <select class="form-select select2Class" name="linkedIssuesInputs" id="linkedIssuesDrop">
                             <!-- May need to add more options -->
                             <option value="" selected="selected">None</option>
                             <option value="blocks">Blocks</option>
@@ -377,7 +379,7 @@
                         <input class="form-control" type="file" id="inputXXXFile" multiple>
                     </div>
                     <!-- <div class="col-sm-1"></div> -->
-                    
+
                     <label class="col-form-label col-sm-2" for="inputXXXFile">Or Select From Previously Uploaded</label>
                     <div class="col-sm-3">
                         <multi-input id="inputXXXFileAlt">
