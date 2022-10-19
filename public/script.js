@@ -14,11 +14,11 @@ $(document).ready(function () {
         tags: true
     })
 
-    create_tr('table_body')
-    create_tr('table_body')
-    create_tr('table_body')
-    create_tr('table_body')
-    create_tr('table_body')
+    create_tr('miseq_table_body')
+    create_tr('miseq_table_body')
+    create_tr('miseq_table_body')
+    create_tr('miseq_table_body')
+    create_tr('miseq_table_body')
 });
 
 console.log('d3', d3.version)
@@ -296,48 +296,56 @@ async function handleMiSeqSampleSheet() {
     // set set samples from table
     let titleRow = [];
     samples = [] // empty sample array for mistakes
-    Object.entries(mySpreadSheet.datas[0].rows._).forEach((x, indexX) => {
+    
+    // i think all we need to do now is set samples = data from bottom
+    getAllMiSeqTableVals()
+    samples = miSeqTableVals
 
-        if (indexX == 0) {
-            Object.entries(x[1].cells).forEach(y => {
-                titleRow.push(y[1].text)
-            })
-            samples.push(titleRow)
-        } else {
-            let arrayRow = Array(titleRow.length).fill("")
-            Object.entries(x[1].cells).forEach(y => {
-                arrayRow[y[0]] = y[1].text.split('-').join('_') // replaces - with _ 
-            })
-            samples.push(arrayRow)
-        }
+    // Object.entries(mySpreadSheet.datas[0].rows._).forEach((x, indexX) => {
 
-    })
+    //     if (indexX == 0) {
+    //         Object.entries(x[1].cells).forEach(y => {
+    //             titleRow.push(y[1].text)
+    //         })
+    //         samples.push(titleRow)
+    //     } else {
+    //         let arrayRow = Array(titleRow.length).fill("")
+    //         Object.entries(x[1].cells).forEach(y => {
+    //             arrayRow[y[0]] = y[1].text.split('-').join('_') // replaces - with _ 
+    //         })
+    //         samples.push(arrayRow)
+    //     }
+
+    // })
+
+    
 
     console.log("samples:", samples)
 
     // Check if required fields are populated correctly
-    if (samples.length <= 1) {
-        alert('Please add Samples!', 'danger')
-        return;
-    }
     if (!expName) {
         alert('Please add Experiment Name!', 'danger')
         return;
     }
 
+    // fix simple errors and type check etc
     let errors = false;
     samples.forEach((x, i) => {
 
         // if we've already found errors no need to keep checking each row
         if (errors) { return; }
 
-        // check header info and sample control checks for header.
-        // want to check all necesary columns are there and get their index potentially? 
-        // want to see what columns have been added?
-        if (i == 0) {
-            return;
-        }
+        // convert - and ' ' to _
+        x[0] = x[0].split('-').join('_')
+        x[0] = x[0].split(' ').join('_')
+        x[1] = x[1].split('-').join('_')
+        x[1] = x[1].split(' ').join('_')
+        x[7] = x[7].split('-').join('_')
+        x[7] = x[7].split(' ').join('_')
 
+        // this is where we need to do checking on the sample information
+        // need to double check the index on these
+        // (these should be good bc using dropdown but also has self input so keep... )
         if (x[3].match(/[^ATCGN]/)) {
             alert('Invalid characters present in I7_Index_ID', 'danger')
             errors = true;
@@ -597,7 +605,12 @@ function makeMiseqSampleSheet() {
 
     csvSampleSheetMiSeq += "\n[Data]\n"
 
+    // add header names
+    miSeqTableHeaders.forEach(x => {
+        csvSampleSheetMiSeq += x.join(',') + "\n"
+    })
 
+    // add samples
     samples.forEach((x, index) => {
 
         csvSampleSheetMiSeq += x.join(',') + "\n"
@@ -665,7 +678,6 @@ const alert = (message, type) => {
 
 
 
-
 /*
 *
 * New MiSEQ Table
@@ -716,3 +728,59 @@ function remove_tr(This) {
 }
 
 
+let miSeqTableVals = []
+let miSeqTableHeaders = ['Sample_ID','Sample_Name','Description','I7_Index_ID','index','I5_Index_ID','index2','Sample_Project']
+
+function getAllMiSeqTableVals() {
+
+    // see if any of the extra fields were filled in
+    let miseqExtra1Col = $('#miseq_extra_1').val().split(' ').join('_').split('-').join('_')
+    let miseqExtra2Col = $('#miseq_extra_2').val().split(' ').join('_').split('-').join('_')
+    let miseqExtra3Col = $('#miseq_extra_3').val().split(' ').join('_').split('-').join('_')
+    
+    let hasExtra1 = false
+    let hasExtra2 = false
+    let hasExtra3 = false
+    if (miseqExtra1Col) {
+        hasExtra1 = true
+        miSeqTableHeaders.push(val)
+    }
+    if (miseqExtra2Col) {
+        hasExtra2 = true
+        miSeqTableHeaders.push(miseqExtra2Col)
+    }
+    if (miseqExtra3Col) {
+        hasExtra3 = true
+        miSeqTableHeaders.push(miseqExtra3Col)
+    }
+
+    //get values
+    $("#miseq_table_body tr").each(function() {
+
+        let rowVals = []
+
+        rowVals.push($(this).find(".sampId").val())
+        rowVals.push($(this).find(".sampName").val())
+        rowVals.push($(this).find(".sampDes").val())
+        rowVals.push($(this).find(".sampI7 option:selected").text())
+        rowVals.push($(this).find(".sampInd option:selected").text())
+        rowVals.push($(this).find(".sampI4 option:selected").text())
+        rowVals.push($(this).find(".sampInd2 option:selected").text())
+        rowVals.push($(this).find(".sampProj").val())
+        rowVals.push($(this).find(".sampRef option:selected").text())
+
+        if (hasExtra1) {
+            rowVals.push($(this).find(".sampEx1").val())
+        }
+        if (hasExtra2) {
+            rowVals.push($(this).find(".sampEx2").val())
+        }
+        if (hasExtra3) {
+            rowVals.push($(this).find(".sampEx3").val())
+        }
+
+        miSeqTableVals.push(rowVals)
+
+    })
+
+}

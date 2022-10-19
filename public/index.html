@@ -82,12 +82,6 @@
 
 
 
-
-
-
-
-
-
                 <div class="container overflow-auto" style="height: 400px">
                     <table class="table">
                         <thead class="thead-light">
@@ -102,50 +96,50 @@
                                 <th>Sample_Project</th>
                                 <th>Reference</th>
                                 <th>
-                                    <input type="text" class="form-control" placeholder="Extra 1" style="width: 100px">
+                                    <input type="text" class="form-control" id="miseq_extra_1" placeholder="Extra 1" style="width: 100px">
                                 </th>
                                 <th>
-                                    <input type="text" class="form-control" placeholder="Extra 2" style="width: 100px">
+                                    <input type="text" class="form-control" id="miseq_extra_2" placeholder="Extra 2" style="width: 100px">
                                 </th>
                                 <th>
-                                    <input type="text" class="form-control" placeholder="Extra 3" style="width: 100px">
+                                    <input type="text" class="form-control" id="miseq_extra_3" placeholder="Extra 3" style="width: 100px">
                                 </th>
                                 <th width="50px">
                                     <div class="action_container">
-                                        <button class="btn btn-primary" onclick="create_tr('table_body')">
+                                        <button class="btn btn-primary" onclick="create_tr('miseq_table_body')">
                                             Add
                                         </button>
                                     </div>
                                 </th>
                             </tr>
                         </thead>
-                        <tbody id="table_body">
+                        <tbody id="miseq_table_body">
                             <tr>
                                 <td>
-                                    <input type="text" class="form-control" placeholder="XXX_XXX_XXX">
+                                    <input class="sampId" type="text" class="form-control" placeholder="XXX_XXX_XXX">
                                 </td>
                                 <td>
-                                    <input type="text" class="form-control" placeholder="XXX_XXX_XXX">
+                                    <input class="sampName" type="text" class="form-control" placeholder="XXX_XXX_XXX">
                                 </td>
                                 <td>
-                                    <textarea class="form-control" style="height: 40px"></textarea>
+                                    <textarea class="form-control sampDes" style="height: 40px"></textarea>
                                 </td>
                                 <td>
-                                    <select class="select2ClassAddMiSeq">
+                                    <select class="select2ClassAddMiSeq sampI7">
                                         <option value="">None</option>
                                         <option value="CGATCATG">CGATCATG</option>
                                         <option value="TAGATCCT">TAGATCCT</option>
                                     </select>
                                 </td>
                                 <td>
-                                    <select class="select2ClassAddMiSeq">
+                                    <select class="select2ClassAddMiSeq sampInd">
                                         <option value="">None</option>
                                         <option value="CGATCATG">CGATCATG</option>
                                         <option value="TAGATCCT">TAGATCCT</option>
                                     </select>
                                 </td>
                                 <td>
-                                    <select class="select2ClassAddMiSeq">
+                                    <select class="select2ClassAddMiSeq sampI5">
                                         <option value="">None</option>
                                         <option value="AAGTAGAG">AAGTAGAG</option>
                                         <option value="CATGCTTA">CATGCTTA</option>
@@ -153,7 +147,7 @@
                                     </select>
                                 </td>
                                 <td>
-                                    <select class="select2ClassAddMiSeq">
+                                    <select class="select2ClassAddMiSeq sampInd2">
                                         <option value="">None</option>
                                         <option value="AAGTAGAG">AAGTAGAG</option>
                                         <option value="CATGCTTA">CATGCTTA</option>
@@ -161,10 +155,10 @@
                                     </select>
                                 </td>
                                 <td>
-                                    <input type="text" class="form-control">
+                                    <input type="text" class="form-control sampProj">
                                 </td>
                                 <td>
-                                    <select class="select2ClassAddMiSeq">
+                                    <select class="select2ClassAddMiSeq sampRef">
                                         <option value="">None</option>
                                         <option value="ref1">Reference 1</option>
                                         <option value="ref2">Reference 2</option>
@@ -172,13 +166,13 @@
                                     </select>
                                 </td>
                                 <td>
-                                    <input type="text" class="form-control">
+                                    <input type="text" class="form-control sampEx1">
                                 </td>
                                 <td>
-                                    <input type="text" class="form-control">
+                                    <input type="text" class="form-control sampEx2">
                                 </td>
                                 <td>
-                                    <input type="text" class="form-control">
+                                    <input type="text" class="form-control sampEx3">
                                 </td>
                                 <td>
                                     <div class="action_container">
@@ -191,11 +185,6 @@
                         </tbody>
                     </table>
                 </div>
-
-
-
-
-
 
 
 
