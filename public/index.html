@@ -80,7 +80,129 @@
                 <h3>MiSeq Sample Sheet Requirements:</h3>
                 <br>
 
-                <div class="container" id="miSeqTable"></div>
+
+
+
+
+
+
+
+
+                <div class="container overflow-auto" style="height: 400px">
+                    <table class="table">
+                        <thead class="thead-light">
+                            <tr>
+                                <th>Sample_ID</th>
+                                <th>Sample_Name</th>
+                                <th>Description</th>
+                                <th>I7_Index_ID</th>
+                                <th>index</th>
+                                <th>I5_Index_ID</th>
+                                <th>index2</th>
+                                <th>Sample_Project</th>
+                                <th>Reference</th>
+                                <th>
+                                    <input type="text" class="form-control" placeholder="Extra 1" style="width: 100px">
+                                </th>
+                                <th>
+                                    <input type="text" class="form-control" placeholder="Extra 2" style="width: 100px">
+                                </th>
+                                <th>
+                                    <input type="text" class="form-control" placeholder="Extra 3" style="width: 100px">
+                                </th>
+                                <th width="50px">
+                                    <div class="action_container">
+                                        <button class="btn btn-primary" onclick="create_tr('table_body')">
+                                            Add
+                                        </button>
+                                    </div>
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody id="table_body">
+                            <tr>
+                                <td>
+                                    <input type="text" class="form-control" placeholder="XXX_XXX_XXX">
+                                </td>
+                                <td>
+                                    <input type="text" class="form-control" placeholder="XXX_XXX_XXX">
+                                </td>
+                                <td>
+                                    <textarea class="form-control" style="height: 40px"></textarea>
+                                </td>
+                                <td>
+                                    <select class="select2ClassAddMiSeq">
+                                        <option value="">None</option>
+                                        <option value="CGATCATG">CGATCATG</option>
+                                        <option value="TAGATCCT">TAGATCCT</option>
+                                    </select>
+                                </td>
+                                <td>
+                                    <select class="select2ClassAddMiSeq">
+                                        <option value="">None</option>
+                                        <option value="CGATCATG">CGATCATG</option>
+                                        <option value="TAGATCCT">TAGATCCT</option>
+                                    </select>
+                                </td>
+                                <td>
+                                    <select class="select2ClassAddMiSeq">
+                                        <option value="">None</option>
+                                        <option value="AAGTAGAG">AAGTAGAG</option>
+                                        <option value="CATGCTTA">CATGCTTA</option>
+                                        <option value="GCACATCT">GCACATCT</option>
+                                    </select>
+                                </td>
+                                <td>
+                                    <select class="select2ClassAddMiSeq">
+                                        <option value="">None</option>
+                                        <option value="AAGTAGAG">AAGTAGAG</option>
+                                        <option value="CATGCTTA">CATGCTTA</option>
+                                        <option value="GCACATCT">GCACATCT</option>
+                                    </select>
+                                </td>
+                                <td>
+                                    <input type="text" class="form-control">
+                                </td>
+                                <td>
+                                    <select class="select2ClassAddMiSeq">
+                                        <option value="">None</option>
+                                        <option value="ref1">Reference 1</option>
+                                        <option value="ref2">Reference 2</option>
+                                        <option value="ref3">Reference 3</option>
+                                    </select>
+                                </td>
+                                <td>
+                                    <input type="text" class="form-control">
+                                </td>
+                                <td>
+                                    <input type="text" class="form-control">
+                                </td>
+                                <td>
+                                    <input type="text" class="form-control">
+                                </td>
+                                <td>
+                                    <div class="action_container">
+                                        <button class="btn btn-danger" onclick="remove_tr(this)">
+                                            Delete
+                                        </button>
+                                    </div>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+
+
+
+
+
+
+
+
+
+
+
                 <br>
 
                 <div class="mb-3 row">
@@ -279,7 +401,7 @@
                 <div class="mb-3 row">
                     <label class="col-form-label col-sm-2" for="inputTag">Add Tag:</label>
                     <div class="col-sm-6">
-                        <select class="form-select select2ClassMultiAdd" id="inputTags" multiple="multiple">
+                        <select class="form-select select2ClassAdd" id="inputTags" multiple="multiple">
                             <option value="Sequencing_Run">Sequencing Run</option>
                             <option value="Needs_To_Be_Analyzed">Needs To Be Analyzed</option>
                             <option value="MiSeq">MiSeq</option>

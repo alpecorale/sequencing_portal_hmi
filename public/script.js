@@ -6,9 +6,19 @@ $(document).ready(function () {
         placeholder: 'None',
         allowClear: true
     })
-    $('.select2ClassMultiAdd').select2({
+    $('.select2ClassAdd').select2({
         tags: true
     })
+    $('.select2ClassAddMiSeq').select2({
+        placeholder: 'None',
+        tags: true
+    })
+
+    create_tr('table_body')
+    create_tr('table_body')
+    create_tr('table_body')
+    create_tr('table_body')
+    create_tr('table_body')
 });
 
 console.log('d3', d3.version)
@@ -420,7 +430,7 @@ async function submitForm(e) {
     if (addXXXFile.length === 0 && addXXXFileAlt.length === 0) {
 
         // can replace with bootbox in future if desired
-        if (!confirm("You are submitting without attaching a reference, this is not recommended")){
+        if (!confirm("You are submitting without attaching a reference, this is not recommended")) {
             return;
         }
 
@@ -636,105 +646,6 @@ function makeDynamicSampleSheet() {
 }
 
 
-//////////////////////////////Spreadsheet stuff////////////////
-
-const myData = [{
-    name: 'Samples',
-    freeze: 'A2',
-    styles: [
-        {
-            bgcolor: '#f4f5f8',
-            color: '#900b09',
-            border: {
-                top: ['thin', '#0366d6'],
-                bottom: ['thin', '#0366d6'],
-                right: ['thin', '#0366d6'],
-                left: ['thin', '#0366d6'],
-            },
-        },
-    ],
-    rows: {
-        0: {
-            cells: {
-                0: { text: 'Sample_ID', style: 0 },
-                1: { text: 'Sample_Name', style: 0 },
-                2: { text: 'Description', style: 0 },
-                3: { text: 'I7_Index_ID', style: 0 },
-                4: { text: 'index', style: 0 },
-                5: { text: 'I5_Index_ID', style: 0 },
-                6: { text: 'index2', style: 0 },
-                7: { text: 'Sample_Project', style: 0 },
-                8: { text: 'Exp_Con', style: 0 },
-                9: { text: 'Call type', style: 0 }
-            },
-
-        },
-        1: {
-            cells: {
-                0: { text: 'Sample1' },
-                1: { text: 'Sample1' },
-                3: { text: 'CGATCATG' },
-                4: { text: 'CGATCATG' },
-                5: { text: 'AAGTAGAG' },
-                6: { text: 'AAGTAGAG' },
-                8: { text: 'WT' }
-            }
-        }
-    },
-}
-]
-
-const options = {
-    mode: 'edit', // edit | read
-    showToolbar: true,
-    showGrid: true,
-    showContextmenu: true,
-    view: {
-        height: () => document.documentElement.clientHeight * .70,
-        width: () => document.documentElement.clientWidth * .75,
-    },
-    row: {
-        len: 50,
-        height: 25,
-    },
-    col: {
-        len: 12,
-        width: 100,
-        indexWidth: 60,
-        minWidth: 60,
-    },
-    style: {
-        bgcolor: '#ffffff',
-        align: 'left',
-        valign: 'middle',
-        textwrap: false,
-        strike: false,
-        underline: false,
-        color: '#0a0a0a',
-        font: {
-            name: 'Helvetica',
-            size: 10,
-            bold: false,
-            italic: false,
-        },
-    },
-}
-
-let mySpreadSheet = x_spreadsheet('#miSeqTable', options)
-    .loadData(myData)
-
-// mySpreadSheet.cellStyle(0,0,)
-// .change(data => {
-//     console.log(data)
-// });
-
-// // data validation
-// s.validate()
-
-console.log(mySpreadSheet.datas[0].rows._);
-
-
-
 // 
 // Alert Stuff
 //
@@ -751,4 +662,57 @@ const alert = (message, type) => {
 
     alertPlaceholder.append(wrapper)
 }
+
+
+
+
+/*
+*
+* New MiSEQ Table
+*
+*/
+
+
+
+function create_tr(table_id) {
+
+    $('.select2ClassAddMiSeq').select2('destroy')
+
+    let table_body = document.getElementById(table_id),
+        first_tr = table_body.lastElementChild
+    tr_clone = first_tr.cloneNode(true);
+
+    table_body.append(tr_clone);
+
+    clean_last_tr(table_body.lastElementChild);
+
+    $('.select2ClassAddMiSeq').select2({
+        placeholder: 'None',
+        tags: true
+    })
+
+}
+
+
+function clean_last_tr(firstTr) {
+    let children = firstTr.children;
+
+    children = Array.isArray(children) ? children : Object.values(children);
+    children.forEach(x => {
+        if (x !== firstTr.lastElementChild) {
+            x.firstElementChild.value = '';
+        }
+    });
+}
+
+
+
+function remove_tr(This) {
+    if (This.closest('tbody').childElementCount == 1) {
+        alert("You Don't have Permission to Delete This", "warning");
+    } else {
+        This.closest('tr').remove();
+    }
+}
+
 
