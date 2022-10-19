@@ -42,7 +42,6 @@ let assignToEpic = '';
 let addXXXFile = [];
 let addXXXFileAlt = [];
 let addYYYFile = [];
-let bypassNoRefAttempts = 0;
 
 //const tagListBoxEl = document.getElementById("tagListBox")
 
@@ -419,18 +418,11 @@ async function submitForm(e) {
     }
     // check if any references have been attached in either location
     if (addXXXFile.length === 0 && addXXXFileAlt.length === 0) {
-        // Throw warning that no reference is attached... need to click out of it to continue
-        // Lazy Option -- check if number of attempts is greater than 1
-        // do want to make sure all other fatal checks are done before this if possible...
-        // again not best solution but is just a warning
-        if (bypassNoRefAttempts === 0) {
-            bypassNoRefAttempts++
-            alert('You are submitting without attaching a reference, this is not recommended.', 'warning')
+
+        // can replace with bootbox in future if desired
+        if (!confirm("You are submitting without attaching a reference, this is not recommended")){
             return;
         }
-
-        // Better Option I think I can just use the normal alert box with a continue anyway button?
-
 
     }
     // check formating of fields
