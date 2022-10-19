@@ -296,7 +296,7 @@ async function handleMiSeqSampleSheet() {
     // set set samples from table
     let titleRow = [];
     samples = [] // empty sample array for mistakes
-    
+
     // i think all we need to do now is set samples = data from bottom
     getAllMiSeqTableVals()
     samples = miSeqTableVals
@@ -318,7 +318,7 @@ async function handleMiSeqSampleSheet() {
 
     // })
 
-    
+
 
     console.log("samples:", samples)
 
@@ -343,26 +343,38 @@ async function handleMiSeqSampleSheet() {
         x[7] = x[7].split('-').join('_')
         x[7] = x[7].split(' ').join('_')
 
+
+        if (!x[0]) {
+            alert('Missing Sample_ID in sample ' + i, 'danger')
+            errors = true
+        }
+        if (!x[1]) {
+            alert('Missing Sample_Name in sample ' + i, 'danger')
+            errors = true
+        }
+
         // this is where we need to do checking on the sample information
         // need to double check the index on these
         // (these should be good bc using dropdown but also has self input so keep... )
         if (x[3].match(/[^ATCGN]/)) {
             alert('Invalid characters present in I7_Index_ID', 'danger')
             errors = true;
-            return;
         } else if (x[4].match(/[^ATCGN]/)) {
             alert('Invalid characters present in index', 'danger')
             errors = true;
-            return;
         } else if (x[5].match(/[^ATCGN]/)) {
             alert('Invalid characters present in I5_Index_ID', 'danger')
             errors = true;
-            return;
         } else if (x[6].match(/[^ATCGN]/)) {
             alert('Invalid characters present in index2', 'danger')
             errors = true;
-            return;
         }
+
+        // check for references in sample sheet being none
+        if (x[8] === 'None') {
+            // add alert and stop here if desired
+        }
+
     })
     if (errors) { return; }
 
@@ -729,7 +741,7 @@ function remove_tr(This) {
 
 
 let miSeqTableVals = []
-let miSeqTableHeaders = ['Sample_ID','Sample_Name','Description','I7_Index_ID','index','I5_Index_ID','index2','Sample_Project']
+let miSeqTableHeaders = ['Sample_ID', 'Sample_Name', 'Description', 'I7_Index_ID', 'index', 'I5_Index_ID', 'index2', 'Sample_Project']
 
 function getAllMiSeqTableVals() {
 
@@ -737,7 +749,7 @@ function getAllMiSeqTableVals() {
     let miseqExtra1Col = $('#miseq_extra_1').val().split(' ').join('_').split('-').join('_')
     let miseqExtra2Col = $('#miseq_extra_2').val().split(' ').join('_').split('-').join('_')
     let miseqExtra3Col = $('#miseq_extra_3').val().split(' ').join('_').split('-').join('_')
-    
+
     let hasExtra1 = false
     let hasExtra2 = false
     let hasExtra3 = false
@@ -755,7 +767,7 @@ function getAllMiSeqTableVals() {
     }
 
     //get values
-    $("#miseq_table_body tr").each(function() {
+    $("#miseq_table_body tr").each(function () {
 
         let rowVals = []
 
@@ -764,7 +776,7 @@ function getAllMiSeqTableVals() {
         rowVals.push($(this).find(".sampDes").val())
         rowVals.push($(this).find(".sampI7 option:selected").text())
         rowVals.push($(this).find(".sampInd option:selected").text())
-        rowVals.push($(this).find(".sampI4 option:selected").text())
+        rowVals.push($(this).find(".sampI5 option:selected").text())
         rowVals.push($(this).find(".sampInd2 option:selected").text())
         rowVals.push($(this).find(".sampProj").val())
         rowVals.push($(this).find(".sampRef option:selected").text())
