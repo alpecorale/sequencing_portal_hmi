@@ -278,6 +278,8 @@ document.body.addEventListener('change', async function (e) {
 
 // }
 
+// switch to stop jira ticket creation if samplesheet fails
+let sampleSheetCreationSuccess = true;
 /*
 * Submit handler for MiSeq
 */
@@ -322,18 +324,17 @@ async function handleMiSeqSampleSheet() {
 
     console.log("samples:", samples)
 
+    let errors = false;
+
     // Check if required fields are populated correctly
     if (!expName) {
         alert('Please add Experiment Name!', 'danger')
-        return;
+        errors = true
     }
 
     // fix simple errors and type check etc
-    let errors = false;
-    samples.forEach((x, i) => {
 
-        // if we've already found errors no need to keep checking each row
-        if (errors) { return; }
+    samples.forEach((x, i) => {
 
         // convert - and ' ' to _
         x[0] = x[0].split('-').join('_')
@@ -361,7 +362,7 @@ async function handleMiSeqSampleSheet() {
             errors = true;
         } else if (x[4].match(/[^ATCGN]/)) {
             alert('Invalid characters present in index', 'danger')
-            errors = true;
+            errors = true; // not sure if this sections regex needs to be editied to accept empty answers
         } else if (x[5].match(/[^ATCGN]/)) {
             alert('Invalid characters present in I5_Index_ID', 'danger')
             errors = true;
@@ -370,20 +371,21 @@ async function handleMiSeqSampleSheet() {
             errors = true;
         }
 
-        // check for references in sample sheet being none
-        if (x[8] === 'None') {
+        // check for references in sample sheet being none/empty
+        if (x[8] === 'None' || x[8] === '') {
             // add alert and stop here if desired
+            // errors = true
         }
 
     })
-    if (errors) { return; }
 
-    if (isNaN(reads1)) {
+    if (isNaN(reads1) || isNaN(reads2)) {
         alert('Make sure Reads are only numbers', 'danger')
-        return;
+        errors = true
     }
-    if (isNaN(reads2)) {
-        alert('Make sure Reads are only numbers', 'danger')
+
+    if (errors) {
+        sampleSheetCreationSuccess = false
         return;
     }
 
@@ -437,7 +439,9 @@ async function submitForm(e) {
     // }
     if (!experimentalist) {
         alert('Please add a Assignee!', 'danger')
-        return;
+        return; // if get more things that we want to call 
+        // errors on then maybe pull out and throw all alerts before returning
+        // like how I did with sample sheet creation
     }
     // manually correct categories for specific projects
     if (jiraProject === 'TES') {
@@ -464,6 +468,11 @@ async function submitForm(e) {
     }
     if (document.getElementById("oxfordNanopore").checked) {
         await handleNanoporeSampleSheet()
+    }
+
+    // checks if sample sheet creation has failed and cancels if failed
+    if (!sampleSheetCreationSuccess) {
+        return;
     }
 
     // add (all new) added files to csvFileToPass 
@@ -696,8 +705,9 @@ const alert = (message, type) => {
 *
 */
 
-
-
+/*
+* Fxn makes table row
+*/
 function create_tr(table_id) {
 
     $('.select2ClassAddMiSeq').select2('destroy')
@@ -717,20 +727,23 @@ function create_tr(table_id) {
 
 }
 
-
-function clean_last_tr(firstTr) {
-    let children = firstTr.children;
+/*
+* Helper fxn to clean the newly created row
+*/
+function clean_last_tr(lastTr) {
+    let children = lastTr.children;
 
     children = Array.isArray(children) ? children : Object.values(children);
     children.forEach(x => {
-        if (x !== firstTr.lastElementChild) {
+        if (x !== lastTr.lastElementChild) {
             x.firstElementChild.value = '';
         }
     });
 }
 
-
-
+/*
+* Fxn to delete table row
+*/
 function remove_tr(This) {
     if (This.closest('tbody').childElementCount == 1) {
         alert("You Don't have Permission to Delete This", "warning");
@@ -743,7 +756,15 @@ function remove_tr(This) {
 let miSeqTableVals = []
 let miSeqTableHeaders = ['Sample_ID', 'Sample_Name', 'Description', 'I7_Index_ID', 'index', 'I5_Index_ID', 'index2', 'Sample_Project']
 
+/*
+* Pulls all of sample information frome the table... 
+* only pulls information from extra columns if title for those columns is filled in
+*/
 function getAllMiSeqTableVals() {
+
+    // reset just in case
+    miSeqTableVals = []
+    miSeqTableHeaders = ['Sample_ID', 'Sample_Name', 'Description', 'I7_Index_ID', 'index', 'I5_Index_ID', 'index2', 'Sample_Project']
 
     // see if any of the extra fields were filled in
     let miseqExtra1Col = $('#miseq_extra_1').val().split(' ').join('_').split('-').join('_')
@@ -774,11 +795,13 @@ function getAllMiSeqTableVals() {
         rowVals.push($(this).find(".sampId").val())
         rowVals.push($(this).find(".sampName").val())
         rowVals.push($(this).find(".sampDes").val())
-        rowVals.push($(this).find(".sampI7 option:selected").text())
-        rowVals.push($(this).find(".sampInd option:selected").text())
-        rowVals.push($(this).find(".sampI5 option:selected").text())
-        rowVals.push($(this).find(".sampInd2 option:selected").text())
+        // rowVals.push($(this).find(".sampI7 option:selected").text()) // gets text value
+        rowVals.push($(this).find(".sampI7").val())
+        rowVals.push($(this).find(".sampInd").val())
+        rowVals.push($(this).find(".sampI5").val())
+        rowVals.push($(this).find(".sampInd2").val())
         rowVals.push($(this).find(".sampProj").val())
+        // rowVals.push($(this).find(".sampRef").val())
         rowVals.push($(this).find(".sampRef option:selected").text())
 
         if (hasExtra1) {
