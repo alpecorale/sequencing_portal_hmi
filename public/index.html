@@ -111,10 +111,17 @@
                                         style="width: 100px">
                                 </th>
                                 <th width="50px">
-                                    <div class="action_container">
-                                        <button class="btn btn-primary" onclick="create_tr('miseq_table_body')">
-                                            Add
-                                        </button>
+                                    <div class="action_container row">
+                                        <!--I'm sorry-->
+                                        <button class="btn btn-sm btn-primary col" style="margin: 5%"
+                                            onclick="create_tr('miseq_table_body')">+1</button>
+                                        <div class="col row">
+                                            <button class="btn btn-sm btn-primary col" style="margin: 5%"
+                                                onclick="create_tr('miseq_table_body'); create_tr('miseq_table_body'); create_tr('miseq_table_body')">+3</button>
+                                            <button class="btn btn-sm btn-primary col" style="margin: 5%"
+                                                onclick="create_tr('miseq_table_body'); create_tr('miseq_table_body'); create_tr('miseq_table_body'); create_tr('miseq_table_body'); create_tr('miseq_table_body');">+5</button>
+                                        </div>
+
                                     </div>
                                 </th>
                             </tr>
@@ -426,7 +433,8 @@
                 <div class="mb-3 row">
                     <label class="col-sm-2 col-form-label" for="jiraCategoryDrop">Category:</label>
                     <div class="col-sm-3">
-                        <select class="form-select select2Class disableWhenJiraTicket" name="jiraCategoryInputs" id="jiraCategoryDrop">
+                        <select class="form-select select2Class disableWhenJiraTicket" name="jiraCategoryInputs"
+                            id="jiraCategoryDrop">
                             <option value="Sequencing" selected="selected">Sequencing</option>
                             <option value="Task">Task</option>
                             <option value="Story">Story</option>
