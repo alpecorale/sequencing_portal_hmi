@@ -39,6 +39,9 @@
             <a class="navbar-brand" href="/">Samplesheet Portal</a>
         </div>
     </nav>
+    <!-- TESTING BUTTON -->
+    <!-- <br>
+    <button class="btn btn-primary" onclick="testButton()">Testing Button</button> -->
     <br>
     <div class="container" id="dataFormDiv">
 
@@ -96,13 +99,16 @@
                                 <th>Sample_Project</th>
                                 <th>Reference</th>
                                 <th>
-                                    <input type="text" class="form-control" id="miseq_extra_1" placeholder="Extra 1" style="width: 100px">
+                                    <input type="text" class="form-control" id="miseq_extra_1" placeholder="Extra 1"
+                                        style="width: 100px">
                                 </th>
                                 <th>
-                                    <input type="text" class="form-control" id="miseq_extra_2" placeholder="Extra 2" style="width: 100px">
+                                    <input type="text" class="form-control" id="miseq_extra_2" placeholder="Extra 2"
+                                        style="width: 100px">
                                 </th>
                                 <th>
-                                    <input type="text" class="form-control" id="miseq_extra_3" placeholder="Extra 3" style="width: 100px">
+                                    <input type="text" class="form-control" id="miseq_extra_3" placeholder="Extra 3"
+                                        style="width: 100px">
                                 </th>
                                 <th width="50px">
                                     <div class="action_container">
@@ -335,7 +341,7 @@
                 </div>
 
                 <div class="mb-3 row" id="moreSeqInfo">
-                    <label class="col-sm-2 col-form-label" for="inputSequencingInfo">Comments:</label><br>
+                    <label class="col-sm-2 col-form-label" for="inputSequencingInfo">Description:</label><br>
                     <div class="col-sm-9">
                         <textarea class="form-control" id="inputSequencingInfo" rows="4" cols="50"></textarea>
                     </div>
@@ -344,7 +350,7 @@
                 <div class="mb-3 row">
                     <label class="col-form-label col-sm-2" for="inputExperimentalist">Assignee:</label>
                     <div class="col-sm-4">
-                        <select class="form-select select2Class" id="inputExperimentalist">
+                        <select class="form-select select2Class disableWhenJiraTicket" id="inputExperimentalist">
                             <option value="">None</option>
                             <option value="apecorale">apecorale</option>
                             <option value="azheng">azheng</option>
@@ -402,24 +408,25 @@
                     </div>
                 </div>
 
-                <div id="projectRow">
-                    <div class="mb-3 row">
-                        <label class="col-sm-2 col-form-label" for="jiraProjectDrop">Project:</label>
-                        <div class="col-sm-3">
-                            <select class="form-select select2Class" name="jiraProjectInputs" id="jiraProjectDrop">
-                                <option value="TES" selected="selected">Test Roadmap</option>
-                                <option value="NT">New Targets</option>
-                                <option value="PAC">PacBio</option>
-                                <option value="BFX">Bioinformatics</option>
-                            </select>
-                        </div>
+
+                <div class="mb-3 row">
+                    <label class="col-sm-2 col-form-label" for="jiraProjectDrop">Project:</label>
+                    <div class="col-sm-3">
+                        <select class="form-select select2Class disableWhenJiraTicket" name="jiraProjectInputs"
+                            id="jiraProjectDrop">
+                            <option value="TES" selected="selected">Test Roadmap</option>
+                            <option value="NT">New Targets</option>
+                            <option value="PAC">PacBio</option>
+                            <option value="BFX">Bioinformatics</option>
+                        </select>
                     </div>
                 </div>
+
 
                 <div class="mb-3 row">
                     <label class="col-sm-2 col-form-label" for="jiraCategoryDrop">Category:</label>
                     <div class="col-sm-3">
-                        <select class="form-select select2Class" name="jiraCategoryInputs" id="jiraCategoryDrop">
+                        <select class="form-select select2Class disableWhenJiraTicket" name="jiraCategoryInputs" id="jiraCategoryDrop">
                             <option value="Sequencing" selected="selected">Sequencing</option>
                             <option value="Task">Task</option>
                             <option value="Story">Story</option>

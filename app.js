@@ -151,6 +151,7 @@ app.post('/makeIssue', bodyParser.json(), (req, res) => {
         // name: req.body.user // uncomment when ready
         name: 'apecorale'
       },
+      customfield_10100: req.body.assignToEpic, // field for assigning epics
       labels: req.body.tags,
       function(error, issue) {
         console.log("error: ", error);
@@ -159,11 +160,66 @@ app.post('/makeIssue', bodyParser.json(), (req, res) => {
     }
   }).then(result => {
     console.log('Result', result)
+    let resultKey = result.json().key
+    console.log("Response Key", resultKey)
+    let resultKey2 = result.key // currently using this one
+    console.log("Response Key 2", resultKey2)
+
+    // add watchers seperatly after
+    if (req.body.watchers) {
+      req.body.watchers.forEach(async (user) => {
+        await jira.addWatcher(resultKey2, user).then(result2 => { res.send(result2) })
+      })
+    }
+
+
+    // add linked Issue stuff
+    if (req.body.linkIssue) {
+      /*req.body.linkIssue.forEach(async (linkTo) => {
+  
+        let link = {}
+        switch (req.body.howLink) {
+          case 'blocks':
+            link = {
+              "name": 'Blocks',
+              "inward": 'Blocks',
+              "outward": 'Blocked By'
+            }
+            break;
+  
+          case 'blockedBy':
+            link = {
+              "name": 'Blocked By',
+              "inward": 'Blocked By',
+              "outward": 'Blocks'
+            }
+            break;
+  
+          case 'clones':
+            link = {
+              "name": 'Clones',
+              "inward": "Clones",
+              "outward": "Cloned by"
+            }
+            break;
+        }
+  
+        let input = {
+          "type": link,
+          "inwardIssue": resultKey2,
+          "outwardIssue": linkTo
+        }
+        await jira.issueLink(input).then(result3 => { res.send(result3) })
+      })*/
+    }
+
     res.send(result);
   }).catch(err => {
     console.log(err)
   })
 })
+
+
 
 // let editBody = {
 // "historyMetadata": {
@@ -255,25 +311,81 @@ app.post('/makeIssue', bodyParser.json(), (req, res) => {
 app.put('/updateIssue', bodyParser.json(), (req, res) => {
   console.log("Made to put: ", req.body)
 
-  jira.updateIssue(req.body.id, {
-    fields: {
-      description: req.body.info, // find way to add text to description/not replace completely
-      //labels: ["triaged"]
-    },
+  let labelsArr = []
+  req.body.tags.forEach(tag => {
+    let obj = { add: tag }
+    labelsArr.push(obj)
+  })
+
+  // how do we put conditionals inside of object?
+  let updateBody = {
+    // dont think we want to utilize fields at all 
+    // might overwrite everything.. can we do everything in update
+    // fields: {
+    //   description: req.body.info, // find way to add text to description/not replace completely
+
+    //   // need to check that what we're assigning is not empty
+    //   // customfield_10100: req.body.assignToEpic, // field for assigning epics
+
+    // },
     update: {
-      labels: [
-        { add: "blocker" }
-      ]
+      labels: labelsArr,
     }
-    // "update": {
-    //   "labels": [
-    //     {
-    //       "add": "triaged"
-    //     }
-    //   ]
-    // }
-  }).then(result => {
+  }
+
+  jira.updateIssue(req.body.id, updateBody).then(async result => {
     console.log('Result', result)
+
+    // add comments seperatly
+    await jira.addComment(req.body.id, req.body.info).then(res2 => res.send(res2))
+
+    // add watchers seperatly
+    if (req.body.watchers) {
+      req.body.watchers.forEach(async (user) => {
+        await jira.addWatcher(req.body.id, user).then(res3 => { res.send(res3) })
+      })
+    }
+
+    // add linked Issue stuff
+    if (req.body.linkIssue) {
+      /*req.body.linkIssue.forEach(async (linkTo) => {
+  
+        let link = {}
+        switch (req.body.howLink) {
+          case 'blocks':
+            link = {
+              "name": 'Blocks',
+              "inward": 'Blocks',
+              "outward": 'Blocked By'
+            }
+            break;
+  
+          case 'blockedBy':
+            link = {
+              "name": 'Blocked By',
+              "inward": 'Blocked By',
+              "outward": 'Blocks'
+            }
+            break;
+  
+          case 'clones':
+            link = {
+              "name": 'Clones',
+              "inward": "Clones",
+              "outward": "Cloned by"
+            }
+            break;
+        }
+  
+        let input = {
+          "type": link,
+          "inwardIssue": resultKey2,
+          "outwardIssue": linkTo
+        }
+        await jira.issueLink(input).then(result3 => { res.send(result3) })
+      })*/
+    }
+
     res.send(result);
   }).catch(err => {
     console.log(err)

@@ -14,6 +14,7 @@ $(document).ready(function () {
         tags: true
     })
 
+    // Uncomment for production
     create_tr('miseq_table_body')
     create_tr('miseq_table_body')
     create_tr('miseq_table_body')
@@ -184,38 +185,51 @@ document.body.addEventListener('change', async function (e) {
             document.getElementById("nanoporeSampleSheetDiv").style.display = "none";
             break;
 
-        case 'inputJiraTicketID':
-
-
-            if (e.target.value) {
-                document.getElementById('projectRow').style.display = "none";
-
-                // getIssue for specific chosen key
-                await fetch('/getTicket?issue_key=' + e.target.value, {
-                    method: 'GET',
-                    headers: {
-                        "Content-Type": "application/json"
-                    }
-                }).then(response => {
-                    return response.json();
-                }).then(json => {
-                    console.log("Get Issue", json)
-
-                    // populate preexisting fields with information from Issue
-                    // let issueCom = json.fields.
-                    // let 
-
-                });
-
-
-            } else {
-                document.getElementById('projectRow').style.display = "block";
-            }
-
-            break;
-
     }
 })
+
+/*
+* Event Listener for inputJiraTicketID (select2 sp) to load ticket in background
+*/
+$('#inputJiraTicketID').on('select2:select', async function (e) {
+    if (e.target.value) {
+
+
+
+
+        // getIssue for specific chosen key
+        await fetch('/getTicket?issue_key=' + e.target.value, {
+            method: 'GET',
+            headers: {
+                "Content-Type": "application/json"
+            }
+        }).then(response => {
+            return response.json();
+        }).then(json => {
+            console.log("Get Issue", json)
+
+            // populate preexisting fields with information from Issue
+            // not doing... only adding not removing stuff
+
+
+            // disable inputs for items that no longer apply
+            // ie. Assignee, Category, Project, Assign to Epic (if already has one)
+            $(".disableWhenJiraTicket").prop("disabled", true)
+
+            // customfield_10100 is epic name
+            if (json.customfield_10100) {
+                $("#inputAssignEpic").prop("disabled", true)
+            }
+
+        });
+
+
+    } else {
+        // undisable inputs
+        $(".disableWhenJiraTicket").prop("disabled", false)
+        $("#inputAssignEpic").prop("disabled", false)
+    }
+});
 
 // async function getAllJiraTicketIDs() {
 
@@ -443,7 +457,7 @@ async function submitForm(e) {
         // errors on then maybe pull out and throw all alerts before returning
         // like how I did with sample sheet creation
     }
-    // manually correct categories for specific projects
+    // manually correct categories for specific projects HARDCODED
     if (jiraProject === 'TES') {
         jiraCategory = 'Task'
     }
@@ -453,7 +467,7 @@ async function submitForm(e) {
     // check if any references have been attached in either location
     if (addXXXFile.length === 0 && addXXXFileAlt.length === 0) {
 
-        // can replace with bootbox in future if desired
+        // can replace with bootbox/bootstrap in future if desired
         if (!confirm("You are submitting without attaching a reference, this is not recommended")) {
             return;
         }
@@ -514,13 +528,13 @@ async function submitForm(e) {
         const json = {
             id: jiraTicketID,
             // project: jiraProject, // shouldnt need because already in project
-            category: jiraCategory,
-            tags: inputTagsArray, // might need 2 categories for new/old -- nvm
-            info: sequencingInfo,
-            user: experimentalist, // assignee (should already be set (see if more added))
-            watchers: stakeholders, // might need to detect changes
-            assignEpic: assignToEpic, // might need to detect changes
-            howLink: howLinkIssue,
+            // category: jiraCategory, // dont want to change category
+            tags: inputTagsArray, // done
+            info: sequencingInfo, // done -- added as commment
+            // user: experimentalist, // assignee (should already be set )
+            watchers: stakeholders, // done -- untested
+            assignEpic: assignToEpic, // I remove option above but may need to make sure not setting to blank
+            howLink: howLinkIssue, // yah gonna need to check this stuff 
             linkIssue: inputLinkedIssuesArray
 
         }
@@ -548,12 +562,12 @@ async function submitForm(e) {
             info: sequencingInfo,
             project: jiraProject,
             category: jiraCategory,
-            tags: inputTagsArray,
+            tags: inputTagsArray, // array
             user: experimentalist, // assignee
-            watchers: stakeholders,
+            watchers: stakeholders, // array
             assignEpic: assignToEpic,
             howLink: howLinkIssue,
-            linkIssue: inputLinkedIssuesArray
+            linkIssue: inputLinkedIssuesArray // array
         }
         const body = JSON.stringify(json);
 
@@ -604,6 +618,7 @@ async function submitForm(e) {
     // everything to blank again
     //location.reload()
 }
+
 
 let sampleSheetToPass = new FormData()
 
@@ -819,3 +834,55 @@ function getAllMiSeqTableVals() {
     })
 
 }
+
+
+
+
+
+
+
+
+
+
+
+
+/*
+* TESTING BUTTON
+*
+*/
+
+async function testButton() {
+
+
+    const json = {
+        id: "TES-46",
+        tags: ["Tag1", "Tag2", "Tag3"], // working
+        info: "New Description2", // adds as comment
+        watchers: []
+        // watchers: stakeholders, // should work
+        // assignEpic: assignToEpic, // I remove option above but may need to make sure not setting to blank
+        // howLink: howLinkIssue, // yah gonna need to check this stuff 
+        // linkIssue: inputLinkedIssuesArray
+
+    }
+    const body = JSON.stringify(json);
+
+    // update an issue
+    await fetch('/updateIssue', {
+        method: 'PUT',
+        body,
+        headers: {
+            "Content-Type": "application/json"
+        }
+    }).then(response => {
+        console.log('Response: ', response)
+        return response.json();
+    }).then(json => {
+        console.log('Response Json: ', json)
+    }).catch(error => {
+        console.log('Error:', error)
+    })
+
+}
+
+
