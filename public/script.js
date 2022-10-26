@@ -642,9 +642,10 @@ function makeMiseqSampleSheet() {
     csvSampleSheetMiSeq += "\n[Data]\n"
 
     // add header names
-    miSeqTableHeaders.forEach(x => {
-        csvSampleSheetMiSeq += x.join(',') + "\n"
-    })
+    // miSeqTableHeaders.forEach(x => {
+    //     csvSampleSheetMiSeq += x.join(',') + "\n"
+    // })
+    csvSampleSheetMiSeq += miSeqTableHeaders.join(',') + "\n"
 
     // add samples
     samples.forEach((x, index) => {
@@ -791,7 +792,7 @@ function getAllMiSeqTableVals() {
     let hasExtra3 = false
     if (miseqExtra1Col) {
         hasExtra1 = true
-        miSeqTableHeaders.push(val)
+        miSeqTableHeaders.push(miseqExtra1Col)
     }
     if (miseqExtra2Col) {
         hasExtra2 = true

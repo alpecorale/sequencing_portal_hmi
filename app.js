@@ -160,8 +160,8 @@ app.post('/makeIssue', bodyParser.json(), (req, res) => {
     }
   }).then(result => {
     console.log('Result', result)
-    let resultKey = result.json().key
-    console.log("Response Key", resultKey)
+    // let resultKey = result.json().key
+    // console.log("Response Key", resultKey)
     let resultKey2 = result.key // currently using this one
     console.log("Response Key 2", resultKey2)
 
