@@ -311,6 +311,9 @@ app.post('/makeIssue', bodyParser.json(), (req, res) => {
 app.put('/updateIssue', bodyParser.json(), (req, res) => {
   console.log("Made to put: ", req.body)
 
+  // let id = req.body.id // turned off for saftey
+  let id = "TES-30"
+
   let labelsArr = []
   req.body.tags.forEach(tag => {
     let obj = { add: tag }
@@ -333,16 +336,16 @@ app.put('/updateIssue', bodyParser.json(), (req, res) => {
     }
   }
 
-  jira.updateIssue(req.body.id, updateBody).then(async result => {
+  jira.updateIssue(id, updateBody).then(async result => {
     console.log('Result', result)
 
     // add comments seperatly
-    await jira.addComment(req.body.id, req.body.info).then(res2 => res.send(res2))
+    await jira.addComment(id, req.body.info).then(res2 => res.send(res2))
 
     // add watchers seperatly
     if (req.body.watchers) {
       req.body.watchers.forEach(async (user) => {
-        await jira.addWatcher(req.body.id, user).then(res3 => { res.send(res3) })
+        await jira.addWatcher(id, user).then(res3 => { res.send(res3) })
       })
     }
 

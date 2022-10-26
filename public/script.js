@@ -1,4 +1,3 @@
-// const { csv } = require("d3");
 
 $(document).ready(function () {
     $('.select2Class').select2();
@@ -14,15 +13,14 @@ $(document).ready(function () {
         tags: true
     })
 
-    // Uncomment for production
-    create_tr('miseq_table_body')
     create_tr('miseq_table_body')
     create_tr('miseq_table_body')
     create_tr('miseq_table_body')
     create_tr('miseq_table_body')
 });
 
-console.log('d3', d3.version)
+// console.log('d3', d3.version)
+console.log('lo', _.VERSION)
 
 // d3.csv('nanoporeFolders.csv', (data) => {
 //     console.log(data)
@@ -81,7 +79,7 @@ async function loadEpicOptions() {
         console.log('Response Epics: ', response)
         return response.json();
     }).then(json => {
-        console.log('Response Json', json)
+        console.log('Response Epics Json', json)
         json.values.forEach(x => {
             prexistingEpics.push(x.key)
         })
@@ -110,7 +108,7 @@ async function loadIssueOptions() {
         console.log('Response Issues: ', response)
         return response.json();
     }).then(json => {
-        console.log('Response Json', json)
+        console.log('Response  Issues Json', json)
         json.issues.forEach(x => {
             prexistingIssues.push(x.key)
         })
@@ -140,7 +138,7 @@ async function loadRefOptions() {
     }).then(response => {
         return response.json();
     }).then(json => {
-        console.log('Response Ref Json', json)
+        console.log('Response Gel List Ref Json', json)
         json.references.forEach(x => {
             prexistingReferences.push(x)
         })
@@ -188,109 +186,42 @@ document.body.addEventListener('change', async function (e) {
     }
 })
 
+$("#inputJiraTicketID").on("select2:unselect", function (e) {
+    $(".disableWhenJiraTicket").prop("disabled", false)
+    $("#inputAssignEpic").prop("disabled", false)
+})
+
 /*
 * Event Listener for inputJiraTicketID (select2 sp) to load ticket in background
 */
 $('#inputJiraTicketID').on('select2:select', async function (e) {
-    if (e.target.value) {
 
 
+    // disable inputs for items that no longer apply
+    // ie. Assignee, Category, Project, Assign to Epic (if already has one)
+    // $(".disableWhenJiraTicket").val(null).trigger('change')
+    $(".disableWhenJiraTicket").prop("disabled", true)
 
+    // getIssue for specific chosen key
+    await fetch('/getTicket?issue_key=' + e.target.value, {
+        method: 'GET',
+        headers: {
+            "Content-Type": "application/json"
+        }
+    }).then(response => {
+        return response.json();
+    }).then(json => {
+        console.log("Get Issue", json)
 
-        // getIssue for specific chosen key
-        await fetch('/getTicket?issue_key=' + e.target.value, {
-            method: 'GET',
-            headers: {
-                "Content-Type": "application/json"
-            }
-        }).then(response => {
-            return response.json();
-        }).then(json => {
-            console.log("Get Issue", json)
+        // customfield_10100 is epic name
+        if (json.fields.customfield_10100) {
+            $("#inputAssignEpic").prop("disabled", true)
+        }
 
-            // populate preexisting fields with information from Issue
-            // not doing... only adding not removing stuff
+    });
 
-
-            // disable inputs for items that no longer apply
-            // ie. Assignee, Category, Project, Assign to Epic (if already has one)
-            $(".disableWhenJiraTicket").prop("disabled", true)
-
-            // customfield_10100 is epic name
-            if (json.customfield_10100) {
-                $("#inputAssignEpic").prop("disabled", true)
-            }
-
-        });
-
-
-    } else {
-        // undisable inputs
-        $(".disableWhenJiraTicket").prop("disabled", false)
-        $("#inputAssignEpic").prop("disabled", false)
-    }
 });
 
-// async function getAllJiraTicketIDs() {
-
-//     await fetch('/getTicketIds', {
-//         method: 'GET',
-//         headers: {
-//             "Content-Type": "application/json"
-//         }
-//     }).then(response => {
-//         console.log('Response: ', response)
-//         return response.json();
-//     }).then(json => {});
-
-//     return;
-// }
-
-// getAllJiraTicketIDs();
-// async function getUsers() {
-//     await fetch("/getUsers", {
-//         method: "GET"
-//     }).then(response => {
-//         return response.json()
-//     }).then(json => {
-//         console.log(json)
-//         //allUsers = json
-//         return json
-//     }).catch((error) => ("Something went wrong!", error));
-// }
-// getUsers()
-
-/*
-* Old tag system
-*/
-// function addTag() {
-//     const tag = document.getElementById("inputTag").value;
-//     inputTagsArray.push(tag)
-
-//     displayTodo();
-
-// }
-
-// function deleteTodo(ind) {
-
-//     inputTagsArray.splice(ind, 1);
-//     displayTodo();
-
-//    }
-
-// function displayTodo() {
-//     let htmlCode = '';
-
-//     inputTagsArray.forEach((item, ind) => {
-//         htmlCode += `<div style="display:flex; padding:5px; border-radius:25%; background-color:#696969"> <p style="padding-right: 5px;">` + item + `</p> <button onclick='deleteTodo(` + ind +`)' class='btn btn-danger'>Delete</button></div>`
-//     })
-
-//     tagListBoxEl.innerHTML = htmlCode
-
-//     // const htmlElement = document.createElement('div')
-//     // htmlElement.appendChild(document.createElement('p'))
-
-// }
 
 // switch to stop jira ticket creation if samplesheet fails
 let sampleSheetCreationSuccess = true;
@@ -310,31 +241,11 @@ async function handleMiSeqSampleSheet() {
     chemistry = document.getElementById('chemistryDrop').value // miseq
 
     // set set samples from table
-    let titleRow = [];
     samples = [] // empty sample array for mistakes
 
     // i think all we need to do now is set samples = data from bottom
     getAllMiSeqTableVals()
     samples = miSeqTableVals
-
-    // Object.entries(mySpreadSheet.datas[0].rows._).forEach((x, indexX) => {
-
-    //     if (indexX == 0) {
-    //         Object.entries(x[1].cells).forEach(y => {
-    //             titleRow.push(y[1].text)
-    //         })
-    //         samples.push(titleRow)
-    //     } else {
-    //         let arrayRow = Array(titleRow.length).fill("")
-    //         Object.entries(x[1].cells).forEach(y => {
-    //             arrayRow[y[0]] = y[1].text.split('-').join('_') // replaces - with _ 
-    //         })
-    //         samples.push(arrayRow)
-    //     }
-
-    // })
-
-
 
     console.log("samples:", samples)
 
@@ -346,6 +257,9 @@ async function handleMiSeqSampleSheet() {
         errors = true
     }
 
+    let i7andi5Pairs = []
+    let allSampleIds = []
+    let allSampleNames = []
     // fix simple errors and type check etc
 
     samples.forEach((x, i) => {
@@ -360,39 +274,71 @@ async function handleMiSeqSampleSheet() {
 
 
         if (!x[0]) {
-            alert('Missing Sample_ID in sample ' + i, 'danger')
+            alert('Missing Sample_ID in Sample ' + (i + 1), 'danger')
             errors = true
         }
         if (!x[1]) {
-            alert('Missing Sample_Name in sample ' + i, 'danger')
+            alert('Missing Sample_Name in Sample ' + (i + 1), 'danger')
             errors = true
         }
+        if (!x[3]) {
+            alert('Missing I7 Index in Sample ' + (i + 1), 'danger')
+            errors = true
+        }
+        if (!x[5]) {
+            alert('Missing I5 Index in Sample ' + (i + 1), 'danger')
+            errors = true
+        }
+
 
         // this is where we need to do checking on the sample information
         // need to double check the index on these
         // (these should be good bc using dropdown but also has self input so keep... )
-        if (x[3].match(/[^ATCGN]/)) {
-            alert('Invalid characters present in I7_Index_ID', 'danger')
+        if (x[3].match(/[^ATCGN]/) || x[5].match(/[^ATCGN]/)) {
+            alert('Invalid characters present in I5 or I7 Index for Sample ' + (i + 1), 'danger')
             errors = true;
-        } else if (x[4].match(/[^ATCGN]/)) {
-            alert('Invalid characters present in index', 'danger')
-            errors = true; // not sure if this sections regex needs to be editied to accept empty answers
-        } else if (x[5].match(/[^ATCGN]/)) {
-            alert('Invalid characters present in I5_Index_ID', 'danger')
-            errors = true;
-        } else if (x[6].match(/[^ATCGN]/)) {
-            alert('Invalid characters present in index2', 'danger')
+        } 
+        if (x[3].length != 8 || x[5].length != 8 ) {
+            alert('I5 or I7 Index length is incorrect length for Sample ' + (i + 1), 'danger')
             errors = true;
         }
+        // add I7 and I5 pair to list
+        i7andi5Pairs.push({'i7': x[3], 'i5': x[5]})
 
-        // check for references in sample sheet being none/empty
-        if (x[8] === 'None' || x[8] === '') {
-            // add alert and stop here if desired
-            // errors = true
-        }
+        // add all sample Ids/Names to list
+        allSampleIds.push(x[0])
+        allSampleNames.push(x[1])
+
+        // // check for references in sample sheet being none/empty
+        // if (x[8] === 'None' || x[8] === '') {
+        //     // add alert and stop here if desired
+        //     // errors = true
+        // }
 
     })
 
+    // check that all I7 and I5 pairs are unique
+    i7andi5Pairs.forEach((x,xi) => {
+        i7andi5Pairs.forEach((y, yi) => {
+            // skip checked pairs
+            if (xi >= yi) {return;}
+            // compare each pair to see if any matches
+            if (_.isEqual(x, y)) {
+                alert('I5_I7 Pair is repeated in Samples ' + (xi + 1) + ' and ' + (yi + 1), 'danger')
+                errors = true
+            }
+        })
+    })
+
+    // check that all sample_Ids and names are unique
+    if (allSampleIds.length !== _.uniq(allSampleIds).length) {
+        alert('Please make sure all sample Ids are unique', 'danger')
+    }
+    if (allSampleNames.length !== _.uniq(allSampleNames).length) {
+        alert('Please make sure all sample Names are unique', 'danger')
+    }
+
+    // check only numbers in reads
     if (isNaN(reads1) || isNaN(reads2)) {
         alert('Make sure Reads are only numbers', 'danger')
         errors = true
@@ -451,7 +397,7 @@ async function submitForm(e) {
     //     alert('Please add Sequencing Info!', 'danger')
     //     return;
     // }
-    if (!experimentalist) {
+    if (!experimentalist && !jiraTicketID) {
         alert('Please add a Assignee!', 'danger')
         return; // if get more things that we want to call 
         // errors on then maybe pull out and throw all alerts before returning
@@ -548,10 +494,10 @@ async function submitForm(e) {
                 "Content-Type": "application/json"
             }
         }).then(response => {
-            console.log('Response: ', response)
+            console.log('Response Update Issue: ', response)
             return response.json();
         }).then(json => {
-            console.log('Response Json: ', json)
+            console.log('Response Update Issue Json: ', json)
         }).catch(error => {
             console.log('Error:', error)
         })
@@ -604,19 +550,8 @@ async function submitForm(e) {
 
     }
 
-
-    // await fetch('/getTicketIds', {
-    //   method: 'GET',
-    //   headers: {
-    //     "Content-Type": "application/json"
-    //   }
-    // }).then(response => {
-    //   console.log('Response', response)
-    //   return response.json();
-    // }).then(json => {console.log('json', json)})
-
     // everything to blank again
-    //location.reload()
+    // location.reload()
 }
 
 
@@ -750,10 +685,19 @@ function clean_last_tr(lastTr) {
     let children = lastTr.children;
 
     children = Array.isArray(children) ? children : Object.values(children);
-    children.forEach(x => {
-        if (x !== lastTr.lastElementChild) {
+    children.forEach((x, i) => {
+        // clear all inputs
+        if (x !== lastTr.lastElementChild && i !== 0) {
             x.firstElementChild.value = '';
         }
+        // set row number
+        if (i === 0) {
+            let rowNum = parseInt(x.innerText)
+            rowNum = rowNum + 1
+            x.innerText = rowNum
+        }
+        
+
     });
 }
 
@@ -765,6 +709,13 @@ function remove_tr(This) {
         alert("You Don't have Permission to Delete This", "warning");
     } else {
         This.closest('tr').remove();
+
+        // and renumber everything
+        let rowNum = 1
+        $("#miseq_table_body tr").each(function() {
+            $(this).children(":first").text(rowNum)
+            rowNum++
+        })
     }
 }
 
@@ -803,7 +754,7 @@ function getAllMiSeqTableVals() {
         miSeqTableHeaders.push(miseqExtra3Col)
     }
 
-    //get values
+    // get values
     $("#miseq_table_body tr").each(function () {
 
         let rowVals = []
@@ -813,9 +764,11 @@ function getAllMiSeqTableVals() {
         rowVals.push($(this).find(".sampDes").val())
         // rowVals.push($(this).find(".sampI7 option:selected").text()) // gets text value
         rowVals.push($(this).find(".sampI7").val())
-        rowVals.push($(this).find(".sampInd").val())
+        // rowVals.push($(this).find(".sampInd").val())
+        rowVals.push($(this).find(".sampI7").val()) // push I7 again for index
         rowVals.push($(this).find(".sampI5").val())
-        rowVals.push($(this).find(".sampInd2").val())
+        // rowVals.push($(this).find(".sampInd2").val())
+        rowVals.push($(this).find(".sampI5").val()) // push I5 again for index2
         rowVals.push($(this).find(".sampProj").val())
         // rowVals.push($(this).find(".sampRef").val())
         rowVals.push($(this).find(".sampRef option:selected").text())
