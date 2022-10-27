@@ -69,6 +69,7 @@ $(document).ready(function () {
         placeholder: 'None',
         tags: true
     })
+    $("#inputLinkedIssue").prop("disabled", true)
 
     create_tr('miseq_table_body')
     create_tr('miseq_table_body')
@@ -251,7 +252,19 @@ function toggleAdvancedJira() {
     }
 }
 
+$("#linkedIssuesDrop").on("select2:unselect", function (e) {
+    $('#inputLinkedIssue').val(null).trigger('change');
+    $("#inputLinkedIssue").prop("disabled", true)
+})
+
+$("#linkedIssuesDrop").on("select2:select", function (e) {
+    $("#inputLinkedIssue").prop("disabled", false)
+})
+
 $("#inputJiraTicketID").on("select2:unselect", function (e) {
+    $('#inputExperimentalist').val(null).trigger('change');
+    $('#inputAssignEpic').val(null).trigger('change'); 
+    $('#jiraCategoryDrop').val("Sequencing").trigger('change');
     $(".disableWhenJiraTicket").prop("disabled", false)
     $("#inputAssignEpic").prop("disabled", false)
 })
@@ -261,11 +274,9 @@ $("#inputJiraTicketID").on("select2:unselect", function (e) {
 */
 $('#inputJiraTicketID').on('select2:select', async function (e) {
 
-
     // disable inputs for items that no longer apply
     // ie. Assignee, Category, Project, Assign to Epic (if already has one)
     // $(".disableWhenJiraTicket").val(null).trigger('change')
-
 
     // getIssue for specific chosen key
     await fetch('/getTicket?issue_key=' + e.target.value, {
@@ -285,6 +296,7 @@ $('#inputJiraTicketID').on('select2:select', async function (e) {
         if (json.fields.issuetype) {
             $('#jiraCategoryDrop').val(json.fields.issuetype.name).trigger('change')
         }
+        $('#inputExperimentalist').val(null).trigger('change');
         if (json.fields.assignee) {
             let data = json.fields.assignee.name
             if ($('#inputExperimentalist').find("option[value='" + data + "']").length) {
