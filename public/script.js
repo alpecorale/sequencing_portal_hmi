@@ -243,6 +243,14 @@ document.body.addEventListener('change', async function (e) {
     }
 })
 
+function toggleAdvancedJira() {
+    if (document.getElementById("advancedJiraOptions").style.display === "block") {
+        document.getElementById("advancedJiraOptions").style.display = "none"
+    } else {
+        document.getElementById("advancedJiraOptions").style.display = "block"
+    }
+}
+
 $("#inputJiraTicketID").on("select2:unselect", function (e) {
     $(".disableWhenJiraTicket").prop("disabled", false)
     $("#inputAssignEpic").prop("disabled", false)

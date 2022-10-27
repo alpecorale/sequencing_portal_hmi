@@ -413,7 +413,7 @@
 
                 <div class="mb-3 row" style="display: flex;">
                     <label class="col-form-label col-sm-2" for="inputTag">Add Tag:</label>
-                    <div class="col-sm-6">
+                    <div class="col-sm-6" style="display: flex;">
                         <select class="form-select select2ClassAdd" id="inputTags" multiple="multiple">
                             <option value="Sequencing_Run">Sequencing Run</option>
                             <option value="Needs_To_Be_Analyzed">Needs To Be Analyzed</option>
@@ -425,57 +425,6 @@
                             title="Tags Info"></i>
                     </div>
                 </div>
-
-
-                <div class="mb-3 row">
-                    <label class="col-sm-2 col-form-label" for="jiraCategoryDrop">Category:</label>
-                    <div class="col-sm-3" style="display: flex;">
-                        <select class="form-select select2Class disableWhenJiraTicket" name="jiraCategoryInputs"
-                            id="jiraCategoryDrop">
-                            <option value="Sequencing" selected="selected">Sequencing</option>
-                            <option value="Task">Task</option>
-                            <option value="Story">Story</option>
-                            <option value="Epic">Epic</option>
-                        </select>
-                        <i class="bi bi-info-circle categoryInfo" style="margin-left: 5px;" data-toggle="popover"
-                            title="Category Info"></i>
-                    </div>
-                    <div class="col-sm-1"></div>
-                    <label class="col-sm-2 col-form-label" for="inputAssignEpic">Assign to Epic:</label>
-                    <div class="col-sm-3" style="display: flex;">
-                        <select class="form-select select2ClassClear" name="inputAssignEpic" id="inputAssignEpic">
-                            <!--Filled in by code-->
-                        </select>
-                        <i class="bi bi-info-circle assignEpicInfo" style="margin-left: 5px;" data-toggle="popover"
-                            title="Assign Epic Info"></i>
-                    </div>
-                </div>
-
-
-                <div class="mb-3 row">
-                    <label class="col-sm-2 col-form-label" for="linkedIssuesDrop">Linked Issues:</label>
-                    <div class="col-sm-3" style="display: flex;">
-                        <select class="form-select select2ClassClear" name="linkedIssuesInputs" id="linkedIssuesDrop">
-                            <!-- May need to add more options -->
-                            <option value="">None</option>
-                            <option value="blocks">Blocks</option>
-                            <option value="blockedBy">Is Blocked By</option>
-                            <option value="clones">Clones</option>
-                        </select>
-                        <i class="bi bi-info-circle linkedIssueInfo" style="margin-left: 5px;" data-toggle="popover"
-                            title="Linked Issue Info"></i>
-                    </div>
-                </div>
-
-                <div class="mb-3 row">
-                    <label class="col-sm-2 col-form-label" for="inputLinkedIssue">Issue:</label>
-                    <div class="col-sm-6">
-                        <select class="form-select select2Class" id="inputLinkedIssue" multiple="multiple">
-                            <!-- Filled in dynamically -->
-                        </select>
-                    </div>
-                </div>
-
 
                 <div class="mb-3 row">
                     <label class="col-form-label col-sm-2" for="inputXXXFile">Attach References:</label>
@@ -500,9 +449,65 @@
                     <label class="col-sm-2 col-form-label" for="inputYYYFile">Other Attachmenets:</label>
                     <div class="col-sm-3" style="display: flex;">
                         <input class="form-control" type="file" id="inputYYYFile" multiple>
-                        <i class="bi bi-info-circle otherAttachmentsInfo" style="margin-left: 5px;" data-toggle="popover"
-                            title="Other Attachments Info"></i>
+                        <i class="bi bi-info-circle otherAttachmentsInfo" style="margin-left: 5px;"
+                            data-toggle="popover" title="Other Attachments Info"></i>
                     </div>
+                </div>
+
+                <br>
+                <div class="mb-3 row">
+                    <a href="javascript:toggleAdvancedJira()">Advanced Jira Options <i class="bi bi-arrow-down"></i></a>
+                </div>
+
+                <div id="advancedJiraOptions" style="display: none;">
+                    <div class="mb-3 row">
+                        <label class="col-sm-2 col-form-label" for="jiraCategoryDrop">Category:</label>
+                        <div class="col-sm-3" style="display: flex;">
+                            <select class="form-select select2Class disableWhenJiraTicket" name="jiraCategoryInputs"
+                                id="jiraCategoryDrop">
+                                <option value="Sequencing" selected="selected">Sequencing</option>
+                                <option value="Task">Task</option>
+                                <option value="Story">Story</option>
+                                <option value="Epic">Epic</option>
+                            </select>
+                            <i class="bi bi-info-circle categoryInfo" style="margin-left: 5px;" data-toggle="popover"
+                                title="Category Info"></i>
+                        </div>
+                        <div class="col-sm-1"></div>
+                        <label class="col-sm-2 col-form-label" for="inputAssignEpic">Assign to Epic:</label>
+                        <div class="col-sm-3" style="display: flex;">
+                            <select style="width: 100px;" class="form-select select2ClassClear" name="inputAssignEpic" id="inputAssignEpic">
+                                <!--Filled in by code-->
+                            </select>
+                            <i class="bi bi-info-circle assignEpicInfo" style="margin-left: 5px;" data-toggle="popover"
+                                title="Assign Epic Info"></i>
+                        </div>
+                    </div>
+
+
+                    <div class="mb-3 row">
+                        <label class="col-sm-2 col-form-label" for="linkedIssuesDrop">Linked Type:</label>
+                        <div class="col-sm-3" style="display: flex;">
+                            <select style="width: 150px;" class="form-select select2ClassClear" name="linkedIssuesInputs"
+                                id="linkedIssuesDrop">
+                                <!-- May need to add more options -->
+                                <option value="">None</option>
+                                <option value="blocks">Blocks</option>
+                                <option value="blockedBy">Is Blocked By</option>
+                                <option value="clones">Clones</option>
+                            </select>
+                            <i class="bi bi-info-circle linkedIssueInfo" style="margin-left: 5px;" data-toggle="popover"
+                                title="Linked Issue Info"></i>
+                        </div>
+                        <div class="col-sm-1"></div>
+                        <label class="col-sm-1 col-form-label" for="inputLinkedIssue">Linked Issues:</label>
+                        <div class="col-sm-3">
+                            <select class="form-select select2Class" id="inputLinkedIssue" multiple="multiple" style="width: 200px;">
+                                <!-- Filled in dynamically -->
+                            </select>
+                        </div>
+                    </div>
+
                 </div>
 
             </div>
