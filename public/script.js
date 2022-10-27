@@ -1,5 +1,62 @@
 
+
 $(document).ready(function () {
+
+    // initialize pop overs
+    $('.indexInfo').popover({
+        container: 'body',
+        content: "Add Indexes here"
+    })
+    $('.sampleSheetRefInfo').popover({
+        container: 'body',
+        content: "Input name of reference if using multiple references. Please attach reference files below"
+    })
+    $('.extraInfo').popover({
+        container: 'body',
+        content: "Add additional sample information here. Ex: Cell_Type, Polarity, idk"
+    })
+    $('.helpfulInfo').popover({
+        container: 'body',
+        content: "Tip 1: You can write your own options in, if select box is missing what you need. Tip 2: Let me know if these boxes are missing something and I can add it to the list. apecorale@homologymedicines.com"
+    })
+    $('.assigneeInfo').popover({
+        container: 'body',
+        content: "Who do you want to assign the ticket to: Yourself?, Other Researcher?"
+    })
+    $('.watcherInfo').popover({
+        container: 'body',
+        content: "Who do you want to add as a watcher for ticket?"
+    })
+    $('.projectInfo').popover({
+        container: 'body',
+        content: "What Project is this ticket attached to?"
+    })
+    $('.tagsInfo').popover({
+        container: 'body',
+        content: "Want to add any tags to your ticket? They can be helpful in sorting downstream analysis. Feel free to make new tags as needed."
+    })
+    $('.categoryInfo').popover({
+        container: 'body',
+        content: "What Category is this ticket? Generally want to put sequencing runs under Sequencing category. Epics are typically reserverd for larger over arching projects."
+    })
+    $('.assignEpicInfo').popover({
+        container: 'body',
+        content: "Does this ticket belong under a bigger project (Epic) or is it independent?"
+    })
+    $('.linkedIssueInfo').popover({
+        container: 'body',
+        content: "Does this ticket have any relationship with other tickets? Ex: Is it blocked by another?"
+    })
+    $('.referenceInfo').popover({
+        container: 'body',
+        content: "Be a pal and upload your references. Select from file system or from previously uploaded list."
+    })
+    $('.otherAttachmentsInfo').popover({
+        container: 'body',
+        content: "Any other helpful files or data you want to attach to ticket, add it here"
+    })
+
+    // initialize select2 boxes
     $('.select2Class').select2();
     $('.select2ClassClear').select2({
         placeholder: 'None',
@@ -200,7 +257,7 @@ $('#inputJiraTicketID').on('select2:select', async function (e) {
     // disable inputs for items that no longer apply
     // ie. Assignee, Category, Project, Assign to Epic (if already has one)
     // $(".disableWhenJiraTicket").val(null).trigger('change')
-    $(".disableWhenJiraTicket").prop("disabled", true)
+
 
     // getIssue for specific chosen key
     await fetch('/getTicket?issue_key=' + e.target.value, {
@@ -213,8 +270,29 @@ $('#inputJiraTicketID').on('select2:select', async function (e) {
     }).then(json => {
         console.log("Get Issue", json)
 
+        // update disabled fields to show proper info
+        if (json.fields.project.key) {
+            $('#jiraProjectDrop').val(json.fields.project.key).trigger('change')
+        }
+        if (json.fields.issuetype) {
+            $('#jiraCategoryDrop').val(json.fields.issuetype.name).trigger('change')
+        }
+        if (json.fields.assignee) {
+            let data = json.fields.assignee.name
+            if ($('#inputExperimentalist').find("option[value='" + data + "']").length) {
+                $('#inputExperimentalist').val(data).trigger('change');
+            } else {
+                // Create a DOM Option and pre-select by default
+                var newOption = new Option(data, data, true, true);
+                // Append it to the select
+                $('#inputExperimentalist').append(newOption).trigger('change');
+            }
+        }
+
+        $(".disableWhenJiraTicket").prop("disabled", true)
         // customfield_10100 is epic name
         if (json.fields.customfield_10100) {
+            $("#inputAssignEpic").val(json.fields.customfield_10100).trigger('change');
             $("#inputAssignEpic").prop("disabled", true)
         }
 
@@ -297,13 +375,13 @@ async function handleMiSeqSampleSheet() {
         if (x[3].match(/[^ATCGN]/) || x[5].match(/[^ATCGN]/)) {
             alert('Invalid characters present in I5 or I7 Index for Sample ' + (i + 1), 'danger')
             errors = true;
-        } 
-        if (x[3].length != 8 || x[5].length != 8 ) {
+        }
+        if (x[3].length != 8 || x[5].length != 8) {
             alert('I5 or I7 Index length is incorrect length for Sample ' + (i + 1), 'danger')
             errors = true;
         }
         // add I7 and I5 pair to list
-        i7andi5Pairs.push({'i7': x[3], 'i5': x[5]})
+        i7andi5Pairs.push({ 'i7': x[3], 'i5': x[5] })
 
         // add all sample Ids/Names to list
         allSampleIds.push(x[0])
@@ -318,10 +396,10 @@ async function handleMiSeqSampleSheet() {
     })
 
     // check that all I7 and I5 pairs are unique
-    i7andi5Pairs.forEach((x,xi) => {
+    i7andi5Pairs.forEach((x, xi) => {
         i7andi5Pairs.forEach((y, yi) => {
             // skip checked pairs
-            if (xi >= yi) {return;}
+            if (xi >= yi) { return; }
             // compare each pair to see if any matches
             if (_.isEqual(x, y)) {
                 alert('I5_I7 Pair is repeated in Samples ' + (xi + 1) + ' and ' + (yi + 1), 'danger')
@@ -577,27 +655,19 @@ function makeMiseqSampleSheet() {
     csvSampleSheetMiSeq += "\n[Data]\n"
 
     // add header names
-    // miSeqTableHeaders.forEach(x => {
-    //     csvSampleSheetMiSeq += x.join(',') + "\n"
-    // })
     csvSampleSheetMiSeq += miSeqTableHeaders.join(',') + "\n"
 
     // add samples
     samples.forEach((x, index) => {
-
         csvSampleSheetMiSeq += x.join(',') + "\n"
-        // if (index == 0) {
-        //     csv += x.join(',') + "\n";
-        // }
-        //csv += date.toLocaleDateString('sv').replaceAll('-', ''); + '_' + x.join('_') +"\n";
     })
-    let fileName = expName + 'SampleSheet.csv'
+    let fileName = expName + '_' + date.toISOString().split('T')[0].split('-').join('_') + '_SampleSheet.csv'
     let csvSampleSheetMiSeqData = new Blob([csvSampleSheetMiSeq], { type: 'text/csv' });
 
 
     sampleSheetToPass.append('file', new File([csvSampleSheetMiSeqData], fileName))
 
-    // old way of downloading sample sheet directly to user
+    // // old way of downloading sample sheet directly to user
     // let csvUrl = URL.createObjectURL(csvSampleSheetMiSeqData);
 
     // let hiddenElement = document.createElement('a');
@@ -696,7 +766,6 @@ function clean_last_tr(lastTr) {
             rowNum = rowNum + 1
             x.innerText = rowNum
         }
-        
 
     });
 }
@@ -706,13 +775,13 @@ function clean_last_tr(lastTr) {
 */
 function remove_tr(This) {
     if (This.closest('tbody').childElementCount == 1) {
-        alert("You Don't have Permission to Delete This", "warning");
+        alert("You don't have permission to delete this", "warning");
     } else {
         This.closest('tr').remove();
 
         // and renumber everything
         let rowNum = 1
-        $("#miseq_table_body tr").each(function() {
+        $("#miseq_table_body tr").each(function () {
             $(this).children(":first").text(rowNum)
             rowNum++
         })
@@ -788,9 +857,6 @@ function getAllMiSeqTableVals() {
     })
 
 }
-
-
-
 
 
 

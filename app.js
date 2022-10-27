@@ -220,94 +220,6 @@ app.post('/makeIssue', bodyParser.json(), (req, res) => {
 })
 
 
-
-// let editBody = {
-// "historyMetadata": {
-//   "actor": {
-//     "avatarUrl": "http://mysystem/avatar/tony.jpg",
-//     "displayName": "Tony",
-//     "id": "tony",
-//     "type": "mysystem-user",
-//     "url": "http://mysystem/users/tony"
-//   },
-//   "extraData": {
-//     "Iteration": "10a",
-//     "Step": "4"
-//   },
-//   "description": "Updating an Issue Test",
-//   "generator": {
-//     "id": "mysystem-1",
-//     "type": "mysystem-application"
-//   },
-//   "cause": {
-//     "id": "myevent",
-//     "type": "mysystem-event"
-//   },
-//   "activityDescription": "Complete order processing",
-//   "type": "myplugin:type"
-// },
-// update: {
-//   summary: [
-//     {
-//       set: "This is a test Update to an issue"
-//     }
-//   ],
-//   components: [
-//     {
-//       set: "Aidan-Component"
-//     }
-//   ],
-//   // timetracking: [
-//   //   {
-//   //     edit: {
-//   //       remainingEstimate: "4d",
-//   //       originalEstimate: "1w 1d"
-//   //     }
-//   //   }
-//   // ],
-//   labels: [
-//     {
-//       add: "triaged"
-//     },
-//     {
-//       remove: "blocker"
-//     }
-//   ]
-// },
-//   fields: {
-//     summary: "Completed orders still displaying in pending",
-//     customfield_10000: {
-//       type: "doc",
-//       version: 1,
-//       content: [
-//         {
-//           type: "paragraph",
-//           content: [
-//             {
-//               text: "Investigation underway",
-//               type: "text"
-//             }
-//           ]
-//         }
-//       ]
-//     }
-//   },
-//   properties: [
-//     {
-//       "value": "Order number 10784",
-//       issueKey: "BFX-74"
-//     },
-//     {
-//       value: "Order number 10923",
-//       key: "BFX-73"
-//     }
-//   ],
-//   function(error, issue) {
-//     console.log("error: ", error);
-//     console.log("issue: ", issue)
-//   }
-// }
-
 app.put('/updateIssue', bodyParser.json(), (req, res) => {
   console.log("Made to put: ", req.body)
 
@@ -394,35 +306,6 @@ app.put('/updateIssue', bodyParser.json(), (req, res) => {
     console.log(err)
   })
 })
-
-
-// let filePath = 'SampleSheet.csv'
-// const fileStream = fs.createReadStream(filePath);
-
-// app.post('/addAttachment', (req, res, next) => {
-//   const form = formidable({multiples: true})
-//   form.uploadDir = uploadFolder
-
-//   form.parse(req, async (err, fields, files) => {
-//     console.log("Fields", fields)
-//     console.log('Files', files)
-//     if (err) {
-//       next(err);
-//       return;
-//     }
-//     console.log("inside form", res.json({fields, files}))
-//     res.json({fields, files})
-
-//   })
-//   console.log("Formidable", form)
-
-//   jira2.addAttachmentOnIssue('TES-1', fs.createReadStream(req.file)).then(result => {
-//     console.log('Result', result)
-//     res.send(result);
-//   }).catch(err => {
-//     console.log(err)
-//   })
-// })
 
 /*
 * Multer temp Storage location 1
@@ -566,6 +449,7 @@ app.post('/downloadReference', ReferencesData.any('files'), (req, res, next) => 
 
 app.get('/getListReferences', (req, res) => {
   let list = [];
+  // change Reference location to more central reference location when applicable
   exec("cd References; ls", (error, stdout, stderr) => {
     if (error) {
       console.log(`error: ${error.message}`);
