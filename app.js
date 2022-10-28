@@ -160,21 +160,19 @@ app.post('/makeIssue', bodyParser.json(), (req, res) => {
     }
   }).then(result => {
     console.log('Result', result)
-    // let resultKey = result.json().key
-    // console.log("Response Key", resultKey)
-    let resultKey2 = result.key // currently using this one
-    console.log("Response Key 2", resultKey2)
+    let resultKey2 = result.key
 
     // add watchers seperatly after
+    // jk not allowed to do apparently
     if (req.body.watchers) {
-      req.body.watchers.forEach(async (user) => {
-        await jira.addWatcher(resultKey2, user).then(result2 => { res.send(result2) })
-      })
+      // req.body.watchers.forEach(async (user) => {
+      //   await jira.addWatcher(resultKey2, user).then(result2 => { res.send(result2) })
+      // })
     }
 
 
     // add linked Issue stuff
-    if (req.body.linkIssue) {
+    // if (req.body.linkIssue) {
       /*req.body.linkIssue.forEach(async (linkTo) => {
   
         let link = {}
@@ -211,7 +209,7 @@ app.post('/makeIssue', bodyParser.json(), (req, res) => {
         }
         await jira.issueLink(input).then(result3 => { res.send(result3) })
       })*/
-    }
+    // }
 
     res.send(result);
   }).catch(err => {
@@ -255,14 +253,15 @@ app.put('/updateIssue', bodyParser.json(), (req, res) => {
     await jira.addComment(id, req.body.info).then(res2 => res.send(res2))
 
     // add watchers seperatly
+    // cannot add watcher apparently
     if (req.body.watchers) {
-      req.body.watchers.forEach(async (user) => {
-        await jira.addWatcher(id, user).then(res3 => { res.send(res3) })
-      })
+      // req.body.watchers.forEach(async (user) => {
+      //   await jira.addWatcher(id, user).then(res3 => { res.send(res3) })
+      // })
     }
 
     // add linked Issue stuff
-    if (req.body.linkIssue) {
+    // if (req.body.linkIssue) {
       /*req.body.linkIssue.forEach(async (linkTo) => {
   
         let link = {}
@@ -299,7 +298,7 @@ app.put('/updateIssue', bodyParser.json(), (req, res) => {
         }
         await jira.issueLink(input).then(result3 => { res.send(result3) })
       })*/
-    }
+    // }
 
     res.send(result);
   }).catch(err => {

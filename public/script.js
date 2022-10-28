@@ -43,10 +43,10 @@ $(document).ready(function () {
         container: 'body',
         content: "Does this ticket belong under a bigger project (Epic) or is it independent?"
     })
-    $('.linkedIssueInfo').popover({
-        container: 'body',
-        content: "Does this ticket have any relationship with other tickets? Ex: Is it blocked by another?"
-    })
+    // $('.linkedIssueInfo').popover({
+    //     container: 'body',
+    //     content: "Does this ticket have any relationship with other tickets? Ex: Is it blocked by another?"
+    // })
     $('.referenceInfo').popover({
         container: 'body',
         content: "Be a pal and upload your references. Select from file system or from previously uploaded list."
@@ -69,7 +69,7 @@ $(document).ready(function () {
         placeholder: 'None',
         tags: true
     })
-    $("#inputLinkedIssue").prop("disabled", true)
+    // $("#inputLinkedIssue").prop("disabled", true)
 
     create_tr('miseq_table_body')
     create_tr('miseq_table_body')
@@ -101,8 +101,8 @@ let libPrepKit = ""; // miseq
 let indexKit = ""; // miseq
 let chemistry = ""; // miseq
 let inputTagsArray = [];
-let howLinkIssue = '';
-let inputLinkedIssuesArray = [];
+// let howLinkIssue = '';
+// let inputLinkedIssuesArray = [];
 let allJiraTickets = [];
 let allUsers = [];
 let assignToEpic = '';
@@ -117,7 +117,7 @@ let prexistingEpics = [];
 const selectAssignEpic = document.getElementById("inputAssignEpic");
 
 let prexistingIssues = [];
-const selectLinkedIssues = document.getElementById("inputLinkedIssue");
+// const selectLinkedIssues = document.getElementById("inputLinkedIssue");
 const selectJiraTicketDrop = document.getElementById("inputJiraTicketID")
 
 let prexistingReferences = [];
@@ -178,7 +178,7 @@ async function loadIssueOptions() {
         htmlCodeIssues += `<option value="` + item + `">` + item + `</option>`
     })
 
-    selectLinkedIssues.innerHTML = htmlCodeIssues
+    // selectLinkedIssues.innerHTML = htmlCodeIssues
 
     let htmlCodeIssues2 = `<option value=''>None</option>` + htmlCodeIssues;
     selectJiraTicketDrop.innerHTML = htmlCodeIssues2
@@ -252,14 +252,14 @@ function toggleAdvancedJira() {
     }
 }
 
-$("#linkedIssuesDrop").on("select2:unselect", function (e) {
-    $('#inputLinkedIssue').val(null).trigger('change');
-    $("#inputLinkedIssue").prop("disabled", true)
-})
+// $("#linkedIssuesDrop").on("select2:unselect", function (e) {
+//     $('#inputLinkedIssue').val(null).trigger('change');
+//     $("#inputLinkedIssue").prop("disabled", true)
+// })
 
-$("#linkedIssuesDrop").on("select2:select", function (e) {
-    $("#inputLinkedIssue").prop("disabled", false)
-})
+// $("#linkedIssuesDrop").on("select2:select", function (e) {
+//     $("#inputLinkedIssue").prop("disabled", false)
+// })
 
 $("#inputJiraTicketID").on("select2:unselect", function (e) {
     $('#inputExperimentalist').val(null).trigger('change');
@@ -479,8 +479,8 @@ async function submitForm(e) {
     jiraCategory = document.getElementById('jiraCategoryDrop').value
     jiraProject = document.getElementById('jiraProjectDrop').value
     assignToEpic = document.getElementById('inputAssignEpic').value
-    howLinkIssue = document.getElementById('linkedIssuesDrop').value
-    inputLinkedIssuesArray = [...document.getElementById("inputLinkedIssue").selectedOptions].map(x => x.value) // should check if empty?
+    // howLinkIssue = document.getElementById('linkedIssuesDrop').value
+    // inputLinkedIssuesArray = [...document.getElementById("inputLinkedIssue").selectedOptions].map(x => x.value) // should check if empty?
     inputTagsArray = [...document.getElementById("inputTags").selectedOptions].map(x => x.value) // also may need to check if empty
     addXXXFile = document.getElementById('inputXXXFile').files // references
     addXXXFileAlt = [...document.getElementById('inputXXXFileAlt').selectedOptions].map(x => x.value)
@@ -578,8 +578,8 @@ async function submitForm(e) {
             // user: experimentalist, // assignee (should already be set )
             watchers: stakeholders, // done -- untested
             assignEpic: assignToEpic, // I remove option above but may need to make sure not setting to blank
-            howLink: howLinkIssue, // yah gonna need to check this stuff 
-            linkIssue: inputLinkedIssuesArray
+            // howLink: howLinkIssue, // yah gonna need to check this stuff 
+            // linkIssue: inputLinkedIssuesArray
 
         }
         const body = JSON.stringify(json);
@@ -610,8 +610,8 @@ async function submitForm(e) {
             user: experimentalist, // assignee
             watchers: stakeholders, // array
             assignEpic: assignToEpic,
-            howLink: howLinkIssue,
-            linkIssue: inputLinkedIssuesArray // array
+            // howLink: howLinkIssue,
+            // linkIssue: inputLinkedIssuesArray // array
         }
         const body = JSON.stringify(json);
 
