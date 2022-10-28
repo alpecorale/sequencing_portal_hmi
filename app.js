@@ -163,11 +163,11 @@ app.post('/makeIssue', bodyParser.json(), (req, res) => {
     let resultKey2 = result.key
 
     // add watchers seperatly after
-    // jk not allowed to do apparently
+
     if (req.body.watchers) {
-      // req.body.watchers.forEach(async (user) => {
-      //   await jira.addWatcher(resultKey2, user).then(result2 => { res.send(result2) })
-      // })
+      req.body.watchers.forEach(async (user) => {
+        await jira.addWatcher(resultKey2, user).then(result2 => { res.send(result2) })
+      })
     }
 
 
@@ -222,7 +222,7 @@ app.put('/updateIssue', bodyParser.json(), (req, res) => {
   console.log("Made to put: ", req.body)
 
   // let id = req.body.id // turned off for saftey
-  let id = "TES-30"
+  let id = "TEST-3"
 
   let labelsArr = []
   req.body.tags.forEach(tag => {
@@ -255,9 +255,9 @@ app.put('/updateIssue', bodyParser.json(), (req, res) => {
     // add watchers seperatly
     // cannot add watcher apparently
     if (req.body.watchers) {
-      // req.body.watchers.forEach(async (user) => {
-      //   await jira.addWatcher(id, user).then(res3 => { res.send(res3) })
-      // })
+      req.body.watchers.forEach(async (user) => {
+        await jira.addWatcher(id, user).then(res3 => { res.send(res3) })
+      })
     }
 
     // add linked Issue stuff

@@ -71,10 +71,10 @@ $(document).ready(function () {
     })
     // $("#inputLinkedIssue").prop("disabled", true)
 
-    create_tr('miseq_table_body')
-    create_tr('miseq_table_body')
-    create_tr('miseq_table_body')
-    create_tr('miseq_table_body')
+    // create_tr('miseq_table_body')
+    // create_tr('miseq_table_body')
+    // create_tr('miseq_table_body')
+    // create_tr('miseq_table_body')
 });
 
 // console.log('d3', d3.version)
@@ -263,7 +263,7 @@ function toggleAdvancedJira() {
 
 $("#inputJiraTicketID").on("select2:unselect", function (e) {
     $('#inputExperimentalist').val(null).trigger('change');
-    $('#inputAssignEpic').val(null).trigger('change'); 
+    $('#inputAssignEpic').val(null).trigger('change');
     $('#jiraCategoryDrop').val("Sequencing").trigger('change');
     $(".disableWhenJiraTicket").prop("disabled", false)
     $("#inputAssignEpic").prop("disabled", false)
@@ -321,12 +321,43 @@ $('#inputJiraTicketID').on('select2:select', async function (e) {
 });
 
 
+const getAllMiSeqTableValsPromise = () => {
+    // return new Promise((resolve, reject) => {
+    //     getAllMiSeqTableVals((err, data) => {
+    //         if (err) {return reject(err)}
+    //         resolve(data)
+    //     })
+    // })
+    return new Promise((resolve, reject) => {
+        getAllMiSeqTableVals((data) => {
+            resolve(data)
+        })
+    })
+}
+
+const handleMiSeqSampleSheetPromise = () => {
+    return new Promise ((res, rej) => {
+        handleMiSeqSampleSheet((data) => {
+            res(data)
+        })
+    })
+}
+
+const makeMiseqSampleSheetPromise = () => {
+    return new Promise ((res, rej) => {
+        makeMiseqSampleSheet((data) => {
+            res(data)
+        })
+    })
+}
+
+
 // switch to stop jira ticket creation if samplesheet fails
 let sampleSheetCreationSuccess = true;
 /*
 * Submit handler for MiSeq
 */
-async function handleMiSeqSampleSheet() {
+async function handleMiSeqSampleSheet(callback) {
 
     // get values from form
     expName = document.getElementById('experimentName').value // probably pull out of miseq
@@ -341,9 +372,9 @@ async function handleMiSeqSampleSheet() {
     // set set samples from table
     samples = [] // empty sample array for mistakes
 
-    // i think all we need to do now is set samples = data from bottom
-    getAllMiSeqTableVals()
-    samples = miSeqTableVals
+    await getAllMiSeqTableValsPromise().then(res => {
+        samples = res
+    })
 
     console.log("samples:", samples)
 
@@ -453,13 +484,15 @@ async function handleMiSeqSampleSheet() {
     await makeMiseqSampleSheet()
 
     // make dynamic sample sheet
-    // await makeDynamicSampleSheet()
+    await makeDynamicSampleSheet()
 
     // attach samplesheet to folder
     await fetch("/downloadSampleSheet", {
         method: "POST",
         body: sampleSheetToPass,
     }).catch((error) => ("Something went wrong!", error));
+
+    callback(true)
 
 }
 
@@ -522,7 +555,7 @@ async function submitForm(e) {
 
     // branch based on MiSeq / Nanopore
     if (document.getElementById("miseq").checked) {
-        await handleMiSeqSampleSheet() // await needed for dynamic samplesheet creation?
+        await handleMiSeqSampleSheetPromise() // await needed for dynamic samplesheet creation?
     }
     if (document.getElementById("oxfordNanopore").checked) {
         await handleNanoporeSampleSheet()
@@ -655,69 +688,102 @@ async function submitForm(e) {
 
 let sampleSheetToPass = new FormData()
 
-function makeMiseqSampleSheet() {
-    let csvSampleSheetMiSeq = '[Header]\n';
-    csvSampleSheetMiSeq += "Local Run Manager Analysis Id," + lrmaId + '\n'
-    csvSampleSheetMiSeq += "Experiment Name," + expName + '\n'
-    csvSampleSheetMiSeq += "Date," + date.toISOString().split('T')[0] + '\n'
-    csvSampleSheetMiSeq += "Module," + module + '\n'
-    csvSampleSheetMiSeq += "Workflow," + workflow + '\n'
-    csvSampleSheetMiSeq += "Library Prep Kit," + libPrepKit + '\n'
-    csvSampleSheetMiSeq += "Index Kit," + indexKit + '\n'
-    csvSampleSheetMiSeq += "Chemistry," + chemistry + '\n'
+function makeMiseqSampleSheet(callback) {
+        let csvSampleSheetMiSeq = '[Header]\n';
+        csvSampleSheetMiSeq += "Local Run Manager Analysis Id," + lrmaId + '\n'
+        csvSampleSheetMiSeq += "Experiment Name," + expName + '\n'
+        csvSampleSheetMiSeq += "Date," + date.toISOString().split('T')[0] + '\n'
+        csvSampleSheetMiSeq += "Module," + module + '\n'
+        csvSampleSheetMiSeq += "Workflow," + workflow + '\n'
+        csvSampleSheetMiSeq += "Library Prep Kit," + libPrepKit + '\n'
+        csvSampleSheetMiSeq += "Index Kit," + indexKit + '\n'
+        csvSampleSheetMiSeq += "Chemistry," + chemistry + '\n'
 
-    csvSampleSheetMiSeq += "\n[Reads]\n"
-    csvSampleSheetMiSeq += reads1 + '\n'
-    csvSampleSheetMiSeq += reads2 + '\n'
+        csvSampleSheetMiSeq += "\n[Reads]\n"
+        csvSampleSheetMiSeq += reads1 + '\n'
+        csvSampleSheetMiSeq += reads2 + '\n'
 
-    csvSampleSheetMiSeq += "\n[Settings]\n"
+        csvSampleSheetMiSeq += "\n[Settings]\n"
 
-    csvSampleSheetMiSeq += "\n[Data]\n"
+        csvSampleSheetMiSeq += "\n[Data]\n"
 
-    // add header names
-    csvSampleSheetMiSeq += miSeqTableHeaders.join(',') + "\n"
+        // add header names
+        csvSampleSheetMiSeq += miSeqTableHeadersOg.join(',') + "\n" // want og headers
 
-    // add samples
-    samples.forEach((x, index) => {
-        csvSampleSheetMiSeq += x.join(',') + "\n"
-    })
-    let fileName = expName + '_' + date.toISOString().split('T')[0].split('-').join('_') + '_SampleSheet.csv'
-    let csvSampleSheetMiSeqData = new Blob([csvSampleSheetMiSeq], { type: 'text/csv' });
+        // add samples
+        samples.forEach((x, index) => {
+            // check if any extra cols and remove if
+            if (miSeqTableHeaders.length === miSeqTableHeadersOg.length) {
+                // no extra columns so fine
+                csvSampleSheetMiSeq += x.join(',') + "\n"
+            } else {
+                // pop the difference
+                let difference = miSeqTableHeaders.length - miSeqTableHeadersOg.length
+                for (let i = 0; i < difference; i++) {
+                    x.pop()
+                }
+                // proceed as normal
+                csvSampleSheetMiSeq += x.join(',') + "\n"
+            }
+
+        })
+        let fileName = expName + '_' + date.toISOString().split('T')[0].split('-').join('_') + '_SampleSheet.csv'
+        let csvSampleSheetMiSeqData = new Blob([csvSampleSheetMiSeq], { type: 'text/csv' });
 
 
-    sampleSheetToPass.append('file', new File([csvSampleSheetMiSeqData], fileName))
+        sampleSheetToPass.append('file', new File([csvSampleSheetMiSeqData], fileName))
 
-    // // old way of downloading sample sheet directly to user
-    // let csvUrl = URL.createObjectURL(csvSampleSheetMiSeqData);
+        // // old way of downloading sample sheet directly to user
+        // let csvUrl = URL.createObjectURL(csvSampleSheetMiSeqData);
 
-    // let hiddenElement = document.createElement('a');
-    // hiddenElement.href = csvUrl;
-    // hiddenElement.target = '_blank';
-    // hiddenElement.download = 'PortalCreatedSampleSheet.csv'; // edit this to properly name the sample sheet
-    // hiddenElement.click();
-
-    return;
+        // let hiddenElement = document.createElement('a');
+        // hiddenElement.href = csvUrl;
+        // hiddenElement.target = '_blank';
+        // hiddenElement.download = 'PortalCreatedSampleSheet.csv'; // edit this to properly name the sample sheet
+        // hiddenElement.click();
+        callback(true)
 }
 
 let csvFileToPass = new FormData()
 let refFilesToPass = new FormData()
 
 function makeDynamicSampleSheet() {
-    let csv = 'expName,date,module,seqInfo,experimentalist,watchers\n';
-    csv += expName + ',' + date.toISOString().split('T')[0] + ',' + module + ',' + sequencingInfo + ',' + experimentalist + ',' + stakeholders
+    return new Promise((resolve) => {
+        let csvSampleSheetMiSeq = '[Header]\n';
+        csvSampleSheetMiSeq += "Local Run Manager Analysis Id," + lrmaId + '\n'
+        csvSampleSheetMiSeq += "Experiment Name," + expName + '\n'
+        csvSampleSheetMiSeq += "Date," + date.toISOString().split('T')[0] + '\n'
+        csvSampleSheetMiSeq += "Module," + module + '\n'
+        csvSampleSheetMiSeq += "Workflow," + workflow + '\n'
+        csvSampleSheetMiSeq += "Library Prep Kit," + libPrepKit + '\n'
+        csvSampleSheetMiSeq += "Index Kit," + indexKit + '\n'
+        csvSampleSheetMiSeq += "Chemistry," + chemistry + '\n'
 
-    // possibly add each sample on end (would need to dynamically create headers or put in brackets idk)
-    // samples.forEach((x, index) => {
+        csvSampleSheetMiSeq += "\n[Reads]\n"
+        csvSampleSheetMiSeq += reads1 + '\n'
+        csvSampleSheetMiSeq += reads2 + '\n'
 
-    //     csv += x.join(',')
-    // })
+        csvSampleSheetMiSeq += "\n[Settings]\n"
 
-    let fileName = expName + 'Info.csv'
-    let csvDataDynamic = new Blob([csv], { type: 'text/csv' });
+        csvSampleSheetMiSeq += "\n[Data]\n"
 
-    csvFileToPass.append('file', new File([csvDataDynamic], fileName))
+        // add header names
+        csvSampleSheetMiSeq += miSeqTableHeaders.join(',') + "\n" // want all headers
 
-    return;
+        // add samples
+        samples.forEach((x, index) => {
+            // want all info
+            csvSampleSheetMiSeq += x.join(',') + "\n"
+        })
+
+        let fileName = expName + '_' + date.toISOString().split('T')[0].split('-').join('_') + '_Additional_Info.csv'
+        let csvDataDynamic = new Blob([csvSampleSheetMiSeq], { type: 'text/csv' });
+
+        csvFileToPass.append('file', new File([csvDataDynamic], fileName))
+
+        resolve()
+        //return;
+    })
 }
 
 
@@ -809,76 +875,104 @@ function remove_tr(This) {
 }
 
 
-let miSeqTableVals = []
-let miSeqTableHeaders = ['Sample_ID', 'Sample_Name', 'Description', 'I7_Index_ID', 'index', 'I5_Index_ID', 'index2', 'Sample_Project']
-
+let miSeqTableHeaders = ['Sample_ID', 'Sample_Name', 'Description', 'I7_Index_ID', 'index', 'I5_Index_ID', 'index2', 'Sample_Project', 'Reference']
+let miSeqTableHeadersOg = ['Sample_ID', 'Sample_Name', 'Description', 'I7_Index_ID', 'index', 'I5_Index_ID', 'index2', 'Sample_Project']
 /*
 * Pulls all of sample information frome the table... 
 * only pulls information from extra columns if title for those columns is filled in
 */
-function getAllMiSeqTableVals() {
+async function getAllMiSeqTableVals(callback) {
+    // return new Promise(resolve => {
+        // reset just in case
+        let miSeqTableVals = []
+        miSeqTableHeaders = ['Sample_ID', 'Sample_Name', 'Description', 'I7_Index_ID', 'index', 'I5_Index_ID', 'index2', 'Sample_Project', 'Reference']
 
-    // reset just in case
-    miSeqTableVals = []
-    miSeqTableHeaders = ['Sample_ID', 'Sample_Name', 'Description', 'I7_Index_ID', 'index', 'I5_Index_ID', 'index2', 'Sample_Project']
+        // see if any of the extra fields were filled in
+        let miseqExtra1Col = $('#miseq_extra_1').val().split(' ').join('_').split('-').join('_')
+        let miseqExtra2Col = $('#miseq_extra_2').val().split(' ').join('_').split('-').join('_')
+        let miseqExtra3Col = $('#miseq_extra_3').val().split(' ').join('_').split('-').join('_')
 
-    // see if any of the extra fields were filled in
-    let miseqExtra1Col = $('#miseq_extra_1').val().split(' ').join('_').split('-').join('_')
-    let miseqExtra2Col = $('#miseq_extra_2').val().split(' ').join('_').split('-').join('_')
-    let miseqExtra3Col = $('#miseq_extra_3').val().split(' ').join('_').split('-').join('_')
+        let hasExtra1 = false
+        let hasExtra2 = false
+        let hasExtra3 = false
 
-    let hasExtra1 = false
-    let hasExtra2 = false
-    let hasExtra3 = false
-    if (miseqExtra1Col) {
-        hasExtra1 = true
-        miSeqTableHeaders.push(miseqExtra1Col)
-    }
-    if (miseqExtra2Col) {
-        hasExtra2 = true
-        miSeqTableHeaders.push(miseqExtra2Col)
-    }
-    if (miseqExtra3Col) {
-        hasExtra3 = true
-        miSeqTableHeaders.push(miseqExtra3Col)
-    }
-
-    // get values
-    $("#miseq_table_body tr").each(function () {
-
-        let rowVals = []
-
-        rowVals.push($(this).find(".sampId").val())
-        rowVals.push($(this).find(".sampName").val())
-        rowVals.push($(this).find(".sampDes").val())
-        // rowVals.push($(this).find(".sampI7 option:selected").text()) // gets text value
-        rowVals.push($(this).find(".sampI7").val())
-        // rowVals.push($(this).find(".sampInd").val())
-        rowVals.push($(this).find(".sampI7").val()) // push I7 again for index
-        rowVals.push($(this).find(".sampI5").val())
-        // rowVals.push($(this).find(".sampInd2").val())
-        rowVals.push($(this).find(".sampI5").val()) // push I5 again for index2
-        rowVals.push($(this).find(".sampProj").val())
-        // rowVals.push($(this).find(".sampRef").val())
-        rowVals.push($(this).find(".sampRef option:selected").text())
-
-        if (hasExtra1) {
-            rowVals.push($(this).find(".sampEx1").val())
+        if (miseqExtra1Col) {
+            hasExtra1 = true
+            miSeqTableHeaders.push(miseqExtra1Col)
         }
-        if (hasExtra2) {
-            rowVals.push($(this).find(".sampEx2").val())
+        if (miseqExtra2Col) {
+            hasExtra2 = true
+            miSeqTableHeaders.push(miseqExtra2Col)
         }
-        if (hasExtra3) {
-            rowVals.push($(this).find(".sampEx3").val())
+        if (miseqExtra3Col) {
+            hasExtra3 = true
+            miSeqTableHeaders.push(miseqExtra3Col)
         }
 
-        miSeqTableVals.push(rowVals)
+        // get values
+        $("#miseq_table_body tr").each(async function () {
 
-    })
+            let rowVals = []
+
+            // bc yah this works for some reason
+            rowVals.push($(this).find(".sampRef option:selected").text())
+
+            if (hasExtra1) {
+                rowVals.push($(this).find(".sampEx1").val())
+            }
+            if (hasExtra2) {
+                rowVals.push($(this).find(".sampEx2").val())
+            }
+            if (hasExtra3) {
+                rowVals.push($(this).find(".sampEx3").val())
+            }
+
+
+            rowVals.push($(this).find(".sampId").val())
+            rowVals.push($(this).find(".sampName").val())
+            rowVals.push($(this).find(".sampDes").val())
+            // rowVals.push($(this).find(".sampI7 option:selected").text()) // gets text value
+            rowVals.push($(this).find(".sampI7").val())
+            // rowVals.push($(this).find(".sampInd").val())
+            rowVals.push($(this).find(".sampI7").val()) // push I7 again for index
+            rowVals.push($(this).find(".sampI5").val())
+            // rowVals.push($(this).find(".sampInd2").val())
+            rowVals.push($(this).find(".sampI5").val()) // push I5 again for index2
+            rowVals.push($(this).find(".sampProj").val())
+            // rowVals.push($(this).find(".sampRef").val())
+
+            // shift and push
+            console.log("pre")
+            console.log(rowVals)
+            rowVals.push(rowVals.shift())
+            if (hasExtra1) {
+                rowVals.push(rowVals.shift())
+            }
+            if (hasExtra2) {
+                rowVals.push(rowVals.shift())
+            }
+            if (hasExtra3) {
+                rowVals.push(rowVals.shift())
+            }
+            console.log(rowVals)
+            await delay(5000)
+            miSeqTableVals.push(rowVals)
+
+            console.log('miSeqTableVals: ', miSeqTableVals)
+
+        })
+
+        callback(miSeqTableVals)
+
+    //     resolve(miSeqTableVals);
+    // })
+
+
+
 
 }
 
-
+const delay = ms => new Promise(res => setTimeout(res, ms));
 
 
 
