@@ -322,35 +322,51 @@ $('#inputJiraTicketID').on('select2:select', async function (e) {
 
 
 const getAllMiSeqTableValsPromise = () => {
-    // return new Promise((resolve, reject) => {
-    //     getAllMiSeqTableVals((err, data) => {
-    //         if (err) {return reject(err)}
-    //         resolve(data)
-    //     })
-    // })
+
     return new Promise((resolve, reject) => {
         getAllMiSeqTableVals((data) => {
+            console.log('end of get all table vals promise', samples)
             resolve(data)
         })
     })
 }
 
 const handleMiSeqSampleSheetPromise = () => {
-    return new Promise ((res, rej) => {
+    console.log('Starting handle MiSeq Sample Sheet Promise')
+    return new Promise((res, rej) => {
         handleMiSeqSampleSheet((data) => {
+            console.log("Finished handle miseq sample sheet promise")
             res(data)
         })
     })
 }
 
-const makeMiseqSampleSheetPromise = () => {
-    return new Promise ((res, rej) => {
-        makeMiseqSampleSheet((data) => {
+const makeMiseqSampleSheetPromise = (samplesList) => {
+    console.log("Starting make MiSeq Sample sheet promise", samples)
+    return new Promise((res, rej) => {
+        makeMiseqSampleSheet(samplesList, (data) => {
+            console.log("Finish make MiSeq Sample sheet promise", samples)
             res(data)
         })
     })
 }
 
+const makeDynamicSampleSheetPromise = (samplesList) => {
+    return new Promise((res, rej) => {
+        makeDynamicSampleSheet(samplesList, (data) => {
+            res(data)
+        })
+    })
+}
+
+const getSamplesErrorsPromise = () => {
+    console.log("starting get Samples errors promise", samples)
+    return new Promise((res, rej) => {
+        getSamplesErrors((data) => {
+            res(data)
+        })
+    })
+}
 
 // switch to stop jira ticket creation if samplesheet fails
 let sampleSheetCreationSuccess = true;
@@ -372,13 +388,10 @@ async function handleMiSeqSampleSheet(callback) {
     // set set samples from table
     samples = [] // empty sample array for mistakes
 
-    await getAllMiSeqTableValsPromise().then(res => {
-        samples = res
-    })
-
-    console.log("samples:", samples)
-
     let errors = false;
+
+    // samples = await getAllMiSeqTableValsPromise()
+    await getAllMiSeqTableValsPromise()
 
     // Check if required fields are populated correctly
     if (!expName) {
@@ -386,86 +399,8 @@ async function handleMiSeqSampleSheet(callback) {
         errors = true
     }
 
-    let i7andi5Pairs = []
-    let allSampleIds = []
-    let allSampleNames = []
     // fix simple errors and type check etc
-
-    samples.forEach((x, i) => {
-
-        // convert - and ' ' to _
-        x[0] = x[0].split('-').join('_')
-        x[0] = x[0].split(' ').join('_')
-        x[1] = x[1].split('-').join('_')
-        x[1] = x[1].split(' ').join('_')
-        x[7] = x[7].split('-').join('_')
-        x[7] = x[7].split(' ').join('_')
-
-
-        if (!x[0]) {
-            alert('Missing Sample_ID in Sample ' + (i + 1), 'danger')
-            errors = true
-        }
-        if (!x[1]) {
-            alert('Missing Sample_Name in Sample ' + (i + 1), 'danger')
-            errors = true
-        }
-        if (!x[3]) {
-            alert('Missing I7 Index in Sample ' + (i + 1), 'danger')
-            errors = true
-        }
-        if (!x[5]) {
-            alert('Missing I5 Index in Sample ' + (i + 1), 'danger')
-            errors = true
-        }
-
-
-        // this is where we need to do checking on the sample information
-        // need to double check the index on these
-        // (these should be good bc using dropdown but also has self input so keep... )
-        if (x[3].match(/[^ATCGN]/) || x[5].match(/[^ATCGN]/)) {
-            alert('Invalid characters present in I5 or I7 Index for Sample ' + (i + 1), 'danger')
-            errors = true;
-        }
-        if (x[3].length != 8 || x[5].length != 8) {
-            alert('I5 or I7 Index length is incorrect length for Sample ' + (i + 1), 'danger')
-            errors = true;
-        }
-        // add I7 and I5 pair to list
-        i7andi5Pairs.push({ 'i7': x[3], 'i5': x[5] })
-
-        // add all sample Ids/Names to list
-        allSampleIds.push(x[0])
-        allSampleNames.push(x[1])
-
-        // // check for references in sample sheet being none/empty
-        // if (x[8] === 'None' || x[8] === '') {
-        //     // add alert and stop here if desired
-        //     // errors = true
-        // }
-
-    })
-
-    // check that all I7 and I5 pairs are unique
-    i7andi5Pairs.forEach((x, xi) => {
-        i7andi5Pairs.forEach((y, yi) => {
-            // skip checked pairs
-            if (xi >= yi) { return; }
-            // compare each pair to see if any matches
-            if (_.isEqual(x, y)) {
-                alert('I5_I7 Pair is repeated in Samples ' + (xi + 1) + ' and ' + (yi + 1), 'danger')
-                errors = true
-            }
-        })
-    })
-
-    // check that all sample_Ids and names are unique
-    if (allSampleIds.length !== _.uniq(allSampleIds).length) {
-        alert('Please make sure all sample Ids are unique', 'danger')
-    }
-    if (allSampleNames.length !== _.uniq(allSampleNames).length) {
-        alert('Please make sure all sample Names are unique', 'danger')
-    }
+    anyMiSeqErrors = await getSamplesErrorsPromise()
 
     // check only numbers in reads
     if (isNaN(reads1) || isNaN(reads2)) {
@@ -473,18 +408,20 @@ async function handleMiSeqSampleSheet(callback) {
         errors = true
     }
 
-    if (errors) {
+
+    if (errors || anyMiSeqErrors) {
         sampleSheetCreationSuccess = false
         return;
     }
 
     expName = expName.split('-').join('_') // replace - with _
 
-    // make samplesheet
-    await makeMiseqSampleSheet()
-
     // make dynamic sample sheet
-    await makeDynamicSampleSheet()
+    await makeDynamicSampleSheetPromise(samples)
+
+    // make samplesheet
+    await makeMiseqSampleSheetPromise(samples)
+
 
     // attach samplesheet to folder
     await fetch("/downloadSampleSheet", {
@@ -576,7 +513,6 @@ async function submitForm(e) {
         csvFileToPass.append('file', x)
     })
 
-    //addXXXFileAlt = ['hello.txt', 'hello2.txt'] // for testing purposes
     // add names of any already uploaded ref to csvFileToPass
     // csvFileToPass.append('refToGrab', JSON.stringify(addXXXFileAlt))
     for (var i = 0; i < addXXXFileAlt.length; i++) {
@@ -688,102 +624,105 @@ async function submitForm(e) {
 
 let sampleSheetToPass = new FormData()
 
-function makeMiseqSampleSheet(callback) {
-        let csvSampleSheetMiSeq = '[Header]\n';
-        csvSampleSheetMiSeq += "Local Run Manager Analysis Id," + lrmaId + '\n'
-        csvSampleSheetMiSeq += "Experiment Name," + expName + '\n'
-        csvSampleSheetMiSeq += "Date," + date.toISOString().split('T')[0] + '\n'
-        csvSampleSheetMiSeq += "Module," + module + '\n'
-        csvSampleSheetMiSeq += "Workflow," + workflow + '\n'
-        csvSampleSheetMiSeq += "Library Prep Kit," + libPrepKit + '\n'
-        csvSampleSheetMiSeq += "Index Kit," + indexKit + '\n'
-        csvSampleSheetMiSeq += "Chemistry," + chemistry + '\n'
+// why does this function remove the extra stuff from samples???????
+function makeMiseqSampleSheet(samplesList, callback) {
 
-        csvSampleSheetMiSeq += "\n[Reads]\n"
-        csvSampleSheetMiSeq += reads1 + '\n'
-        csvSampleSheetMiSeq += reads2 + '\n'
+    let csvSampleSheetMiSeq = '[Header]\n';
+    csvSampleSheetMiSeq += "Local Run Manager Analysis Id," + lrmaId + '\n'
+    csvSampleSheetMiSeq += "Experiment Name," + expName + '\n'
+    csvSampleSheetMiSeq += "Date," + date.toISOString().split('T')[0] + '\n'
+    csvSampleSheetMiSeq += "Module," + module + '\n'
+    csvSampleSheetMiSeq += "Workflow," + workflow + '\n'
+    csvSampleSheetMiSeq += "Library Prep Kit," + libPrepKit + '\n'
+    csvSampleSheetMiSeq += "Index Kit," + indexKit + '\n'
+    csvSampleSheetMiSeq += "Chemistry," + chemistry + '\n'
 
-        csvSampleSheetMiSeq += "\n[Settings]\n"
+    csvSampleSheetMiSeq += "\n[Reads]\n"
+    csvSampleSheetMiSeq += reads1 + '\n'
+    csvSampleSheetMiSeq += reads2 + '\n'
 
-        csvSampleSheetMiSeq += "\n[Data]\n"
+    csvSampleSheetMiSeq += "\n[Settings]\n"
 
-        // add header names
-        csvSampleSheetMiSeq += miSeqTableHeadersOg.join(',') + "\n" // want og headers
+    csvSampleSheetMiSeq += "\n[Data]\n"
 
-        // add samples
-        samples.forEach((x, index) => {
-            // check if any extra cols and remove if
-            if (miSeqTableHeaders.length === miSeqTableHeadersOg.length) {
-                // no extra columns so fine
-                csvSampleSheetMiSeq += x.join(',') + "\n"
-            } else {
-                // pop the difference
-                let difference = miSeqTableHeaders.length - miSeqTableHeadersOg.length
-                for (let i = 0; i < difference; i++) {
-                    x.pop()
-                }
-                // proceed as normal
-                csvSampleSheetMiSeq += x.join(',') + "\n"
+    // add header names
+    csvSampleSheetMiSeq += miSeqTableHeadersOg.join(',') + "\n" // want og headers
+
+    // add samples
+    samplesList.forEach((x, index) => {
+        let cheese = x
+        // check if any extra cols and remove if
+        if (miSeqTableHeaders.length === miSeqTableHeadersOg.length) {
+            // no extra columns so fine
+            csvSampleSheetMiSeq += cheese.join(',') + "\n"
+        } else {
+            // pop the difference
+            let difference = miSeqTableHeaders.length - miSeqTableHeadersOg.length
+            for (let i = 0; i < difference; i++) {
+                cheese.pop()
             }
+            // proceed as normal
+            csvSampleSheetMiSeq += cheese.join(',') + "\n"
+        }
 
-        })
-        let fileName = expName + '_' + date.toISOString().split('T')[0].split('-').join('_') + '_SampleSheet.csv'
-        let csvSampleSheetMiSeqData = new Blob([csvSampleSheetMiSeq], { type: 'text/csv' });
+
+    })
+    let fileName = expName + '_' + date.toISOString().split('T')[0].split('-').join('_') + '_SampleSheet.csv'
+    let csvSampleSheetMiSeqData = new Blob([csvSampleSheetMiSeq], { type: 'text/csv' });
 
 
-        sampleSheetToPass.append('file', new File([csvSampleSheetMiSeqData], fileName))
+    sampleSheetToPass.append('file', new File([csvSampleSheetMiSeqData], fileName))
 
-        // // old way of downloading sample sheet directly to user
-        // let csvUrl = URL.createObjectURL(csvSampleSheetMiSeqData);
+    // // old way of downloading sample sheet directly to user
+    // let csvUrl = URL.createObjectURL(csvSampleSheetMiSeqData);
 
-        // let hiddenElement = document.createElement('a');
-        // hiddenElement.href = csvUrl;
-        // hiddenElement.target = '_blank';
-        // hiddenElement.download = 'PortalCreatedSampleSheet.csv'; // edit this to properly name the sample sheet
-        // hiddenElement.click();
-        callback(true)
+    // let hiddenElement = document.createElement('a');
+    // hiddenElement.href = csvUrl;
+    // hiddenElement.target = '_blank';
+    // hiddenElement.download = 'PortalCreatedSampleSheet.csv'; // edit this to properly name the sample sheet
+    // hiddenElement.click();
+    callback(true)
 }
 
 let csvFileToPass = new FormData()
 let refFilesToPass = new FormData()
 
-function makeDynamicSampleSheet() {
-    return new Promise((resolve) => {
-        let csvSampleSheetMiSeq = '[Header]\n';
-        csvSampleSheetMiSeq += "Local Run Manager Analysis Id," + lrmaId + '\n'
-        csvSampleSheetMiSeq += "Experiment Name," + expName + '\n'
-        csvSampleSheetMiSeq += "Date," + date.toISOString().split('T')[0] + '\n'
-        csvSampleSheetMiSeq += "Module," + module + '\n'
-        csvSampleSheetMiSeq += "Workflow," + workflow + '\n'
-        csvSampleSheetMiSeq += "Library Prep Kit," + libPrepKit + '\n'
-        csvSampleSheetMiSeq += "Index Kit," + indexKit + '\n'
-        csvSampleSheetMiSeq += "Chemistry," + chemistry + '\n'
+function makeDynamicSampleSheet(samplesList, callback) {
 
-        csvSampleSheetMiSeq += "\n[Reads]\n"
-        csvSampleSheetMiSeq += reads1 + '\n'
-        csvSampleSheetMiSeq += reads2 + '\n'
+    let csvSampleSheetMiSeq = '[Header]\n';
+    csvSampleSheetMiSeq += "Local Run Manager Analysis Id," + lrmaId + '\n'
+    csvSampleSheetMiSeq += "Experiment Name," + expName + '\n'
+    csvSampleSheetMiSeq += "Date," + date.toISOString().split('T')[0] + '\n'
+    csvSampleSheetMiSeq += "Module," + module + '\n'
+    csvSampleSheetMiSeq += "Workflow," + workflow + '\n'
+    csvSampleSheetMiSeq += "Library Prep Kit," + libPrepKit + '\n'
+    csvSampleSheetMiSeq += "Index Kit," + indexKit + '\n'
+    csvSampleSheetMiSeq += "Chemistry," + chemistry + '\n'
 
-        csvSampleSheetMiSeq += "\n[Settings]\n"
+    csvSampleSheetMiSeq += "\n[Reads]\n"
+    csvSampleSheetMiSeq += reads1 + '\n'
+    csvSampleSheetMiSeq += reads2 + '\n'
 
-        csvSampleSheetMiSeq += "\n[Data]\n"
+    csvSampleSheetMiSeq += "\n[Settings]\n"
 
-        // add header names
-        csvSampleSheetMiSeq += miSeqTableHeaders.join(',') + "\n" // want all headers
+    csvSampleSheetMiSeq += "\n[Data]\n"
 
-        // add samples
-        samples.forEach((x, index) => {
-            // want all info
-            csvSampleSheetMiSeq += x.join(',') + "\n"
-        })
+    // add header names
+    csvSampleSheetMiSeq += miSeqTableHeaders.join(',') + "\n" // want all headers
 
-        let fileName = expName + '_' + date.toISOString().split('T')[0].split('-').join('_') + '_Additional_Info.csv'
-        let csvDataDynamic = new Blob([csvSampleSheetMiSeq], { type: 'text/csv' });
-
-        csvFileToPass.append('file', new File([csvDataDynamic], fileName))
-
-        resolve()
-        //return;
+    // add samples
+    samplesList.forEach((x, index) => {
+        // want all info
+        csvSampleSheetMiSeq += x.join(',') + "\n"
     })
+
+
+    let fileName = expName + '_' + date.toISOString().split('T')[0].split('-').join('_') + '_Additional_Info.csv'
+    let csvDataDynamic = new Blob([csvSampleSheetMiSeq], { type: 'text/csv' });
+
+    csvFileToPass.append('file', new File([csvDataDynamic], fileName))
+
+    callback(true)
 }
 
 
@@ -874,103 +813,190 @@ function remove_tr(This) {
     }
 }
 
+async function getSamplesErrors(callback) {
+    let internalErrors = false
+
+    let i7andi5Pairs = []
+    let allSampleIds = []
+    let allSampleNames = []
+
+    // check sample errors here
+    samples.forEach((x, i) => {
+
+        // convert - and ' ' to _
+        x[0] = x[0].split('-').join('_')
+        x[0] = x[0].split(' ').join('_')
+        x[1] = x[1].split('-').join('_')
+        x[1] = x[1].split(' ').join('_')
+        x[7] = x[7].split('-').join('_')
+        x[7] = x[7].split(' ').join('_')
+
+
+        if (!x[0]) {
+            alert('Missing Sample_ID in Sample ' + (i + 1), 'danger')
+            internalErrors = true
+        }
+        if (!x[1]) {
+            alert('Missing Sample_Name in Sample ' + (i + 1), 'danger')
+            internalErrors = true
+        }
+        if (!x[3]) {
+            alert('Missing I7 Index in Sample ' + (i + 1), 'danger')
+            internalErrors = true
+        }
+        if (!x[5]) {
+            alert('Missing I5 Index in Sample ' + (i + 1), 'danger')
+            internalErrors = true
+        }
+
+
+        // this is where we need to do checking on the sample information
+        // need to double check the index on these
+        // (these should be good bc using dropdown but also has self input so keep... )
+        if (x[3].match(/[^ATCGN]/) || x[5].match(/[^ATCGN]/)) {
+            alert('Invalid characters present in I5 or I7 Index for Sample ' + (i + 1), 'danger')
+            internalErrors = true;
+        }
+        if (x[3].length != 8 || x[5].length != 8) {
+            alert('I5 or I7 Index length is incorrect length for Sample ' + (i + 1), 'danger')
+            internalErrors = true;
+        }
+        // add I7 and I5 pair to list
+        i7andi5Pairs.push({ 'i7': x[3], 'i5': x[5] })
+
+        // add all sample Ids/Names to list
+        allSampleIds.push(x[0])
+        allSampleNames.push(x[1])
+
+        // // check for references in sample sheet being none/empty
+        // if (x[8] === 'None' || x[8] === '') {
+        //     // add alert and stop here if desired
+        //     // internalErrors = true
+        // }
+
+    })
+
+    // check that all I7 and I5 pairs are unique
+    i7andi5Pairs.forEach((x, xi) => {
+        i7andi5Pairs.forEach((y, yi) => {
+            // skip checked pairs
+            if (xi >= yi) { return; }
+            // compare each pair to see if any matches
+            if (_.isEqual(x, y)) {
+                alert('I5_I7 Pair is repeated in Samples ' + (xi + 1) + ' and ' + (yi + 1), 'danger')
+                internalErrors = true
+            }
+        })
+    })
+
+    // check that all sample_Ids and names are unique
+    if (allSampleIds.length !== _.uniq(allSampleIds).length) {
+        alert('Please make sure all sample Ids are unique', 'danger')
+        internalErrors = true
+    }
+
+    if (allSampleNames.length !== _.uniq(allSampleNames).length) {
+        alert('Please make sure all sample Names are unique', 'danger')
+        internalErrors = true
+    }
+
+
+    callback(internalErrors)
+}
+
 
 let miSeqTableHeaders = ['Sample_ID', 'Sample_Name', 'Description', 'I7_Index_ID', 'index', 'I5_Index_ID', 'index2', 'Sample_Project', 'Reference']
 let miSeqTableHeadersOg = ['Sample_ID', 'Sample_Name', 'Description', 'I7_Index_ID', 'index', 'I5_Index_ID', 'index2', 'Sample_Project']
+let anyMiSeqErrors = false
 /*
 * Pulls all of sample information frome the table... 
 * only pulls information from extra columns if title for those columns is filled in
 */
+let hasExtra1 = false
+let hasExtra2 = false
+let hasExtra3 = false
+let miSeqTableVals = []
 async function getAllMiSeqTableVals(callback) {
-    // return new Promise(resolve => {
-        // reset just in case
-        let miSeqTableVals = []
-        miSeqTableHeaders = ['Sample_ID', 'Sample_Name', 'Description', 'I7_Index_ID', 'index', 'I5_Index_ID', 'index2', 'Sample_Project', 'Reference']
+    anyMiSeqErrors = false
 
-        // see if any of the extra fields were filled in
-        let miseqExtra1Col = $('#miseq_extra_1').val().split(' ').join('_').split('-').join('_')
-        let miseqExtra2Col = $('#miseq_extra_2').val().split(' ').join('_').split('-').join('_')
-        let miseqExtra3Col = $('#miseq_extra_3').val().split(' ').join('_').split('-').join('_')
+    // reset just in case
+    // let miSeqTableVals = []
+    miSeqTableHeaders = ['Sample_ID', 'Sample_Name', 'Description', 'I7_Index_ID', 'index', 'I5_Index_ID', 'index2', 'Sample_Project', 'Reference']
 
-        let hasExtra1 = false
-        let hasExtra2 = false
-        let hasExtra3 = false
+    // see if any of the extra fields were filled in
+    let miseqExtra1Col = $('#miseq_extra_1').val().split(' ').join('_').split('-').join('_')
+    let miseqExtra2Col = $('#miseq_extra_2').val().split(' ').join('_').split('-').join('_')
+    let miseqExtra3Col = $('#miseq_extra_3').val().split(' ').join('_').split('-').join('_')
 
-        if (miseqExtra1Col) {
-            hasExtra1 = true
-            miSeqTableHeaders.push(miseqExtra1Col)
+    // let hasExtra1 = false
+    // let hasExtra2 = false
+    // let hasExtra3 = false
+
+    if (miseqExtra1Col) {
+        hasExtra1 = true
+        miSeqTableHeaders.push(miseqExtra1Col)
+    }
+    if (miseqExtra2Col) {
+        hasExtra2 = true
+        miSeqTableHeaders.push(miseqExtra2Col)
+    }
+    if (miseqExtra3Col) {
+        hasExtra3 = true
+        miSeqTableHeaders.push(miseqExtra3Col)
+    }
+
+    // get values
+    let geet = $("#miseq_table_body tr").each(async function (x) {
+
+        let rowVals = []
+
+        let id = $(this).find(".sampId").val()
+        let name = $(this).find(".sampName").val()
+        let des = $(this).find(".sampDes").val()
+        let i7 = $(this).find(".sampI7").val()
+        let i5 = $(this).find(".sampI5").val()
+        let proj = $(this).find(".sampProj").val()
+        let ref = $(this).find(".sampRef option:selected").text()
+        let ex1 = $(this).find(".sampEx1").val()
+        let ex2 = $(this).find(".sampEx2").val()
+        let ex3 = $(this).find(".sampEx3").val()
+
+        rowVals.push(id)
+        rowVals.push(name)
+        rowVals.push(des)
+        rowVals.push(i7)
+        rowVals.push(i7)
+        rowVals.push(i5)
+        rowVals.push(i5)
+        rowVals.push(proj)
+        rowVals.push(ref)
+
+
+        if (hasExtra1) {
+            rowVals.push(ex1)
         }
-        if (miseqExtra2Col) {
-            hasExtra2 = true
-            miSeqTableHeaders.push(miseqExtra2Col)
+        if (hasExtra2) {
+            rowVals.push(ex2)
         }
-        if (miseqExtra3Col) {
-            hasExtra3 = true
-            miSeqTableHeaders.push(miseqExtra3Col)
+        if (hasExtra3) {
+            rowVals.push(ex3)
         }
 
-        // get values
-        $("#miseq_table_body tr").each(async function () {
+        miSeqTableVals.push(rowVals)
 
-            let rowVals = []
+        console.log('miSeqTableVals: ', miSeqTableVals)
+        console.log("done with geet")
 
-            // bc yah this works for some reason
-            rowVals.push($(this).find(".sampRef option:selected").text())
+    })
 
-            if (hasExtra1) {
-                rowVals.push($(this).find(".sampEx1").val())
-            }
-            if (hasExtra2) {
-                rowVals.push($(this).find(".sampEx2").val())
-            }
-            if (hasExtra3) {
-                rowVals.push($(this).find(".sampEx3").val())
-            }
-
-
-            rowVals.push($(this).find(".sampId").val())
-            rowVals.push($(this).find(".sampName").val())
-            rowVals.push($(this).find(".sampDes").val())
-            // rowVals.push($(this).find(".sampI7 option:selected").text()) // gets text value
-            rowVals.push($(this).find(".sampI7").val())
-            // rowVals.push($(this).find(".sampInd").val())
-            rowVals.push($(this).find(".sampI7").val()) // push I7 again for index
-            rowVals.push($(this).find(".sampI5").val())
-            // rowVals.push($(this).find(".sampInd2").val())
-            rowVals.push($(this).find(".sampI5").val()) // push I5 again for index2
-            rowVals.push($(this).find(".sampProj").val())
-            // rowVals.push($(this).find(".sampRef").val())
-
-            // shift and push
-            console.log("pre")
-            console.log(rowVals)
-            rowVals.push(rowVals.shift())
-            if (hasExtra1) {
-                rowVals.push(rowVals.shift())
-            }
-            if (hasExtra2) {
-                rowVals.push(rowVals.shift())
-            }
-            if (hasExtra3) {
-                rowVals.push(rowVals.shift())
-            }
-            console.log(rowVals)
-            await delay(5000)
-            miSeqTableVals.push(rowVals)
-
-            console.log('miSeqTableVals: ', miSeqTableVals)
-
-        })
-
+    $.when.apply(geet, miSeqTableVals).done(async () => {
+        console.log("starting geet promise")
+        samples = miSeqTableVals
         callback(miSeqTableVals)
-
-    //     resolve(miSeqTableVals);
-    // })
-
-
-
+    })
 
 }
+
 
 const delay = ms => new Promise(res => setTimeout(res, ms));
 
