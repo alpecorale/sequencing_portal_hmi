@@ -71,10 +71,10 @@ $(document).ready(function () {
     })
     // $("#inputLinkedIssue").prop("disabled", true)
 
-    // create_tr('miseq_table_body')
-    // create_tr('miseq_table_body')
-    // create_tr('miseq_table_body')
-    // create_tr('miseq_table_body')
+    create_tr('miseq_table_body')
+    create_tr('miseq_table_body')
+    create_tr('miseq_table_body')
+    create_tr('miseq_table_body')
 });
 
 // console.log('d3', d3.version)
@@ -618,7 +618,7 @@ async function submitForm(e) {
     }
 
     // everything to blank again
-    // location.reload()
+    location.reload()
 }
 
 
@@ -649,24 +649,30 @@ function makeMiseqSampleSheet(samplesList, callback) {
     csvSampleSheetMiSeq += miSeqTableHeadersOg.join(',') + "\n" // want og headers
 
     // add samples
-    samplesList.forEach((x, index) => {
-        let cheese = x
-        // check if any extra cols and remove if
-        if (miSeqTableHeaders.length === miSeqTableHeadersOg.length) {
-            // no extra columns so fine
-            csvSampleSheetMiSeq += cheese.join(',') + "\n"
-        } else {
-            // pop the difference
-            let difference = miSeqTableHeaders.length - miSeqTableHeadersOg.length
-            for (let i = 0; i < difference; i++) {
-                cheese.pop()
-            }
-            // proceed as normal
-            csvSampleSheetMiSeq += cheese.join(',') + "\n"
-        }
-
-
+    samplesList.forEach((x) => {
+        // slice to get original rows
+        x = x.slice(0,8)
+        csvSampleSheetMiSeq += x.join(',') + "\n"
+        
     })
+    // samplesList.forEach((x, index) => {
+    //     let cheese = x
+    //     // check if any extra cols and remove if
+    //     if (miSeqTableHeaders.length === miSeqTableHeadersOg.length) {
+    //         // no extra columns so fine
+    //         csvSampleSheetMiSeq += cheese.join(',') + "\n"
+    //     } else {
+    //         // pop the difference
+    //         let difference = miSeqTableHeaders.length - miSeqTableHeadersOg.length
+    //         for (let i = 0; i < difference; i++) {
+    //             cheese.pop()
+    //         }
+    //         // proceed as normal
+    //         csvSampleSheetMiSeq += cheese.join(',') + "\n"
+    //     }
+
+
+    // })
     let fileName = expName + '_' + date.toISOString().split('T')[0].split('-').join('_') + '_SampleSheet.csv'
     let csvSampleSheetMiSeqData = new Blob([csvSampleSheetMiSeq], { type: 'text/csv' });
 
@@ -674,13 +680,13 @@ function makeMiseqSampleSheet(samplesList, callback) {
     sampleSheetToPass.append('file', new File([csvSampleSheetMiSeqData], fileName))
 
     // // old way of downloading sample sheet directly to user
-    // let csvUrl = URL.createObjectURL(csvSampleSheetMiSeqData);
+    let csvUrl = URL.createObjectURL(csvSampleSheetMiSeqData);
 
-    // let hiddenElement = document.createElement('a');
-    // hiddenElement.href = csvUrl;
-    // hiddenElement.target = '_blank';
-    // hiddenElement.download = 'PortalCreatedSampleSheet.csv'; // edit this to properly name the sample sheet
-    // hiddenElement.click();
+    let hiddenElement = document.createElement('a');
+    hiddenElement.href = csvUrl;
+    hiddenElement.target = '_blank';
+    hiddenElement.download = 'PortalCreatedSampleSheet.csv'; // edit this to properly name the sample sheet
+    hiddenElement.click();
     callback(true)
 }
 
@@ -711,7 +717,7 @@ function makeDynamicSampleSheet(samplesList, callback) {
     csvSampleSheetMiSeq += miSeqTableHeaders.join(',') + "\n" // want all headers
 
     // add samples
-    samplesList.forEach((x, index) => {
+    samplesList.forEach((x) => {
         // want all info
         csvSampleSheetMiSeq += x.join(',') + "\n"
     })
