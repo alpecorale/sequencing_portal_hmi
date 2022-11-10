@@ -1,4 +1,122 @@
 
+// Make data options for varius dropdowns
+
+let i7BarcodeKits = {
+
+    "results": [
+        {
+            "id": "",
+            "text": "None"
+        },
+
+        {
+            "text": "Barcode Kit 1",
+            "children": [
+                {
+                    "id": "CGATCATG",
+                    "text": "CGATCATG"
+                },
+                {
+                    "id": "TAGATCCT",
+                    "text": "TAGATCCT"
+                }
+            ]
+        },
+        {
+            "text": "Barcode Kit 2",
+            "children": [
+                {
+                    "id": "GACCATTG",
+                    "text": "GACCATTG"
+                },
+                {
+                    "id": "CAGATAAT",
+                    "text": "CAGATAAT"
+                }
+            ]
+        }
+    ]
+
+}
+
+let i5BarcodeKits = {
+
+    "results": [
+        {
+            "id": "",
+            "text": "None"
+        },
+
+        {
+            "text": "Barcode Kit 1",
+            "children": [
+                {
+                    "id": "AAGTAGAG",
+                    "text": "AAGTAGAG"
+                },
+                {
+                    "id": "CATGCTTA",
+                    "text": "CATGCTTA"
+                },
+                {
+                    "id": "AGTTGCTT",
+                    "text": "AGTTGCTT"
+                }
+            ]
+        },
+        {
+            "text": "Barcode Kit 2",
+            "children": [
+                {
+                    "id": "GCACATCT",
+                    "text": "GCACATCT"
+                },
+                {
+                    "id": "TGCTCGAC",
+                    "text": "TGCTCGAC"
+                },
+                {
+                    "id": "AGCAATTC",
+                    "text": "AGCAATTC"
+                }
+            ]
+        }
+    ]
+
+}
+
+let selectReferenceData = {
+
+    "results": [
+        {
+            "id": "",
+            "text": "None"
+        },
+
+        {
+            "text": "Ref Group",
+            "children": [
+                {
+                    "id": "Reference1",
+                    "text": "Reference 1"
+                },
+                {
+                    "id": "Reference2",
+                    "text": "Reference 2"
+                }
+            ]
+        },
+
+        {
+            "id": "Reference3",
+            "text": "Reference 3"
+        }
+
+    ]
+
+}
+
+
 
 $(document).ready(function () {
 
@@ -69,6 +187,17 @@ $(document).ready(function () {
         placeholder: 'None',
         tags: true
     })
+    $('.select2ClassAddMiSeqI7').select2({
+        data: i7BarcodeKits.results,
+        tags: true
+    })
+    $('.select2ClassAddMiSeqI5').select2({
+        data: i5BarcodeKits.results
+    })
+    $('.select2ClassAddMiSeqRef').select2({
+        data: selectReferenceData.results
+    })
+
     // $("#inputLinkedIssue").prop("disabled", true)
 
     create_tr('miseq_table_body')
@@ -76,6 +205,18 @@ $(document).ready(function () {
     create_tr('miseq_table_body')
     create_tr('miseq_table_body')
 });
+
+// $('.select2ClassAddMiSeqRef').on('select2:close', (e) => {
+//     console.log('hello')
+//     console.log(e)
+//     var newOption = new Option("data.text", "data.id", false, false);
+//     $('.select2ClassAddMiSeqRef').append(newOption).trigger('change')
+
+//     // $('.select2ClassAddMiSeqI7').select2('destroy')
+//     // $('.select2ClassAddMiSeqI7').select2({
+//     //     data: i7BarcodeKits.results
+//     // })
+// })
 
 // console.log('d3', d3.version)
 console.log('lo', _.VERSION)
@@ -141,7 +282,6 @@ async function loadEpicOptions() {
         json.values.forEach(x => {
             prexistingEpics.push(x.key)
         })
-
 
     });
 
@@ -651,9 +791,9 @@ function makeMiseqSampleSheet(samplesList, callback) {
     // add samples
     samplesList.forEach((x) => {
         // slice to get original rows
-        x = x.slice(0,8)
+        x = x.slice(0, 8)
         csvSampleSheetMiSeq += x.join(',') + "\n"
-        
+
     })
     // samplesList.forEach((x, index) => {
     //     let cheese = x
@@ -893,6 +1033,49 @@ async function getSamplesErrors(callback) {
                 internalErrors = true
             }
         })
+    })
+
+    // check that all I7 and I5 pairs are from same barcoding kit (group)
+    i7andi5Pairs.forEach((x, xi) => {
+        let i7Kit = ''
+        // let i5Kit = ''
+        let foundMatch = false
+
+        // this can be done a lot better with lodash.contains probably
+        // or litterly any other way to see inside objects
+        i7BarcodeKits.results.forEach((y, yi) => {
+            if (i7Kit !== '') { return } // already found
+            if (yi === 0) { return } // skip none value
+            // a .contains would be nice here
+            y.children.forEach(z => {
+                if (i7Kit !== '') { return }
+                if (z.id === x.i7) {
+                    i7Kit = y.text
+                }
+            })
+
+        })
+
+        i5BarcodeKits.results.forEach((y, yi) => {
+            if (yi === 0) { return } // skip first
+            if (y.text === i7Kit) {
+                //.contains would be nice here
+                y.children.forEach(z => {
+                    if (foundMatch) { return } // already found
+                    if (z.id === x.i5) {
+                        foundMatch = true
+                    }
+                })
+            }
+
+        })
+
+
+        if (!foundMatch) {
+            alert('I7 & I5 Barcodes in Sample ' + (xi + 1) + ' do not come from the same barcoding kit ', 'danger')
+            internalErrors = true
+        }
+
     })
 
     // check that all sample_Ids and names are unique
