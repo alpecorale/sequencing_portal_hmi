@@ -1,4 +1,5 @@
 
+console.log("TEST Prod")
 
 $(document).ready(function () {
 
