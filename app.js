@@ -1,8 +1,13 @@
 const http = require('http');
 
 const hostname = 'srv-hpc01';
+<<<<<<< HEAD
 // const port = 3001;
 const port = 3317;
+=======
+// const port = 3317
+const port = 3001;
+>>>>>>> origin/master
 
 const express = require('express'),
   morgan = require('morgan'),
@@ -480,7 +485,11 @@ app.get('/getTicket', (req, res) => {
 })
 
 
+<<<<<<< HEAD
 app.listen(process.env.PORT || port, hostname, () => console.log("listening on port ", port));
+=======
+app.listen(process.env.PORT || port, hostname, () => console.log("listening on port " + port));
+>>>>>>> origin/master
 // register view engine
 // app.set('view engine', 'ejs');
 
