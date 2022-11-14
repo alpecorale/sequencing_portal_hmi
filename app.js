@@ -1,8 +1,8 @@
 const http = require('http');
 
 const hostname = 'srv-hpc01';
-const port = 3001;
-// const port = 3317;
+// const port = 3001;
+const port = 3317;
 
 const express = require('express'),
   morgan = require('morgan'),
