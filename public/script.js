@@ -219,7 +219,21 @@ $(document).ready(function () {
     })
     $('.select2ClassAddMiSeqI7').select2({
         data: i7BarcodeKits.results,
-        tags: true
+        tags: true,
+        createTag: (params) => {
+
+            let regex = /^([ATGCN]{8})$/;
+            let regexPass = regex.test(params.term)
+            if (regexPass) {
+                return {
+                    id: params.term,
+                    text: params.term
+                }
+            }
+
+            return null
+
+        }
     })
     $('.select2ClassAddMiSeqI5').select2({
         data: i5BarcodeKits.results
@@ -228,20 +242,6 @@ $(document).ready(function () {
         data: selectReferenceData.results
     })
 
-    $(".select2ClassAddMiSeqRef").on("select2:close", (e) => {
-        console.log(e)
-        var newStateVal = e.data;
-        // Set the value, creating a new option if necessary
-        if ($(".select2ClassAddMiSeqRef").find("option[value=" + newStateVal.id + "]").length) {
-          $(".select2ClassAddMiSeqRef").val(newStateVal.id).trigger("change");
-        } else { 
-          // Create the DOM option that is pre-selected by default
-          var newState = new Option(newStateVal.id, newStateVal.text, true, true);
-          // Append it to the select
-          $(".select2ClassAddMiSeqRef").append(newState).trigger('change');
-        } 
-      });  
-
     // $("#inputLinkedIssue").prop("disabled", true)
 
     create_tr('miseq_table_body')
@@ -249,6 +249,7 @@ $(document).ready(function () {
     create_tr('miseq_table_body')
     create_tr('miseq_table_body')
 });
+
 
 // $('.select2ClassAddMiSeqRef').on('select2:close', (e) => {
 //     console.log('hello')
@@ -802,8 +803,8 @@ async function submitForm(e) {
 
     }
 
-    // everything to blank again
-    location.reload()
+    // refresh everything to blank again
+    // location.reload()
 }
 
 
@@ -962,6 +963,45 @@ function create_tr(table_id) {
         tags: true
     })
 
+    $('.select2ClassAddMiSeqI7').select2({
+        placeholder: 'None',
+        tags: true,
+        createTag: (params) => {
+
+            let regex = /^([ATGCN]{8})$/;
+            let regexPass = regex.test(params.term)
+            if (regexPass) {
+                return {
+                    id: params.term,
+                    text: params.term
+                }
+            }
+    
+            return null
+    
+        }
+    })
+
+    $('.select2ClassAddMiSeqI5').select2({
+        placeholder: 'None',
+        tags: true,
+        createTag: (params) => {
+
+            let regex = /^([ATGCN]{8})$/;
+            let regexPass = regex.test(params.term)
+            if (regexPass) {
+                return {
+                    id: params.term,
+                    text: params.term
+                }
+            }
+    
+            return null
+    
+        }
+    })
+    
+
 }
 
 /*
@@ -1011,7 +1051,7 @@ async function getSamplesErrors(callback) {
     let allSampleIds = []
     let allSampleNames = []
 
-    if (samples.length < 1){
+    if (samples.length < 1) {
         alert('Please add samples', 'danger')
         internalErrors = true
         return;
