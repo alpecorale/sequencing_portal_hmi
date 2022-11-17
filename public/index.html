@@ -29,6 +29,17 @@
     <!--Lodash-->
     <script type="text/javascript" src="multi-input.js" defer></script>
     <script type="text/javascript" src="script.js" defer></script>
+    <style>
+        /* Style Sheet */
+
+        /* Add red astric to left of labels with class required-field */
+        .required-field::before {
+            content: "*";
+            color: red;
+            padding-right: 5px;
+        }
+
+    </style>
 </head>
 
 <body>
@@ -88,15 +99,15 @@
                         <thead class="thead-light">
                             <tr>
                                 <th></th>
-                                <th>Sample_ID</th>
-                                <th>Sample_Name</th>
+                                <th class="required-field">Sample_ID</th>
+                                <!-- <th class="required-field">Sample_Name</th> -->
                                 <th>Description</th>
-                                <th>I7_Index
+                                <th class="required-field">I7_Index
                                     <i class="bi bi-info-circle indexInfo" data-toggle="popover"
                                         title="Common I7 Indexes"></i>
                                 </th>
                                 <!-- <th>index</th> -->
-                                <th>I5_Index <i class="bi bi-info-circle indexInfo" data-toggle="popover"
+                                <th class="required-field">I5_Index <i class="bi bi-info-circle indexInfo" data-toggle="popover"
                                         title="Common I5 Indexes"></i>
                                 </th>
                                 <!-- <th>index2</th> -->
@@ -139,11 +150,11 @@
                             <tr>
                                 <td>1</td>
                                 <td>
-                                    <input class="sampId" type="text" class="form-control" placeholder="sample_id">
+                                    <input class="sampId" type="text" class="form-control" placeholder="sample_id" oninput="noSpecialChars(this)">
                                 </td>
-                                <td>
-                                    <input class="sampName" type="text" class="form-control" placeholder="sample_name">
-                                </td>
+                                <!-- <td>
+                                    <input class="sampName" type="text" class="form-control" placeholder="sample_name" oninput="noSpecialChars(this)">
+                                </td> -->
                                 <td>
                                     <textarea class="form-control sampDes"
                                         style="height: 40px; width: 150px;"></textarea>
@@ -198,21 +209,21 @@
                 <br>
 
                 <div class="mb-3 row">
-                    <label class="col-sm-2 col-form-label" for="experimentName">Experiment Name:</label>
+                    <label class="col-sm-2 col-form-label required-field" for="experimentName">Experiment Name:</label>
                     <div class="col-sm-5">
                         <input class="form-control" type="text" id="experimentName">
                     </div>
                 </div>
 
                 <div class="mb-3 row">
-                    <label class="col-sm-2 col-form-label bold" for="inputReads1">Reads 1:</label>
+                    <label class="col-sm-2 col-form-label bold required-field" for="inputReads1">Reads 1:</label>
                     <div class="col-sm-1">
-                        <input class="form-control" type="text" id="inputReads1" value="151" style="text-align: right">
+                        <input class="form-control" type="text" id="inputReads1" value="151" style="text-align: right" oninput="numbersOnly(this)">
                     </div>
                     <div class="col-sm-3"></div>
-                    <label class="col-sm-2 col-form-label" for="inputReads2">Reads 2:</label>
+                    <label class="col-sm-2 col-form-label required-field" for="inputReads2">Reads 2:</label>
                     <div class="col-sm-1">
-                        <input class="form-control" type="text" id="inputReads2" value="151" style="text-align: right">
+                        <input class="form-control" type="text" id="inputReads2" value="151" style="text-align: right" oninput="numbersOnly(this)">
                     </div>
                 </div>
 
@@ -224,7 +235,7 @@
                                             </div> -->
 
                 <div class="mb-3 row">
-                    <label class="col-sm-2 col-form-label" for="moduleDrop">Module:</label>
+                    <label class="col-sm-2 col-form-label required-field" for="moduleDrop">Module:</label>
                     <div class="col-sm-3" style="display: flex;">
                         <select class="form-select select2ClassAdd" name="moduleInputs" id="moduleDrop">
                             <option value="GenerateFASTQ" selected="selected">GenerateFASTQ</option>
@@ -236,7 +247,7 @@
                             title="Info"></i>
                     </div>
                     <div class="col-sm-1"></div>
-                    <label class="col-sm-2 col-form-label" for="workflowDrop">Workflow:</label>
+                    <label class="col-sm-2 col-form-label required-field" for="workflowDrop">Workflow:</label>
                     <div class="col-sm-3">
                         <select class="form-select select2ClassAdd" name="workflowInputs" id="workflowDrop">
                             <option value="GenerateFASTQ" selected="selected">GenerateFASTQ</option>
@@ -249,7 +260,7 @@
 
 
                 <div class="mb-3 row">
-                    <label class="col-sm-2 col-form-label" for="libraryDrop">Library Prep Kit:</label>
+                    <label class="col-sm-2 col-form-label required-field" for="libraryDrop">Library Prep Kit:</label>
                     <div class="col-sm-3">
                         <select class="form-select select2ClassAdd" name="libraryInputs" id="libraryDrop">
                             <option value="Custom" selected="selected">Custom</option>
@@ -259,7 +270,7 @@
                         </select>
                     </div>
                     <div class="col-sm-1"></div>
-                    <label class="col-sm-2 col-form-label" for="indexKitDrop">Index Kit:</label>
+                    <label class="col-sm-2 col-form-label required-field" for="indexKitDrop">Index Kit:</label>
                     <div class="col-sm-3">
                         <select class="form-select select2ClassAdd" name="indexKitInputs" id="indexKitDrop">
                             <option value="Custom" selected="selected">Custom</option>
@@ -272,7 +283,7 @@
 
 
                 <div class="mb-3 row">
-                    <label class="col-sm-2 col-form-label" for="chemistryDrop">Chemistry:</label>
+                    <label class="col-sm-2 col-form-label required-field" for="chemistryDrop">Chemistry:</label>
                     <div class="col-sm-3">
                         <select class="form-select select2ClassAdd" name="chemistryInputs" id="chemistryDrop">
                             <option value="Amplicon" selected="selected">Amplicon</option>
@@ -327,7 +338,7 @@
                 </div>
 
                 <div class="mb-3 row">
-                    <label class="col-form-label col-sm-2" for="inputExperimentalist">Assignee:</label>
+                    <label class="col-form-label col-sm-2 required-field" for="inputExperimentalist">Assignee:</label>
                     <div class="col-sm-3" style="display: flex;">
                         <select class="form-select select2Class disableWhenJiraTicket" id="inputExperimentalist">
                             <option value="">None</option>
@@ -410,7 +421,7 @@
                 </div>
 
                 <div class="mb-3 row">
-                    <label class="col-form-label col-sm-2" for="inputXXXFile">Attach References:</label>
+                    <label class="col-form-label col-sm-2 required-field" for="inputXXXFile">Attach References:</label>
                     <div class="col-sm-3" style="display: flex;">
                         <input class="form-control" type="file" id="inputXXXFile" multiple>
                         <i class="bi bi-info-circle referenceInfo" style="margin-left: 5px;" data-toggle="popover"

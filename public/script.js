@@ -10,7 +10,7 @@ let i7BarcodeKits = {
         },
 
         {
-            "text": "Barcode Kit 1",
+            "text": "Custom",
             "children": [
                 {
                     "id": "CGATCATG",
@@ -19,11 +19,28 @@ let i7BarcodeKits = {
                 {
                     "id": "TAGATCCT",
                     "text": "TAGATCCT"
+                },
+                {
+                    "id": "TTACTGTC",
+                    "text": "TTACTGTC"
+                },
+                {
+                    "id": "GGCATAGG",
+                    "text": "GGCATAGG"
+                },
+                {
+                    "id": "CAAGGCGA",
+                    "text": "CAAGGCGA"
+                },
+                {
+                    "id": "GACGCTAT",
+                    "text": "GACGCTAT"
                 }
+
             ]
         },
         {
-            "text": "Barcode Kit 2",
+            "text": "Test Barcode Kit 2",
             "children": [
                 {
                     "id": "GACCATTG",
@@ -48,7 +65,7 @@ let i5BarcodeKits = {
         },
 
         {
-            "text": "Barcode Kit 1",
+            "text": "Custom",
             "children": [
                 {
                     "id": "AAGTAGAG",
@@ -61,12 +78,7 @@ let i5BarcodeKits = {
                 {
                     "id": "AGTTGCTT",
                     "text": "AGTTGCTT"
-                }
-            ]
-        },
-        {
-            "text": "Barcode Kit 2",
-            "children": [
+                },
                 {
                     "id": "GCACATCT",
                     "text": "GCACATCT"
@@ -78,6 +90,24 @@ let i5BarcodeKits = {
                 {
                     "id": "AGCAATTC",
                     "text": "AGCAATTC"
+                },
+                {
+                    "id": "AGTTGCTT",
+                    "text": "AGTTGCTT"
+                }
+            ]
+        },
+        {
+            "text": "Test Barcode Kit 2",
+            "children": [
+                {
+                    "id": "AGCTTTTC",
+                    "text": "AGCTTTTC"
+                },
+                ,
+                {
+                    "id": "AGGGGTTC",
+                    "text": "AGGGGTTC"
                 }
             ]
         }
@@ -198,6 +228,20 @@ $(document).ready(function () {
         data: selectReferenceData.results
     })
 
+    $(".select2ClassAddMiSeqRef").on("select2:close", (e) => {
+        console.log(e)
+        var newStateVal = e.data;
+        // Set the value, creating a new option if necessary
+        if ($(".select2ClassAddMiSeqRef").find("option[value=" + newStateVal.id + "]").length) {
+          $(".select2ClassAddMiSeqRef").val(newStateVal.id).trigger("change");
+        } else { 
+          // Create the DOM option that is pre-selected by default
+          var newState = new Option(newStateVal.id, newStateVal.text, true, true);
+          // Append it to the select
+          $(".select2ClassAddMiSeqRef").append(newState).trigger('change');
+        } 
+      });  
+
     // $("#inputLinkedIssue").prop("disabled", true)
 
     create_tr('miseq_table_body')
@@ -217,6 +261,7 @@ $(document).ready(function () {
 //     //     data: i7BarcodeKits.results
 //     // })
 // })
+
 
 // console.log('d3', d3.version)
 console.log('lo', _.VERSION)
@@ -966,6 +1011,12 @@ async function getSamplesErrors(callback) {
     let allSampleIds = []
     let allSampleNames = []
 
+    if (samples.length < 1){
+        alert('Please add samples', 'danger')
+        internalErrors = true
+        return;
+    }
+
     // check sample errors here
     samples.forEach((x, i) => {
 
@@ -1106,6 +1157,8 @@ let hasExtra2 = false
 let hasExtra3 = false
 let miSeqTableVals = []
 async function getAllMiSeqTableVals(callback) {
+
+    miSeqTableVals = []
     anyMiSeqErrors = false
 
     // reset just in case
@@ -1140,7 +1193,7 @@ async function getAllMiSeqTableVals(callback) {
         let rowVals = []
 
         let id = $(this).find(".sampId").val()
-        let name = $(this).find(".sampName").val()
+        // let name = $(this).find(".sampName").val()
         let des = $(this).find(".sampDes").val()
         let i7 = $(this).find(".sampI7").val()
         let i5 = $(this).find(".sampI5").val()
@@ -1150,8 +1203,15 @@ async function getAllMiSeqTableVals(callback) {
         let ex2 = $(this).find(".sampEx2").val()
         let ex3 = $(this).find(".sampEx3").val()
 
+        // if everything (important) is empty then just skip row
+        if (!id && !i7 && !i5) {
+            // console.log("Skip This Row")
+            return;
+        }
+
         rowVals.push(id)
-        rowVals.push(name)
+        // rowVals.push(name)
+        rowVals.push(id)
         rowVals.push(des)
         rowVals.push(i7)
         rowVals.push(i7)
@@ -1173,8 +1233,8 @@ async function getAllMiSeqTableVals(callback) {
 
         miSeqTableVals.push(rowVals)
 
-        console.log('miSeqTableVals: ', miSeqTableVals)
-        console.log("done with geet")
+        // console.log('miSeqTableVals: ', miSeqTableVals)
+        // console.log("done with geet")
 
     })
 
@@ -1235,3 +1295,21 @@ async function testButton() {
 }
 
 
+// function to prevent certain characters form entering name/id inputs
+function noSpecialChars(input) {
+    //let regex = /[^a-z]/gi; only allows letters
+    let regex = /[!@#$%^&*()/?:;[\]'"{},.`~=+\\]/gi; // allows anything but these characters
+    input.value = input.value.replace(regex, "")
+}
+
+// function to limit inputs to numbers only
+function numbersOnly(input) {
+    let regex = /[^0-9]/gi;
+    input.value = input.value.replace(regex, "")
+}
+
+// um I think have to this in select2 boxes logic but dont really feel like figuring that out rn
+function indexInputFilter(input) {
+    let regex = /[^AGTCN]/gi;
+    input.value = input.value.replace(regex, "")
+}
