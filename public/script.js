@@ -153,7 +153,7 @@ $(document).ready(function () {
     // initialize pop overs
     $('.indexInfo').popover({
         container: 'body',
-        content: "Add Indexes here"
+        content: "Pick or type your own indexes here"
     })
     $('.sampleSheetRefInfo').popover({
         container: 'body',
@@ -236,7 +236,22 @@ $(document).ready(function () {
         }
     })
     $('.select2ClassAddMiSeqI5').select2({
-        data: i5BarcodeKits.results
+        data: i5BarcodeKits.results,
+        tags: true,
+        createTag: (params) => {
+
+            let regex = /^([ATGCN]{8})$/;
+            let regexPass = regex.test(params.term)
+            if (regexPass) {
+                return {
+                    id: params.term,
+                    text: params.term
+                }
+            }
+
+            return null
+
+        }
     })
     $('.select2ClassAddMiSeqRef').select2({
         data: selectReferenceData.results
@@ -971,14 +986,16 @@ function create_tr(table_id) {
             let regex = /^([ATGCN]{8})$/;
             let regexPass = regex.test(params.term)
             if (regexPass) {
+                // return addOptionI7(params.term)
+
                 return {
                     id: params.term,
                     text: params.term
                 }
             }
-    
+
             return null
-    
+
         }
     })
 
@@ -995,12 +1012,12 @@ function create_tr(table_id) {
                     text: params.term
                 }
             }
-    
+
             return null
-    
+
         }
     })
-    
+
 
 }
 
@@ -1044,12 +1061,112 @@ function remove_tr(This) {
     }
 }
 
+// event listeners to call add to select2 options
+$('.select2ClassAddMiSeqI7').on('select2:select', function (e) {
+    let item = e.params.data.id
+    // check if item is in original dataset
+    // jk idk but it works this way
+    addOptionI7(item)
+});
+$('.select2ClassAddMiSeqI5').on('select2:select', function (e) {
+    let item = e.params.data.id
+    // check if item is in original dataset
+    // jk idk but it works this way
+    addOptionI5(item)
+});
+$('.select2ClassAddMiSeqRef').on('select2:select', function (e) {
+    let item = e.params.data.id
+    // check if item is in original dataset
+    // jk idk but it works this way
+    addOptionRef(item)
+});
+
+
+// code for adding new tags to data in samplesheet table
+function addOptionI7(term) {
+    $('.select2ClassAddMiSeqI7').select2('destroy')
+
+    $('.select2ClassAddMiSeqI7').select2({
+        data: [{ "id": term, "text": term }],
+        placeholder: 'None',
+        tags: true,
+        createTag: (params) => {
+
+            let regex = /^([ATGCN]{8})$/;
+            let regexPass = regex.test(params.term)
+            if (regexPass) {
+                return {
+                    id: params.term,
+                    text: params.term
+                }
+                // return addOptionI7(params.term)
+            }
+
+            return null
+
+        }
+    })
+    // idk why this is needed her but it works
+    $('.select2ClassAddMiSeqI7').on('select2:select', function (e) {
+        let item = e.params.data.id
+        addOptionI7(item)
+    });
+    // return { "id": term, "text": term }
+}
+
+function addOptionI5(term) {
+    $('.select2ClassAddMiSeqI5').select2('destroy')
+
+    $('.select2ClassAddMiSeqI5').select2({
+        data: [{ "id": term, "text": term }],
+        placeholder: 'None',
+        tags: true,
+        createTag: (params) => {
+
+            let regex = /^([ATGCN]{8})$/;
+            let regexPass = regex.test(params.term)
+            if (regexPass) {
+                return {
+                    id: params.term,
+                    text: params.term
+                }
+            }
+
+            return null
+
+        }
+    })
+    // idk why this is needed her but it works
+    $('.select2ClassAddMiSeqI5').on('select2:select', function (e) {
+        let item = e.params.data.id
+        addOptionI5(item)
+    });
+}
+
+function addOptionRef(term) {
+    $('.select2ClassAddMiSeqRef').select2('destroy')
+
+    $('.select2ClassAddMiSeqRef').select2({
+        data: [{ "id": term, "text": term }],
+        placeholder: 'None',
+        tags: true
+    })
+    // idk why this is needed her but it works
+    $('.select2ClassAddMiSeqRef').on('select2:select', function (e) {
+        let item = e.params.data.id
+        addOptionRef(item)
+    });
+}
+
+
+
+// Get Samples ERRORS code
 async function getSamplesErrors(callback) {
     let internalErrors = false
 
     let i7andi5Pairs = []
     let allSampleIds = []
-    let allSampleNames = []
+    // let allSampleNames = []
 
     if (samples.length < 1) {
         alert('Please add samples', 'danger')
@@ -1073,10 +1190,10 @@ async function getSamplesErrors(callback) {
             alert('Missing Sample_ID in Sample ' + (i + 1), 'danger')
             internalErrors = true
         }
-        if (!x[1]) {
-            alert('Missing Sample_Name in Sample ' + (i + 1), 'danger')
-            internalErrors = true
-        }
+        // if (!x[1]) {
+        //     alert('Missing Sample_Name in Sample ' + (i + 1), 'danger')
+        //     internalErrors = true
+        // }
         if (!x[3]) {
             alert('Missing I7 Index in Sample ' + (i + 1), 'danger')
             internalErrors = true
@@ -1090,20 +1207,27 @@ async function getSamplesErrors(callback) {
         // this is where we need to do checking on the sample information
         // need to double check the index on these
         // (these should be good bc using dropdown but also has self input so keep... )
-        if (x[3].match(/[^ATCGN]/) || x[5].match(/[^ATCGN]/)) {
-            alert('Invalid characters present in I5 or I7 Index for Sample ' + (i + 1), 'danger')
-            internalErrors = true;
+        // if (x[3].match(/[^ATCGN]/) || x[5].match(/[^ATCGN]/)) {
+        //     alert('Invalid characters present in I5 or I7 Index for Sample ' + (i + 1), 'danger')
+        //     internalErrors = true;
+        // }
+        // if (x[3].length != 8 || x[5].length != 8) {
+        //     alert('I5 or I7 Index length is incorrect length for Sample ' + (i + 1), 'danger')
+        //     internalErrors = true;
+        // }
+
+        // make sure i5 and i7 index are not the same
+        if (x[3] === x[5]) {
+            alert('I5 and I7 Index in Sample ' + (i + 1) + 'cannot be the same', 'danger')
+            internalErrors = true
         }
-        if (x[3].length != 8 || x[5].length != 8) {
-            alert('I5 or I7 Index length is incorrect length for Sample ' + (i + 1), 'danger')
-            internalErrors = true;
-        }
+
         // add I7 and I5 pair to list
         i7andi5Pairs.push({ 'i7': x[3], 'i5': x[5] })
 
         // add all sample Ids/Names to list
         allSampleIds.push(x[0])
-        allSampleNames.push(x[1])
+        // allSampleNames.push(x[1])
 
         // // check for references in sample sheet being none/empty
         // if (x[8] === 'None' || x[8] === '') {
@@ -1129,8 +1253,9 @@ async function getSamplesErrors(callback) {
     // check that all I7 and I5 pairs are from same barcoding kit (group)
     i7andi5Pairs.forEach((x, xi) => {
         let i7Kit = ''
-        // let i5Kit = ''
-        let foundMatch = false
+        let i5Kit = ''
+        // let foundMatch = false
+
 
         // this can be done a lot better with lodash.contains probably
         // or litterly any other way to see inside objects
@@ -1148,21 +1273,35 @@ async function getSamplesErrors(callback) {
         })
 
         i5BarcodeKits.results.forEach((y, yi) => {
-            if (yi === 0) { return } // skip first
-            if (y.text === i7Kit) {
-                //.contains would be nice here
-                y.children.forEach(z => {
-                    if (foundMatch) { return } // already found
-                    if (z.id === x.i5) {
-                        foundMatch = true
-                    }
-                })
-            }
+            if (i5Kit !== '') { return } // already found
+            if (yi === 0) { return } // skip none value
+            // a .contains would be nice here
+            y.children.forEach(z => {
+                if (i5Kit !== '') { return }
+                if (z.id === x.i5) {
+                    i5Kit = y.text
+                }
+            })
 
         })
 
+        // i5BarcodeKits.results.forEach((y, yi) => {
+        //     if (yi === 0) { return } // skip first
+        //     if (y.text === i7Kit) {
+        //         //.contains would be nice here
+        //         y.children.forEach(z => {
+        //             if (foundMatch) { return } // already found
+        //             if (z.id === x.i5) {
+        //                 foundMatch = true
+        //             }
+        //         })
+        //     }
 
-        if (!foundMatch) {
+        // })
+
+
+        // if (!foundMatch) {
+        if (i5Kit !== i7Kit) {
             alert('I7 & I5 Barcodes in Sample ' + (xi + 1) + ' do not come from the same barcoding kit ', 'danger')
             internalErrors = true
         }
@@ -1175,10 +1314,10 @@ async function getSamplesErrors(callback) {
         internalErrors = true
     }
 
-    if (allSampleNames.length !== _.uniq(allSampleNames).length) {
-        alert('Please make sure all sample Names are unique', 'danger')
-        internalErrors = true
-    }
+    // if (allSampleNames.length !== _.uniq(allSampleNames).length) {
+    //     alert('Please make sure all sample Names are unique', 'danger')
+    //     internalErrors = true
+    // }
 
 
     callback(internalErrors)
@@ -1302,35 +1441,35 @@ const delay = ms => new Promise(res => setTimeout(res, ms));
 
 async function testButton() {
 
+    addOptionI7('AAAAAAAA')
+    // const json = {
+    //     id: "TES-46",
+    //     tags: ["Tag1", "Tag2", "Tag3"], // working
+    //     info: "New Description2", // adds as comment
+    //     watchers: []
+    //     // watchers: stakeholders, // should work
+    //     // assignEpic: assignToEpic, // I remove option above but may need to make sure not setting to blank
+    //     // howLink: howLinkIssue, // yah gonna need to check this stuff 
+    //     // linkIssue: inputLinkedIssuesArray
 
-    const json = {
-        id: "TES-46",
-        tags: ["Tag1", "Tag2", "Tag3"], // working
-        info: "New Description2", // adds as comment
-        watchers: []
-        // watchers: stakeholders, // should work
-        // assignEpic: assignToEpic, // I remove option above but may need to make sure not setting to blank
-        // howLink: howLinkIssue, // yah gonna need to check this stuff 
-        // linkIssue: inputLinkedIssuesArray
+    // }
+    // const body = JSON.stringify(json);
 
-    }
-    const body = JSON.stringify(json);
-
-    // update an issue
-    await fetch('/updateIssue', {
-        method: 'PUT',
-        body,
-        headers: {
-            "Content-Type": "application/json"
-        }
-    }).then(response => {
-        console.log('Response: ', response)
-        return response.json();
-    }).then(json => {
-        console.log('Response Json: ', json)
-    }).catch(error => {
-        console.log('Error:', error)
-    })
+    // // update an issue
+    // await fetch('/updateIssue', {
+    //     method: 'PUT',
+    //     body,
+    //     headers: {
+    //         "Content-Type": "application/json"
+    //     }
+    // }).then(response => {
+    //     console.log('Response: ', response)
+    //     return response.json();
+    // }).then(json => {
+    //     console.log('Response Json: ', json)
+    // }).catch(error => {
+    //     console.log('Error:', error)
+    // })
 
 }
 
