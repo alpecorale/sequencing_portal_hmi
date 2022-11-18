@@ -51,6 +51,11 @@ let i7BarcodeKits = {
                     "text": "CAGATAAT"
                 }
             ]
+        },
+        {
+            "text": "Other",
+            "children": []
+
         }
     ]
 
@@ -110,6 +115,11 @@ let i5BarcodeKits = {
                     "text": "AGGGGTTC"
                 }
             ]
+        },
+        {
+            "text": "Other",
+            "children": []
+
         }
     ]
 
@@ -136,10 +146,10 @@ let selectReferenceData = {
                 }
             ]
         },
-
         {
-            "id": "Reference3",
-            "text": "Reference 3"
+            "text": "Other",
+            "children": []
+
         }
 
     ]
@@ -1217,8 +1227,8 @@ async function getSamplesErrors(callback) {
         // }
 
         // make sure i5 and i7 index are not the same
-        if (x[3] === x[5]) {
-            alert('I5 and I7 Index in Sample ' + (i + 1) + 'cannot be the same', 'danger')
+        if (x[3] === x[5] && x[3] && x[5]) {
+            alert('I5 and I7 Index in Sample ' + (i + 1) + ' cannot be the same', 'danger')
             internalErrors = true
         }
 
