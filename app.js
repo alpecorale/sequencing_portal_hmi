@@ -141,18 +141,19 @@ app.post('/makeIssue', bodyParser.json(), (req, res) => {
   jira.addNewIssue({
     fields: {
       project: {
-        // key: req.body.project // uncomment when ready
-        key: "TES"
+        key: req.body.project // uncomment when ready
+        // key: "TES"
       },
-      summary: "Portal Jira Testing (Delete)",
+      // summary: "Portal Jira Testing (Delete)",
+      summary: req.body.expName,
       description: req.body.info,
       issuetype: {
         name: req.body.category
         // name: "Task"
       },
       assignee: {
-        // name: req.body.user // uncomment when ready
-        name: 'apecorale'
+        name: req.body.user // uncomment when ready
+        // name: 'apecorale'
       },
       customfield_10100: req.body.assignToEpic, // field for assigning epics
       labels: req.body.tags,
@@ -224,8 +225,8 @@ app.post('/makeIssue', bodyParser.json(), (req, res) => {
 app.put('/updateIssue', bodyParser.json(), (req, res) => {
   console.log("Made to put: ", req.body)
 
-  // let id = req.body.id // turned off for saftey
-  let id = "TEST-3"
+  let id = req.body.id // turned off for saftey
+  // let id = "TEST-3"
 
   let labelsArr = []
   req.body.tags.forEach(tag => {

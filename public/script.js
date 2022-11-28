@@ -784,6 +784,7 @@ async function submitForm(e) {
 
         const json = {
             info: sequencingInfo,
+            summary: expName,
             project: jiraProject,
             category: jiraCategory,
             tags: inputTagsArray, // array
