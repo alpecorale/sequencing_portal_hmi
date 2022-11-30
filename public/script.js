@@ -209,6 +209,10 @@ $(document).ready(function () {
         container: 'body',
         content: "Be a pal and upload your references. Select from file system or from previously uploaded list."
     })
+    $('.nanoporeSampleSheetInfo').popover({
+        container: 'body',
+        content: "Upload your nanopore samplesheet."
+    })
     $('.otherAttachmentsInfo').popover({
         container: 'body',
         content: "Any other helpful files or data you want to attach to ticket, add it here"
@@ -552,6 +556,16 @@ const handleMiSeqSampleSheetPromise = () => {
     })
 }
 
+const handleNanoporeSampleSheetPromise = () => {
+    console.log('Starting handle Nanopore SampleSheet Promise')
+    return new Promise((res, rej) => {
+        handleNanoporeSampleSheet((data) => {
+            console.log("Finished handle nanopore sample sheet promise")
+            res(data)
+        })
+    })
+}
+
 const makeMiseqSampleSheetPromise = (samplesList) => {
     console.log("Starting make MiSeq Sample sheet promise", samples)
     return new Promise((res, rej) => {
@@ -645,6 +659,72 @@ async function handleMiSeqSampleSheet(callback) {
 }
 
 /*
+*
+*   Nanopore handle
+*/
+async function handleNanoporeSampleSheet(callback) {
+
+    // get values from form
+    expName = document.getElementById('experimentNameNanopore').value
+
+
+    // // set set samples from table
+    // samples = [] // empty sample array for mistakes
+
+    let errors = false;
+
+    // // samples = await getAllMiSeqTableValsPromise()
+    // await getAllMiSeqTableValsPromise()
+
+    // Check if required fields are populated correctly
+    if (!expName) {
+        alert('Please add Experiment Name!', 'danger')
+        errors = true
+    }
+
+    // // fix simple errors and type check etc
+    // anyMiSeqErrors = await getSamplesErrorsPromise()
+
+
+    if (errors) {
+    //if (errors || anyMiSeqErrors) {
+        sampleSheetCreationSuccess = false
+        return;
+    }
+
+    expName = expName.split('-').join('_') // replace - with _
+
+    // // make dynamic sample sheet
+    // await makeDynamicSampleSheetPromise(samples)
+
+    // // make samplesheet
+    // await makeMiseqSampleSheetPromise(samples)
+
+    const rawFile = document.getElementById('inputNanoporeSampleSheet').files // rawFile
+
+    let nanoporeSampleSheetToPass = new FormData()
+
+    Array.from(rawFile).forEach(x => {
+        csvFileToPass.append('file', x) // this one gets sent to jira
+        nanoporeSampleSheetToPass.append('file', x) // this one gets saved on server
+    })
+    
+
+    // attach samplesheet to folder
+    // maybe want a seperate fxn/location for download? idk
+    await fetch("/downloadSampleSheet", {
+        method: "POST",
+        body: nanoporeSampleSheetToPass,
+    }).catch((error) => ("Something went wrong!", error));
+
+    callback(true)
+
+}
+
+
+
+
+/*
 * General Submit Form Handler
 */
 async function submitForm(e) {
@@ -706,7 +786,7 @@ async function submitForm(e) {
         await handleMiSeqSampleSheetPromise() // await needed for dynamic samplesheet creation?
     }
     if (document.getElementById("oxfordNanopore").checked) {
-        await handleNanoporeSampleSheet()
+        await handleNanoporeSampleSheetPromise()
     }
 
     // checks if sample sheet creation has failed and cancels if failed

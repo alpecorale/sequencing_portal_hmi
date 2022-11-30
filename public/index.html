@@ -67,7 +67,7 @@
                 </div>
                 <div class="col-sm-3">
                     <!-- <button class="btn btn-primary" onclick="goToNanopore(event)">Create Nanopore Samplesheet</button> -->
-                    <input disabled class="form-check-input" type="radio" id="oxfordNanopore" name="inputTypeOfSeq"
+                    <input class="form-check-input" type="radio" id="oxfordNanopore" name="inputTypeOfSeq"
                         value="NANO">
                     <label class="form-check-label" for="oxfordNanopore">Oxford Nanopore</label>
                 </div>
@@ -297,10 +297,28 @@
             </div>
 
             <!--Nanopore-->
+            <!--Nanopore-->
+            <!--Nanopore-->
+            <!--Nanopore-->
             <div class="container" id="nanoporeSampleSheetDiv" style="display: none;">
-                <h3>Nanopore Sample Sheet Requirements:</h3>
-                <br>
-                <p>Upload sample sheet</p>
+                <h3>Nanopore Samplesheet:</h3>
+                <br />
+                <div class="mb-3 row">
+                    <label class="col-sm-2 col-form-label required-field" for="experimentNameNanopore">Experiment Name:</label>
+                    <div class="col-sm-5">
+                        <input class="form-control" type="text" id="experimentNameNanopore">
+                    </div>
+                </div>
+                <div class="mb-3 row">
+                    <label class="col-form-label col-sm-2 required-field" for="inputNanoporeSampleSheet">Attach Nanopore Samplesheet:</label>
+                    <div class="col-sm-5" style="display: flex;">
+                        <input class="form-control" type="file" id="inputNanoporeSampleSheet" multiple>
+                        <i class="bi bi-info-circle nanoporeSampleSheetInfo" style="margin-left: 5px;" data-toggle="popover"
+                            title="Samplesheet Info"></i>
+                    </div>
+
+                </div>
+
             </div>
 
             <hr />

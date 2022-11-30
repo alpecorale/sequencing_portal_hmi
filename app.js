@@ -145,7 +145,7 @@ app.post('/makeIssue', bodyParser.json(), (req, res) => {
         // key: "TES"
       },
       // summary: "Portal Jira Testing (Delete)",
-      summary: req.body.expName,
+      summary: req.body.summary,
       description: req.body.info,
       issuetype: {
         name: req.body.category
