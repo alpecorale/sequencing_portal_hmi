@@ -245,7 +245,8 @@ $(document).ready(function () {
     })
 
     // auto pop with a few more rows
-    create_tr(); create_tr(); create_tr(); create_tr();
+    create_tr(); create_tr(); create_tr(); create_tr(); create_tr();
+    create_tr(); create_tr(); create_tr(); create_tr(); create_tr();
 
 });
 
@@ -511,7 +512,7 @@ const alert = (message, type) => {
 
 /*
 *
-* New MiSEQ Table
+* MiSEQ Table
 *
 */
 
@@ -618,10 +619,7 @@ function clean_last_tr(lastTr) {
 */
 function remove_tr() {
 
-    if (this === undefined) {
-        console.log("hello")
-        return
-    }
+    if (this === undefined) { return }
     if (this.closest('tbody').childElementCount == 1) {
         alert("You don't have permission to delete this", "warning");
     } else {

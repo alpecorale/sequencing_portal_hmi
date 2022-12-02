@@ -7,10 +7,49 @@ $(document).ready(function () {
         container: 'body',
         content: "Upload your nanopore samplesheet."
     })
+    $('.multiplexKitInfo').popover({
+        container: 'body',
+        content: "Multiplex Kit Info."
+    })
+    $('.constructInfo').popover({
+        container: 'body',
+        content: "Construct Info."
+    })
+    $('.capsidInfo').popover({
+        container: 'body',
+        content: "Capsid Info."
+    })
     
+    // initialize select2 boxes
+    $('.select2ClassNano').select2({
+        placeholder: 'None' // ,
+        // tags: true
+    })
 
     // event listeners onto buttons and inputs
     document.getElementById('nanoExperimentName').addEventListener('input', noSpecialChars)
+    let rm_row_btns = document.querySelectorAll('.rm-row-btn')
+    Array.from(rm_row_btns).forEach(x => {
+        // x.addEventListener('click', () => remove_tr(this))
+        x.addEventListener('click', remove_tr)
+    })
+    let sampIds = document.querySelectorAll('.nanoSampId')
+    Array.from(sampIds).forEach(x => {
+        x.addEventListener('input', noSpecialChars)
+    })
+
+    // hey its not pretty but it works
+    document.getElementById('add1NanoRow').addEventListener('click', create_tr)
+    document.getElementById('add3NanoRow').addEventListener('click', () => {
+        create_tr(); create_tr(); create_tr();
+    })
+    document.getElementById('add5NanoRow').addEventListener('click', () => {
+        create_tr(); create_tr(); create_tr(); create_tr(); create_tr();
+    })
+
+    // auto pop with a few more rows
+    create_tr(); create_tr(); create_tr(); create_tr(); create_tr();
+    create_tr(); create_tr(); create_tr(); create_tr(); create_tr();
 
 
 });
@@ -94,6 +133,103 @@ async function handleNanoporeSampleSheet(callback) {
     callback(true)
 
 }
+
+
+
+
+/*
+*
+* Nano Table
+*
+*/
+
+/*
+* Fxn makes table row
+*/
+function create_tr() {
+
+    $('.select2ClassNano').select2('destroy')
+
+    let table_body = document.getElementById('nano_table_body'),
+        first_tr = table_body.lastElementChild,
+        tr_clone = first_tr.cloneNode(true);
+
+    table_body.append(tr_clone);
+
+    clean_last_tr(table_body.lastElementChild);
+
+    $('.select2ClassNano').select2({
+        placeholder: 'None' // ,
+        // tags: true
+    })
+
+
+    // Re add event listeners everywhere
+    let rm_row_btns = document.querySelectorAll('.rm-row-btn')
+    Array.from(rm_row_btns).forEach(x => {
+        // x.addEventListener('click', () => remove_tr(this))
+        x.addEventListener('click', remove_tr)
+        x.myParam = 'this'
+    })
+    let sampIds = document.querySelectorAll('.nanoSampId')
+    Array.from(sampIds).forEach(x => {
+        x.addEventListener('input', noSpecialChars)
+    })
+
+
+}
+
+/*
+* Helper fxn to clean the newly created row
+*/
+function clean_last_tr(lastTr) {
+    let children = lastTr.children;
+
+    children = Array.isArray(children) ? children : Object.values(children);
+    children.forEach((x, i) => {
+        // clear all inputs
+        if (x !== lastTr.lastElementChild && i !== 0) {
+            x.firstElementChild.value = '';
+        }
+        // set row number
+        if (i === 0) {
+            let rowNum = parseInt(x.innerText)
+            rowNum = rowNum + 1
+            x.innerText = rowNum
+        }
+
+    });
+}
+
+/*
+* Fxn to delete table row
+*/
+function remove_tr() {
+
+    if (this === undefined) { return }
+    if (this.closest('tbody').childElementCount == 1) {
+        alert("You don't have permission to delete this", "warning");
+    } else {
+        this.closest('tr').remove();
+
+        // and renumber everything
+        let rowNum = 1
+        $("#nano_table_body tr").each(function () {
+            $(this).children(":first").text(rowNum)
+            rowNum++
+        })
+    }
+}
+
+
+
+
+
+
+
+
+
+
 
 
 

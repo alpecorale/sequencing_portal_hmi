@@ -84,6 +84,8 @@ let assignToEpic = '';
 let addXXXFile = [];
 let addXXXFileAlt = [];
 let addYYYFile = [];
+let csvFileToPass = new FormData()
+let refFilesToPass = new FormData()
 
 // loading stuff to html
 let prexistingEpics = [];
@@ -502,11 +504,6 @@ async function submitForm(e) {
     // refresh everything to blank again
     // location.reload()
 }
-
-
-// also not sure what to do with this
-let csvFileToPass = new FormData()
-let refFilesToPass = new FormData()
 
 
 // 
