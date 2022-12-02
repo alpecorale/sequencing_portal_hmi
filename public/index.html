@@ -25,10 +25,12 @@
         crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
     <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/lodash@4.17.15/lodash.min.js"></script>
     <!--Lodash-->
-    <script type="text/javascript" src="multi-input.js" defer></script>
-    <script type="text/javascript" src="script.js" defer></script>
+    <script src="https://cdn.jsdelivr.net/npm/lodash@4.17.15/lodash.min.js"></script>
+    <!-- <script type="text/javascript" src="script.js" defer></script> -->
+    <script type="module" src="miseqScript.js"></script>
+    <script type="module" src="nanoScript.js"></script>
+    <script type="module" src="newScript.js" defer></script>
     <style>
         /* Style Sheet */
 
@@ -38,7 +40,6 @@
             color: red;
             padding-right: 5px;
         }
-
     </style>
 </head>
 
@@ -49,9 +50,6 @@
             <a class="navbar-brand" href="/">Samplesheet Portal</a>
         </div>
     </nav>
-    <!-- TESTING BUTTON -->
-    <!-- <br>
-    <button class="btn btn-primary" onclick="testButton()">Testing Button</button> -->
     <br>
     <div class="container" id="dataFormDiv">
 
@@ -61,18 +59,14 @@
             <br>
             <div class="mb-3 row" id="sequencingTypeDiv">
                 <div class="col-sm-2">
-                    <!-- <button class="btn btn-primary" onclick="goToMiSeq(event)">Create MiSeq Samplesheet</button> -->
                     <input class="form-check-input" type="radio" id="miseq" name="inputTypeOfSeq" value="MISEQ" checked>
                     <label class="form-check-label" for="miseq">MiSeq</label>
                 </div>
                 <div class="col-sm-3">
-                    <!-- <button class="btn btn-primary" onclick="goToNanopore(event)">Create Nanopore Samplesheet</button> -->
-                    <input class="form-check-input" type="radio" id="oxfordNanopore" name="inputTypeOfSeq"
-                        value="NANO">
+                    <input class="form-check-input" type="radio" id="oxfordNanopore" name="inputTypeOfSeq" value="NANO">
                     <label class="form-check-label" for="oxfordNanopore">Oxford Nanopore</label>
                 </div>
                 <div class="col-sm-3">
-                    <!-- <button class="btn btn-primary" onclick="skipSampleSheet(event)">Skip Sample Sheet</button> -->
                     <input disabled class="form-check-input" type="radio" id="noSampleSheet" name="inputTypeOfSeq"
                         value="NOSAMP">
                     <label class="form-check-label" for="noSampleSheet">No Samplesheet</label>
@@ -91,7 +85,7 @@
             <!--MiSeq-->
             <div class="container" id="miSeqSampleSheetDiv" style="display: block;">
 
-                <h3>MiSeq Sample Sheet Requirements:</h3>
+                <h3>MiSeq Samplesheet:</h3>
                 <br>
 
                 <div class="container overflow-auto" style="height: 400px">
@@ -107,8 +101,8 @@
                                         title="Common I7 Indexes"></i>
                                 </th>
                                 <!-- <th>index</th> -->
-                                <th class="required-field">I5_Index <i class="bi bi-info-circle indexInfo" data-toggle="popover"
-                                        title="Common I5 Indexes"></i>
+                                <th class="required-field">I5_Index <i class="bi bi-info-circle indexInfo"
+                                        data-toggle="popover" title="Common I5 Indexes"></i>
                                 </th>
                                 <!-- <th>index2</th> -->
                                 <th>Sample_Project</th>
@@ -132,14 +126,13 @@
                                 </th>
                                 <th width="50px">
                                     <div class="action_container row">
-                                        <!--I mean... its not pretty but it works-->
-                                        <button class="btn btn-sm btn-primary col" style="margin: 5%"
-                                            onclick="create_tr('miseq_table_body')">+1</button>
+                                        <button class="btn btn-sm btn-primary col" id="add1MiseqRow"
+                                            style="margin: 5%">+1</button>
                                         <div class="col row">
-                                            <button class="btn btn-sm btn-primary col" style="margin: 5%"
-                                                onclick="create_tr('miseq_table_body'); create_tr('miseq_table_body'); create_tr('miseq_table_body')">+3</button>
-                                            <button class="btn btn-sm btn-primary col" style="margin: 5%"
-                                                onclick="create_tr('miseq_table_body'); create_tr('miseq_table_body'); create_tr('miseq_table_body'); create_tr('miseq_table_body'); create_tr('miseq_table_body');">+5</button>
+                                            <button class="btn btn-sm btn-primary col" id="add3MiseqRow"
+                                                style="margin: 5%">+3</button>
+                                            <button class="btn btn-sm btn-primary col" id="add5MiseqRow"
+                                                style="margin: 5%">+5</button>
                                         </div>
 
                                     </div>
@@ -150,10 +143,10 @@
                             <tr>
                                 <td>1</td>
                                 <td>
-                                    <input class="sampId" type="text" class="form-control" placeholder="sample_id" oninput="noSpecialChars(this)">
+                                    <input class="sampId" type="text" class="form-control" placeholder="sample_id">
                                 </td>
                                 <!-- <td>
-                                    <input class="sampName" type="text" class="form-control" placeholder="sample_name" oninput="noSpecialChars(this)">
+                                    <input class="sampName" type="text" class="form-control" placeholder="sample_name">
                                 </td> -->
                                 <td>
                                     <textarea class="form-control sampDes"
@@ -193,7 +186,7 @@
                                 </td>
                                 <td>
                                     <div class="action_container" style="width: 70px">
-                                        <button class="btn btn-danger" onclick="remove_tr(this)">
+                                        <button class="btn btn-danger rm-row-btn">
                                             <i class="bi bi-trash3" style="width: 10px"></i>
                                         </button>
                                     </div>
@@ -209,30 +202,24 @@
                 <br>
 
                 <div class="mb-3 row">
-                    <label class="col-sm-2 col-form-label required-field" for="experimentName">Experiment Name:</label>
+                    <label class="col-sm-2 col-form-label required-field" for="miseqExperimentName">Experiment Name:</label>
                     <div class="col-sm-5">
-                        <input class="form-control" type="text" id="experimentName">
+                        <input class="form-control" type="text" id="miseqExperimentName">
                     </div>
                 </div>
 
                 <div class="mb-3 row">
                     <label class="col-sm-2 col-form-label bold required-field" for="inputReads1">Reads 1:</label>
                     <div class="col-sm-1">
-                        <input class="form-control" type="text" id="inputReads1" value="151" style="text-align: right" oninput="numbersOnly(this)">
+                        <input class="form-control" type="text" id="inputReads1" value="151" style="text-align: right">
                     </div>
                     <div class="col-sm-3"></div>
                     <label class="col-sm-2 col-form-label required-field" for="inputReads2">Reads 2:</label>
                     <div class="col-sm-1">
-                        <input class="form-control" type="text" id="inputReads2" value="151" style="text-align: right" oninput="numbersOnly(this)">
+                        <input class="form-control" type="text" id="inputReads2" value="151" style="text-align: right">
                     </div>
                 </div>
 
-                <!-- <div class="mb-3 row">
-                                                <label class="col-sm-2 col-form-label" for="inputReads2">Reads 2:</label>
-                                                <div class="col-sm-1">
-                                                    <input class="form-control" type="text" id="inputReads2" value="151">
-                                                </div>
-                                            </div> -->
 
                 <div class="mb-3 row">
                     <label class="col-sm-2 col-form-label required-field" for="moduleDrop">Module:</label>
@@ -304,17 +291,19 @@
                 <h3>Nanopore Samplesheet:</h3>
                 <br />
                 <div class="mb-3 row">
-                    <label class="col-sm-2 col-form-label required-field" for="experimentNameNanopore">Experiment Name:</label>
+                    <label class="col-sm-2 col-form-label required-field" for="nanoExperimentName">Experiment
+                        Name:</label>
                     <div class="col-sm-5">
-                        <input class="form-control" type="text" id="experimentNameNanopore">
+                        <input class="form-control" type="text" id="nanoExperimentName">
                     </div>
                 </div>
                 <div class="mb-3 row">
-                    <label class="col-form-label col-sm-2 required-field" for="inputNanoporeSampleSheet">Attach Nanopore Samplesheet:</label>
+                    <label class="col-form-label col-sm-2 required-field" for="inputNanoporeSampleSheet">Attach Nanopore
+                        Samplesheet:</label>
                     <div class="col-sm-5" style="display: flex;">
                         <input class="form-control" type="file" id="inputNanoporeSampleSheet" multiple>
-                        <i class="bi bi-info-circle nanoporeSampleSheetInfo" style="margin-left: 5px;" data-toggle="popover"
-                            title="Samplesheet Info"></i>
+                        <i class="bi bi-info-circle nanoporeSampleSheetInfo" style="margin-left: 5px;"
+                            data-toggle="popover" title="Samplesheet Info"></i>
                     </div>
 
                 </div>
@@ -349,9 +338,9 @@
                 </div>
 
                 <div class="mb-3 row" id="moreSeqInfo">
-                    <label class="col-sm-2 col-form-label" for="inputSequencingInfo">Description:</label><br>
+                    <label class="col-sm-2 col-form-label" for="inputDescriptionInfo">Description:</label><br>
                     <div class="col-sm-9">
-                        <textarea class="form-control" id="inputSequencingInfo" rows="4" cols="50"></textarea>
+                        <textarea class="form-control" id="inputDescriptionInfo" rows="4" cols="50"></textarea>
                     </div>
                 </div>
 
@@ -468,7 +457,8 @@
 
                 <br>
                 <div class="mb-3 row">
-                    <a href="javascript:toggleAdvancedJira()">Advanced Jira Options <i class="bi bi-arrow-down"></i></a>
+                    <p style="color: blue;" id="toggleAdvancedJiraText">Advanced Jira Options <i
+                            class="bi bi-arrow-down"></i></p>
                 </div>
 
                 <div id="advancedJiraOptions" style="display: none;">
@@ -527,7 +517,7 @@
 
         <hr />
 
-        <button class="btn btn-primary" onclick="submitForm(event)">Submit</button>
+        <button class="btn btn-primary" id="submitFormBtn">Submit</button>
 
         <br>
         <br>

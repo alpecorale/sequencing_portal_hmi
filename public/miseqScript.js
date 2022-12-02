@@ -1,4 +1,5 @@
 
+
 // Make data options for varius dropdowns
 
 let i7BarcodeKits = {
@@ -173,60 +174,8 @@ $(document).ready(function () {
         container: 'body',
         content: "Add additional sample information here. Ex: Cell_Type, Polarity, idk"
     })
-    $('.helpfulInfo').popover({
-        container: 'body',
-        content: "Tip 1: You can write your own options in, if select box is missing what you need. Tip 2: Let me know if these boxes are missing something and I can add it to the list. apecorale@homologymedicines.com"
-    })
-    $('.assigneeInfo').popover({
-        container: 'body',
-        content: "Who do you want to assign the ticket to: Yourself?, Other Researcher?"
-    })
-    $('.watcherInfo').popover({
-        container: 'body',
-        content: "Who do you want to add as a watcher for ticket?"
-    })
-    $('.projectInfo').popover({
-        container: 'body',
-        content: "What Project is this ticket attached to?"
-    })
-    $('.tagsInfo').popover({
-        container: 'body',
-        content: "Want to add any tags to your ticket? They can be helpful in sorting downstream analysis. Feel free to make new tags as needed."
-    })
-    $('.categoryInfo').popover({
-        container: 'body',
-        content: "What Category is this ticket? Generally want to put sequencing runs under Sequencing category. Epics are typically reserverd for larger over arching projects."
-    })
-    $('.assignEpicInfo').popover({
-        container: 'body',
-        content: "Does this ticket belong under a bigger project (Epic) or is it independent?"
-    })
-    // $('.linkedIssueInfo').popover({
-    //     container: 'body',
-    //     content: "Does this ticket have any relationship with other tickets? Ex: Is it blocked by another?"
-    // })
-    $('.referenceInfo').popover({
-        container: 'body',
-        content: "Be a pal and upload your references. Select from file system or from previously uploaded list."
-    })
-    $('.nanoporeSampleSheetInfo').popover({
-        container: 'body',
-        content: "Upload your nanopore samplesheet."
-    })
-    $('.otherAttachmentsInfo').popover({
-        container: 'body',
-        content: "Any other helpful files or data you want to attach to ticket, add it here"
-    })
 
     // initialize select2 boxes
-    $('.select2Class').select2();
-    $('.select2ClassClear').select2({
-        placeholder: 'None',
-        allowClear: true
-    })
-    $('.select2ClassAdd').select2({
-        tags: true
-    })
     $('.select2ClassAddMiSeq').select2({
         placeholder: 'None',
         tags: true
@@ -262,278 +211,58 @@ $(document).ready(function () {
                     text: params.term
                 }
             }
-
             return null
-
         }
     })
     $('.select2ClassAddMiSeqRef').select2({
         data: selectReferenceData.results
     })
 
-    // $("#inputLinkedIssue").prop("disabled", true)
 
-    create_tr('miseq_table_body')
-    create_tr('miseq_table_body')
-    create_tr('miseq_table_body')
-    create_tr('miseq_table_body')
+
+    // event listeners onto buttons and inputs
+    document.getElementById('miseqExperimentName').addEventListener('input', noSpecialChars)
+    let rm_row_btns = document.querySelectorAll('.rm-row-btn')
+    Array.from(rm_row_btns).forEach(x => {
+        // x.addEventListener('click', () => remove_tr(this))
+        x.addEventListener('click', remove_tr)
+    })
+    let sampIds = document.querySelectorAll('.sampId')
+    Array.from(sampIds).forEach(x => {
+        x.addEventListener('input', noSpecialChars)
+    })
+    document.getElementById('inputReads1').addEventListener('input', numbersOnly)
+    document.getElementById('inputReads2').addEventListener('input', numbersOnly)
+
+
+    // hey its not pretty but it works
+    document.getElementById('add1MiseqRow').addEventListener('click', create_tr)
+    document.getElementById('add3MiseqRow').addEventListener('click', () => {
+        create_tr(); create_tr(); create_tr();
+    })
+    document.getElementById('add5MiseqRow').addEventListener('click', () => {
+        create_tr(); create_tr(); create_tr(); create_tr(); create_tr();
+    })
+
+    // auto pop with a few more rows
+    create_tr(); create_tr(); create_tr(); create_tr();
+
 });
 
 
-// $('.select2ClassAddMiSeqRef').on('select2:close', (e) => {
-//     console.log('hello')
-//     console.log(e)
-//     var newOption = new Option("data.text", "data.id", false, false);
-//     $('.select2ClassAddMiSeqRef').append(newOption).trigger('change')
 
-//     // $('.select2ClassAddMiSeqI7').select2('destroy')
-//     // $('.select2ClassAddMiSeqI7').select2({
-//     //     data: i7BarcodeKits.results
-//     // })
-// })
-
-
-// console.log('d3', d3.version)
-console.log('lo', _.VERSION)
-
-// d3.csv('nanoporeFolders.csv', (data) => {
-//     console.log(data)
-// });
-
-let typeOfSeq = 'MISEQ';
-let jiraTicketID = '';
 let samples = [];
-let sequencingInfo = '';
-let experimentalist = ''; // Assignee
-let stakeholders = []; // Watchers
 let reads1 = 151; // miseq
 let reads2 = 151; // miseq
 let lrmaId = 10000 // miseq
-let expName = "" // miseq
+export let miseqExpName = "" // miseq
 let date = new Date();
 let module = ""; // miseq
 let workflow = ""; // miseq
 let libPrepKit = ""; // miseq
 let indexKit = ""; // miseq
 let chemistry = ""; // miseq
-let inputTagsArray = [];
-// let howLinkIssue = '';
-// let inputLinkedIssuesArray = [];
-let allJiraTickets = [];
-let allUsers = [];
-let assignToEpic = '';
-let addXXXFile = [];
-let addXXXFileAlt = [];
-let addYYYFile = [];
 
-//const tagListBoxEl = document.getElementById("tagListBox")
-
-// loading stuff to html
-let prexistingEpics = [];
-const selectAssignEpic = document.getElementById("inputAssignEpic");
-
-let prexistingIssues = [];
-// const selectLinkedIssues = document.getElementById("inputLinkedIssue");
-const selectJiraTicketDrop = document.getElementById("inputJiraTicketID")
-
-let prexistingReferences = [];
-const listOfAvailRef = document.getElementById("inputXXXFileAlt")
-
-
-// need to load epics into options
-async function loadEpicOptions() {
-
-    // only gets Epics from one board (can pass as variable but currently hardcoded)
-    await fetch('/getEpics', {
-        method: 'GET',
-        headers: {
-            "Content-Type": "application/json"
-        }
-    }).then(response => {
-        console.log('Response Epics: ', response)
-        return response.json();
-    }).then(json => {
-        console.log('Response Epics Json', json)
-        json.values.forEach(x => {
-            prexistingEpics.push(x.key)
-        })
-
-    });
-
-    let htmlCodeEpics = `<option value=''>None</option>`;
-
-    prexistingEpics.forEach(item => {
-        htmlCodeEpics += `<option value="` + item + `">` + item + `</option>`
-    })
-
-    selectAssignEpic.innerHTML = htmlCodeEpics
-    return;
-}
-// need to load issues into options
-async function loadIssueOptions() {
-    // only gets Issues from one board (can pass as variable but currently hardcoded)
-    await fetch('/getIssues', {
-        method: 'GET',
-        headers: {
-            "Content-Type": "application/json"
-        }
-    }).then(response => {
-        console.log('Response Issues: ', response)
-        return response.json();
-    }).then(json => {
-        console.log('Response  Issues Json', json)
-        json.issues.forEach(x => {
-            prexistingIssues.push(x.key)
-        })
-    });
-
-    let htmlCodeIssues = '';
-
-    prexistingIssues.forEach(item => {
-        htmlCodeIssues += `<option value="` + item + `">` + item + `</option>`
-    })
-
-    // selectLinkedIssues.innerHTML = htmlCodeIssues
-
-    let htmlCodeIssues2 = `<option value=''>None</option>` + htmlCodeIssues;
-    selectJiraTicketDrop.innerHTML = htmlCodeIssues2
-
-    return;
-}
-// need to load references into options
-async function loadRefOptions() {
-    // get references from directory
-    await fetch('/getListReferences', {
-        method: 'GET',
-        headers: {
-            "Content-Type": "application/json"
-        }
-    }).then(response => {
-        return response.json();
-    }).then(json => {
-        console.log('Response Gel List Ref Json', json)
-        json.references.forEach(x => {
-            prexistingReferences.push(x)
-        })
-    });
-
-    let htmlCodeReferences = ''
-
-    prexistingReferences.forEach(item => {
-        htmlCodeReferences += `<option value="` + item + `">` + item + `</option>`
-    })
-
-    listOfAvailRef.innerHTML = htmlCodeReferences
-
-    return
-}
-
-// call all load functions
-loadEpicOptions()
-loadIssueOptions()
-loadRefOptions()
-
-/*
-* Event Listener to change between MiSeq and Nanopore sample sheets
-*/
-document.body.addEventListener('change', async function (e) {
-    let target = e.target;
-    switch (target.id) {
-        case 'miseq':
-            document.getElementById("nanoporeSampleSheetDiv").style.display = "none";
-            document.getElementById("miSeqSampleSheetDiv").style.display = "block";
-            // code to flip state to on and turn off nanopore
-            break;
-
-        case 'oxfordNanopore':
-            // code to flip state on and turn off miseq
-            document.getElementById("miSeqSampleSheetDiv").style.display = "none";
-            document.getElementById("nanoporeSampleSheetDiv").style.display = "block";
-            break;
-
-        case 'noSampleSheet':
-            document.getElementById("miSeqSampleSheetDiv").style.display = "none";
-            document.getElementById("nanoporeSampleSheetDiv").style.display = "none";
-            break;
-
-    }
-})
-
-function toggleAdvancedJira() {
-    if (document.getElementById("advancedJiraOptions").style.display === "block") {
-        document.getElementById("advancedJiraOptions").style.display = "none"
-    } else {
-        document.getElementById("advancedJiraOptions").style.display = "block"
-    }
-}
-
-// $("#linkedIssuesDrop").on("select2:unselect", function (e) {
-//     $('#inputLinkedIssue').val(null).trigger('change');
-//     $("#inputLinkedIssue").prop("disabled", true)
-// })
-
-// $("#linkedIssuesDrop").on("select2:select", function (e) {
-//     $("#inputLinkedIssue").prop("disabled", false)
-// })
-
-$("#inputJiraTicketID").on("select2:unselect", function (e) {
-    $('#inputExperimentalist').val(null).trigger('change');
-    $('#inputAssignEpic').val(null).trigger('change');
-    $('#jiraCategoryDrop').val("Sequencing").trigger('change');
-    $(".disableWhenJiraTicket").prop("disabled", false)
-    $("#inputAssignEpic").prop("disabled", false)
-})
-
-/*
-* Event Listener for inputJiraTicketID (select2 sp) to load ticket in background
-*/
-$('#inputJiraTicketID').on('select2:select', async function (e) {
-
-    // disable inputs for items that no longer apply
-    // ie. Assignee, Category, Project, Assign to Epic (if already has one)
-    // $(".disableWhenJiraTicket").val(null).trigger('change')
-
-    // getIssue for specific chosen key
-    await fetch('/getTicket?issue_key=' + e.target.value, {
-        method: 'GET',
-        headers: {
-            "Content-Type": "application/json"
-        }
-    }).then(response => {
-        return response.json();
-    }).then(json => {
-        console.log("Get Issue", json)
-
-        // update disabled fields to show proper info
-        if (json.fields.project.key) {
-            $('#jiraProjectDrop').val(json.fields.project.key).trigger('change')
-        }
-        if (json.fields.issuetype) {
-            $('#jiraCategoryDrop').val(json.fields.issuetype.name).trigger('change')
-        }
-        $('#inputExperimentalist').val(null).trigger('change');
-        if (json.fields.assignee) {
-            let data = json.fields.assignee.name
-            if ($('#inputExperimentalist').find("option[value='" + data + "']").length) {
-                $('#inputExperimentalist').val(data).trigger('change');
-            } else {
-                // Create a DOM Option and pre-select by default
-                var newOption = new Option(data, data, true, true);
-                // Append it to the select
-                $('#inputExperimentalist').append(newOption).trigger('change');
-            }
-        }
-
-        $(".disableWhenJiraTicket").prop("disabled", true)
-        // customfield_10100 is epic name
-        if (json.fields.customfield_10100) {
-            $("#inputAssignEpic").val(json.fields.customfield_10100).trigger('change');
-            $("#inputAssignEpic").prop("disabled", true)
-        }
-
-    });
-
-});
 
 
 const getAllMiSeqTableValsPromise = () => {
@@ -546,7 +275,7 @@ const getAllMiSeqTableValsPromise = () => {
     })
 }
 
-const handleMiSeqSampleSheetPromise = () => {
+export const handleMiSeqSampleSheetPromise = () => {
     console.log('Starting handle MiSeq Sample Sheet Promise')
     return new Promise((res, rej) => {
         handleMiSeqSampleSheet((data) => {
@@ -556,15 +285,6 @@ const handleMiSeqSampleSheetPromise = () => {
     })
 }
 
-const handleNanoporeSampleSheetPromise = () => {
-    console.log('Starting handle Nanopore SampleSheet Promise')
-    return new Promise((res, rej) => {
-        handleNanoporeSampleSheet((data) => {
-            console.log("Finished handle nanopore sample sheet promise")
-            res(data)
-        })
-    })
-}
 
 const makeMiseqSampleSheetPromise = (samplesList) => {
     console.log("Starting make MiSeq Sample sheet promise", samples)
@@ -594,14 +314,14 @@ const getSamplesErrorsPromise = () => {
 }
 
 // switch to stop jira ticket creation if samplesheet fails
-let sampleSheetCreationSuccess = true;
+export let miseqSampleSheetCreationSuccess = true;
 /*
 * Submit handler for MiSeq
 */
 async function handleMiSeqSampleSheet(callback) {
 
     // get values from form
-    expName = document.getElementById('experimentName').value // probably pull out of miseq
+    miseqExpName = document.getElementById('miseqExperimentName').value // probably pull out of miseq
     reads1 = document.getElementById('inputReads1').value // miseq
     reads2 = document.getElementById('inputReads2').value // miseq
     module = document.getElementById('moduleDrop').value // miseq
@@ -619,7 +339,7 @@ async function handleMiSeqSampleSheet(callback) {
     await getAllMiSeqTableValsPromise()
 
     // Check if required fields are populated correctly
-    if (!expName) {
+    if (!miseqExpName) {
         alert('Please add Experiment Name!', 'danger')
         errors = true
     }
@@ -635,11 +355,11 @@ async function handleMiSeqSampleSheet(callback) {
 
 
     if (errors || anyMiSeqErrors) {
-        sampleSheetCreationSuccess = false
+        miseqSampleSheetCreationSuccess = false
         return;
     }
 
-    expName = expName.split('-').join('_') // replace - with _
+    miseqExpName = miseqExpName.split('-').join('_') // replace - with _
 
     // make dynamic sample sheet
     await makeDynamicSampleSheetPromise(samples)
@@ -658,270 +378,14 @@ async function handleMiSeqSampleSheet(callback) {
 
 }
 
-/*
-*
-*   Nanopore handle
-*/
-async function handleNanoporeSampleSheet(callback) {
-
-    // get values from form
-    expName = document.getElementById('experimentNameNanopore').value
-
-
-    // // set set samples from table
-    // samples = [] // empty sample array for mistakes
-
-    let errors = false;
-
-    // // samples = await getAllMiSeqTableValsPromise()
-    // await getAllMiSeqTableValsPromise()
-
-    // Check if required fields are populated correctly
-    if (!expName) {
-        alert('Please add Experiment Name!', 'danger')
-        errors = true
-    }
-
-    // // fix simple errors and type check etc
-    // anyMiSeqErrors = await getSamplesErrorsPromise()
-
-
-    if (errors) {
-    //if (errors || anyMiSeqErrors) {
-        sampleSheetCreationSuccess = false
-        return;
-    }
-
-    expName = expName.split('-').join('_') // replace - with _
-
-    // // make dynamic sample sheet
-    // await makeDynamicSampleSheetPromise(samples)
-
-    // // make samplesheet
-    // await makeMiseqSampleSheetPromise(samples)
-
-    const rawFile = document.getElementById('inputNanoporeSampleSheet').files // rawFile
-
-    let nanoporeSampleSheetToPass = new FormData()
-
-    Array.from(rawFile).forEach(x => {
-        csvFileToPass.append('file', x) // this one gets sent to jira
-        nanoporeSampleSheetToPass.append('file', x) // this one gets saved on server
-    })
-    
-
-    // attach samplesheet to folder
-    // maybe want a seperate fxn/location for download? idk
-    await fetch("/downloadSampleSheet", {
-        method: "POST",
-        body: nanoporeSampleSheetToPass,
-    }).catch((error) => ("Something went wrong!", error));
-
-    callback(true)
-
-}
-
-
-
-
-/*
-* General Submit Form Handler
-*/
-async function submitForm(e) {
-    // e.preventDefault()
-
-    console.log("submit called")
-
-    // get values from form
-    jiraTicketID = document.getElementById('inputJiraTicketID').value
-    sequencingInfo = document.getElementById('inputSequencingInfo').value // extra - comments
-    experimentalist = document.getElementById('inputExperimentalist').value
-    stakeholders = [...document.getElementById('inputStakeholder').selectedOptions].map(x => x.value)
-    jiraCategory = document.getElementById('jiraCategoryDrop').value
-    jiraProject = document.getElementById('jiraProjectDrop').value
-    assignToEpic = document.getElementById('inputAssignEpic').value
-    // howLinkIssue = document.getElementById('linkedIssuesDrop').value
-    // inputLinkedIssuesArray = [...document.getElementById("inputLinkedIssue").selectedOptions].map(x => x.value) // should check if empty?
-    inputTagsArray = [...document.getElementById("inputTags").selectedOptions].map(x => x.value) // also may need to check if empty
-    addXXXFile = document.getElementById('inputXXXFile').files // references
-    addXXXFileAlt = [...document.getElementById('inputXXXFileAlt').selectedOptions].map(x => x.value)
-    addYYYFile = document.getElementById('inputYYYFile').files
-    console.log("REFFF File", addXXXFile)
-    console.log('len addXXXFile', addXXXFileAlt)
-    console.log('Experimentalist', experimentalist)
-    // console.log(document.getElementById('inputSamples').value.split(/\r?\n/))
-
-    // check to see all required fields are populated correctly
-    // if (!sequencingInfo) {
-    //     alert('Please add Sequencing Info!', 'danger')
-    //     return;
-    // }
-    if (!experimentalist && !jiraTicketID) {
-        alert('Please add a Assignee!', 'danger')
-        return; // if get more things that we want to call 
-        // errors on then maybe pull out and throw all alerts before returning
-        // like how I did with sample sheet creation
-    }
-    // manually correct categories for specific projects HARDCODED
-    if (jiraProject === 'TES') {
-        jiraCategory = 'Task'
-    }
-    if (jiraProject === 'NT' && jiraCategory === 'Sequencing') {
-        jiraCategory = 'Story'
-    }
-    // check if any references have been attached in either location
-    if (addXXXFile.length === 0 && addXXXFileAlt.length === 0) {
-
-        // can replace with bootbox/bootstrap in future if desired
-        if (!confirm("You are submitting without attaching a reference, this is not recommended")) {
-            return;
-        }
-
-    }
-    // check formating of fields
-    sequencingInfo = sequencingInfo.split('-').join('_')
-
-    // branch based on MiSeq / Nanopore
-    if (document.getElementById("miseq").checked) {
-        await handleMiSeqSampleSheetPromise() // await needed for dynamic samplesheet creation?
-    }
-    if (document.getElementById("oxfordNanopore").checked) {
-        await handleNanoporeSampleSheetPromise()
-    }
-
-    // checks if sample sheet creation has failed and cancels if failed
-    if (!sampleSheetCreationSuccess) {
-        return;
-    }
-
-    // add (all new) added files to csvFileToPass 
-    Array.from(addXXXFile).forEach(x => {
-        csvFileToPass.append('file', x)
-        refFilesToPass.append('file', x)
-    })
-
-    Array.from(addYYYFile).forEach(x => {
-        csvFileToPass.append('file', x)
-    })
-
-    // add names of any already uploaded ref to csvFileToPass
-    // csvFileToPass.append('refToGrab', JSON.stringify(addXXXFileAlt))
-    for (var i = 0; i < addXXXFileAlt.length; i++) {
-        csvFileToPass.append('arr[]', addXXXFileAlt[i]);
-    }
-
-    // attach document and update issue if Jira ticket Id exists
-    // otherwise create a JiraTicket for the run
-    if (jiraTicketID) {
-
-        csvFileToPass.append('jiraId', jiraTicketID)
-
-        // attach document to jira issue
-        await fetch("/addAttachment2Issue", {
-            method: "POST",
-            body: csvFileToPass,
-        }).catch((error) => ("Something went wrong!", error));
-
-        // download References to cluster
-        // going to need to wrap in something to see if Ref needs to be uploaded
-        await fetch("/downloadReference", {
-            method: "POST",
-            body: refFilesToPass,
-        }).catch((error) => ("Something went wrong!", error));
-
-        const json = {
-            id: jiraTicketID,
-            // project: jiraProject, // shouldnt need because already in project
-            // category: jiraCategory, // dont want to change category
-            tags: inputTagsArray, // done
-            info: sequencingInfo, // done -- added as commment
-            // user: experimentalist, // assignee (should already be set )
-            watchers: stakeholders, // done -- untested
-            assignEpic: assignToEpic, // I remove option above but may need to make sure not setting to blank
-            // howLink: howLinkIssue, // yah gonna need to check this stuff 
-            // linkIssue: inputLinkedIssuesArray
-
-        }
-        const body = JSON.stringify(json);
-
-        // update an issue
-        await fetch('/updateIssue', {
-            method: 'PUT',
-            body,
-            headers: {
-                "Content-Type": "application/json"
-            }
-        }).then(response => {
-            console.log('Response Update Issue: ', response)
-            return response.json();
-        }).then(json => {
-            console.log('Response Update Issue Json: ', json)
-        }).catch(error => {
-            console.log('Error:', error)
-        })
-
-    } else { // creates Jira Ticket from scratch
-
-        const json = {
-            info: sequencingInfo,
-            summary: expName,
-            project: jiraProject,
-            category: jiraCategory,
-            tags: inputTagsArray, // array
-            user: experimentalist, // assignee
-            watchers: stakeholders, // array
-            assignEpic: assignToEpic,
-            // howLink: howLinkIssue,
-            // linkIssue: inputLinkedIssuesArray // array
-        }
-        const body = JSON.stringify(json);
-
-        let returnedIssueKey = '';
-
-        // make an issue if one is not provided
-        await fetch('/makeIssue', {
-            method: 'POST',
-            body,
-            headers: {
-                "Content-Type": "application/json"
-            }
-        }).then(response => {
-            console.log('Response: ', response)
-            return response.json();
-        }).then(json => {
-            returnedIssueKey = json.key
-            console.log(json)
-        })
-
-        // add attachment to this issue
-        csvFileToPass.append('jiraId', returnedIssueKey)
-
-        // attach document to jira issue
-        await fetch("/addAttachment2Issue", {
-            method: "POST",
-            body: csvFileToPass,
-        }).catch((error) => ("Something went wrong!", error));
-
-        await fetch("/downloadReference", {
-            method: "POST",
-            body: refFilesToPass,
-        }).catch((error) => ("Something went wrong!", error));
-
-    }
-
-    // refresh everything to blank again
-    // location.reload()
-}
-
 
 let sampleSheetToPass = new FormData()
 
-// why does this function remove the extra stuff from samples???????
 function makeMiseqSampleSheet(samplesList, callback) {
 
     let csvSampleSheetMiSeq = '[Header]\n';
     csvSampleSheetMiSeq += "Local Run Manager Analysis Id," + lrmaId + '\n'
-    csvSampleSheetMiSeq += "Experiment Name," + expName + '\n'
+    csvSampleSheetMiSeq += "Experiment Name," + miseqExpName + '\n'
     csvSampleSheetMiSeq += "Date," + date.toISOString().split('T')[0] + '\n'
     csvSampleSheetMiSeq += "Module," + module + '\n'
     csvSampleSheetMiSeq += "Workflow," + workflow + '\n'
@@ -965,7 +429,7 @@ function makeMiseqSampleSheet(samplesList, callback) {
 
 
     // })
-    let fileName = expName + '_' + date.toISOString().split('T')[0].split('-').join('_') + '_SampleSheet.csv'
+    let fileName = miseqExpName + '_' + date.toISOString().split('T')[0].split('-').join('_') + '_SampleSheet.csv'
     let csvSampleSheetMiSeqData = new Blob([csvSampleSheetMiSeq], { type: 'text/csv' });
 
 
@@ -982,14 +446,15 @@ function makeMiseqSampleSheet(samplesList, callback) {
     callback(true)
 }
 
-let csvFileToPass = new FormData()
-let refFilesToPass = new FormData()
+// let miSeqOnlycsvFileToPass = new FormData()
+
+export let miSeqDynamicFile
 
 function makeDynamicSampleSheet(samplesList, callback) {
 
     let csvSampleSheetMiSeq = '[Header]\n';
     csvSampleSheetMiSeq += "Local Run Manager Analysis Id," + lrmaId + '\n'
-    csvSampleSheetMiSeq += "Experiment Name," + expName + '\n'
+    csvSampleSheetMiSeq += "Experiment Name," + miseqExpName + '\n'
     csvSampleSheetMiSeq += "Date," + date.toISOString().split('T')[0] + '\n'
     csvSampleSheetMiSeq += "Module," + module + '\n'
     csvSampleSheetMiSeq += "Workflow," + workflow + '\n'
@@ -1015,10 +480,11 @@ function makeDynamicSampleSheet(samplesList, callback) {
     })
 
 
-    let fileName = expName + '_' + date.toISOString().split('T')[0].split('-').join('_') + '_Additional_Info.csv'
+    let fileName = miseqExpName + '_' + date.toISOString().split('T')[0].split('-').join('_') + '_Additional_Info.csv'
     let csvDataDynamic = new Blob([csvSampleSheetMiSeq], { type: 'text/csv' });
 
-    csvFileToPass.append('file', new File([csvDataDynamic], fileName))
+    miSeqDynamicFile = new File([csvDataDynamic], fileName)
+    // miSeqOnlycsvFileToPass.append('file', new File([csvDataDynamic], fileName))
 
     callback(true)
 }
@@ -1052,13 +518,13 @@ const alert = (message, type) => {
 /*
 * Fxn makes table row
 */
-function create_tr(table_id) {
+function create_tr() {
 
     $('.select2ClassAddMiSeq').select2('destroy')
 
-    let table_body = document.getElementById(table_id),
+    let table_body = document.getElementById('miseq_table_body'),
         first_tr = table_body.lastElementChild,
-    tr_clone = first_tr.cloneNode(true);
+        tr_clone = first_tr.cloneNode(true);
 
     table_body.append(tr_clone);
 
@@ -1109,6 +575,19 @@ function create_tr(table_id) {
         }
     })
 
+    // Re add event listeners everywhere
+    let rm_row_btns = document.querySelectorAll('.rm-row-btn')
+    Array.from(rm_row_btns).forEach(x => {
+        // x.addEventListener('click', () => remove_tr(this))
+        x.addEventListener('click', remove_tr)
+        x.myParam = 'this'
+    })
+    let sampIds = document.querySelectorAll('.sampId')
+    Array.from(sampIds).forEach(x => {
+        x.addEventListener('input', noSpecialChars)
+        // x.oninput = 'noSpecialChars(this)'
+    })
+
 
 }
 
@@ -1137,11 +616,16 @@ function clean_last_tr(lastTr) {
 /*
 * Fxn to delete table row
 */
-function remove_tr(This) {
-    if (This.closest('tbody').childElementCount == 1) {
+function remove_tr() {
+
+    if (this === undefined) {
+        console.log("hello")
+        return
+    }
+    if (this.closest('tbody').childElementCount == 1) {
         alert("You don't have permission to delete this", "warning");
     } else {
-        This.closest('tr').remove();
+        this.closest('tr').remove();
 
         // and renumber everything
         let rowNum = 1
@@ -1520,66 +1004,24 @@ async function getAllMiSeqTableVals(callback) {
 const delay = ms => new Promise(res => setTimeout(res, ms));
 
 
-
-
-
-
-
-/*
-* TESTING BUTTON
-*
-*/
-
-async function testButton() {
-
-    addOptionI7('AAAAAAAA')
-    // const json = {
-    //     id: "TES-46",
-    //     tags: ["Tag1", "Tag2", "Tag3"], // working
-    //     info: "New Description2", // adds as comment
-    //     watchers: []
-    //     // watchers: stakeholders, // should work
-    //     // assignEpic: assignToEpic, // I remove option above but may need to make sure not setting to blank
-    //     // howLink: howLinkIssue, // yah gonna need to check this stuff 
-    //     // linkIssue: inputLinkedIssuesArray
-
-    // }
-    // const body = JSON.stringify(json);
-
-    // // update an issue
-    // await fetch('/updateIssue', {
-    //     method: 'PUT',
-    //     body,
-    //     headers: {
-    //         "Content-Type": "application/json"
-    //     }
-    // }).then(response => {
-    //     console.log('Response: ', response)
-    //     return response.json();
-    // }).then(json => {
-    //     console.log('Response Json: ', json)
-    // }).catch(error => {
-    //     console.log('Error:', error)
-    // })
-
-}
-
-
-// function to prevent certain characters form entering name/id inputs
-function noSpecialChars(input) {
+// no special characters
+function noSpecialChars(e) {
+    let input = e.target
     //let regex = /[^a-z]/gi; only allows letters
     let regex = /[!@#$%^&*()/?:;[\]'"{},.`~=+\\]/gi; // allows anything but these characters
     input.value = input.value.replace(regex, "")
 }
 
 // function to limit inputs to numbers only
-function numbersOnly(input) {
+function numbersOnly(e) {
+    let input = e.target
     let regex = /[^0-9]/gi;
     input.value = input.value.replace(regex, "")
 }
 
-// um I think have to this in select2 boxes logic but dont really feel like figuring that out rn
-function indexInputFilter(input) {
+// only valid barcode seq
+function indexInputFilter(e) {
+    let input = e.target
     let regex = /[^AGTCN]/gi;
     input.value = input.value.replace(regex, "")
 }
