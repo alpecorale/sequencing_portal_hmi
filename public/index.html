@@ -291,6 +291,7 @@
             <div class="container" id="nanoporeSampleSheetDiv" style="display: none;">
                 <h3>Nanopore Samplesheet:</h3>
                 <br />
+                <!-- Nanopore SampleSheet FieldsFields -->
                 <div class="mb-3 row">
                     <label class="col-sm-2 col-form-label required-field" for="nanoExperimentName">Experiment
                         Name:</label>
@@ -298,31 +299,129 @@
                         <input class="form-control" type="text" id="nanoExperimentName">
                     </div>
                 </div>
-                <div class="mb-3 row">
-                    <label class="col-form-label col-sm-2 required-field" for="inputNanoporeSampleSheet">Attach Nanopore
-                        Samplesheet:</label>
-                    <div class="col-sm-5" style="display: flex;">
-                        <input class="form-control" type="file" id="inputNanoporeSampleSheet" multiple>
-                        <i class="bi bi-info-circle nanoporeSampleSheetInfo" style="margin-left: 5px;"
-                            data-toggle="popover" title="Samplesheet Info"></i>
-                    </div>
 
+                <!-- Platform/Department -->
+                <!-- <div class="mb-3 row">
+                    <label class="col-form-label col-sm-2 required-field" for="inputPlatform">Platform:</label>
+                    <div class="col-sm-2" style="display: flex;">
+                        <select class="form-select select2Class" id="inputPlatform">
+                            <option value="MinION" selected>Nanopore-MinION</option>
+                        </select>
+                    </div>
+                    <div class="col-sm-1"></div>
+                    <label class="col-form-label col-sm-2 required-field" for="inputDepartment">Department:</label>
+                    <div class="col-sm-2" style="display: flex;">
+                        <select class="form-select select2Class" id="inputDepartment">
+                            <option value="Genomics" selected>Genomics</option>
+                            <option value="PD">PD</option>
+                        </select>
+                    </div>
+                </div> -->
+
+                <!-- GUPPY VERSION / MODE -->
+                <div class="mb-3 row">
+                    <label class="col-form-label col-sm-2 required-field" for="inputGuppyVersion">Guppy Basecaller
+                        Version:</label>
+                    <div class="col-sm-2" style="display: flex;">
+                        <select class="form-select select2Class" id="inputGuppyVersion">
+                            <option value="5.0.11" selected>5.0.11</option>
+                            <option value="4.0.14">4.0.14</option>
+                        </select>
+                    </div>
+                    <div class="col-sm-1"></div>
+                    <label class="col-form-label col-sm-2 required-field" for="inputGuppyMode">Guppy Basecaller
+                        Mode:</label>
+                    <div class="col-sm-4" style="display: flex;">
+                        <select class="form-select select2Class" id="inputGuppyMode" style="width: 175px;">
+                            <option value="FAST" selected>FAST</option>
+                            <option value="ACCURATE">ACCURATE</option>
+                            <option value="ACCURATE_MODBASE">ACCURATE_MODBASE</option>
+                            <option value="SUPER_ACCURATE">SUPER_ACCURATE</option>
+                        </select>
+                    </div>
                 </div>
 
-                <br />
-                <br />
+
+                <!-- FLOWCELL/ LIB NAME -->
+                <div class="mb-3 row">
+                    <label class="col-form-label col-sm-2 required-field" for="inputFlowcellID">Flowcell ID:</label>
+                    <div class="col-sm-3" style="display: flex;">
+                        <input type="text" class="form-control" id="inputFlowcellID">
+                    </div>
+                    <div class="col-sm-1"></div>
+                    <label class="col-form-label col-sm-2 required-field" for="inputLibraryName">Library Name:</label>
+                    <div class="col-sm-3" style="display: flex;">
+                        <input type="text" class="form-control" id="inputLibraryName">
+                    </div>
+                </div>
+
+
+                <!-- Filter Reads / MIN LENGTH / MIN QUALITY  -->
+                <div>
+                    <div style="display: flex;">
+                        <label class="required-field" style="width: auto" for="inputFilterReadsSwitch">Filter
+                            Reads:</label>
+                        <div class="form-check form-switch" style="padding-left: 5%;">
+                            <input class="form-check-input" type="checkbox" id="inputFilterReadsSwitch" checked>
+                        </div>
+                    </div>
+
+                    <div id="filterReadsHideDiv" style="display: block;">
+                        <div class="mb-3 row">
+
+                            <div class="col-sm-1">
+                            </div>
+                            <label class="col-form-label col-sm-3 required-field" for="inputFilterMinLength">Filter
+                                Reads by
+                                Min
+                                Length:</label>
+                            <div class="col-sm-2" style="display: flex;">
+                                <select class="form-select select2Class" id="inputFilterMinLength">
+                                    <option value="800" selected>800</option>
+                                    <option value="1000">1000</option>
+                                    <option value="1200">1200</option>
+                                    <option value="2000">2000</option>
+                                </select>
+                            </div>
+                            <div class="col-sm-1">
+                            </div>
+                            <label class="col-form-label col-sm-3 required-field" for="inputFilterMinQuality">Filter
+                                Reads
+                                by Min
+                                Quality:</label>
+                            <div class="col-sm-2" style="display: flex;">
+                                <select class="form-select select2Class" id="inputFilterMinQuality">
+                                    <option value="80" selected>80</option>
+                                    <option value="85">85</option>
+                                    <option value="90">90</option>
+                                    <option value="93">93</option>
+                                    <option value="95">95</option>
+                                    <option value="97">97</option>
+                                    <option value="98">98</option>
+                                    <option value="99">99</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <hr />
+
+
+                <!-- Nanopore Samplesheet Table -->
                 <div class="container overflow-auto" style="height: 400px">
                     <table class="table">
                         <thead class="thead-light">
                             <tr>
                                 <th></th>
-                                <th>Multiplex Kit <i class="bi bi-info-circle multiplexKitInfo" data-toggle="popover"
-                                        title="Multiplex Kits"></i>
+                                <th class="required-field">Multiplex Kit <i class="bi bi-info-circle multiplexKitInfo"
+                                        data-toggle="popover" title="Multiplex Kits"></i>
                                 </th>
                                 <th class="required-field">Sample_Name</th>
-                                <th class="required-field">Project</th>
-                                <th>Construct ID <i class="bi bi-info-circle constructInfo" data-toggle="popover"
-                                        title="Construct Info"></i>
+                                <th>Project</th>
+                                <th>Program</th>
+                                <th class="required-field">Construct ID <i class="bi bi-info-circle constructInfo"
+                                        data-toggle="popover" title="Construct Info"></i>
                                 </th>
                                 <th>Capsid <i class="bi bi-info-circle capsidInfo" data-toggle="popover"
                                         title="Capsid Info"></i>
@@ -370,9 +469,22 @@
                                 <td>
                                     <select class="select2Class multiplexKitInput" style="width: 150px;">
                                         <option value="">None</option>
-                                        <option value="1">Multiplex Kit 1</option>
-                                        <option value="2">Multiplex Kit 2</option>
-                                        <option value="3">Multiplex Kit 3</option>
+                                        <option value="EXP-NBD103">EXP-NBD103</option>
+                                        <option value="EXP-NBD104">EXP-NBD104</option>
+                                        <option value="EXP-NBD114">EXP-NBD114</option>
+                                        <option value="EXP-PBC001">EXP-PBC001</option>
+                                        <option value="EXP-PBC096">EXP-PBC096</option>
+                                        <option value="SQK-16S024">SQK-16S024</option>
+                                        <option value="SQK-LWB001">SQK-LWB001</option>
+                                        <option value="SQK-PBK004">SQK-PBK004</option>
+                                        <option value="SQK-RAB201">SQK-RAB201</option>
+                                        <option value="SQK-RAB204">SQK-RAB204</option>
+                                        <option value="SQK-RBK001">SQK-RBK001</option>
+                                        <option value="SQK-RBK004">SQK-RBK004</option>
+                                        <option value="SQK-RLB001">SQK-RLB001</option>
+                                        <option value="SQK-RPB004">SQK-RPB004</option>
+                                        <option value="VSK-VMK001">VSK-VMK001</option>
+                                        <option value="VSK-VMK002">VSK-VMK002</option>
                                     </select>
                                 </td>
                                 <td>
@@ -380,12 +492,34 @@
                                         placeholder="sample_name">
                                 </td>
                                 <td>
-                                    <select class="select2Class select2ClassNano nanoSampProj"
-                                        style="width: 150px;">
+                                    <select class="select2Class select2ClassNano nanoSampProj" style="width: 150px;">
                                         <option value="">None</option>
-                                        <option value="1">Project 1</option>
-                                        <option value="2">Project 2</option>
-                                        <option value="3">Project 3</option>
+                                        <option value="Exp">Exp</option>
+                                        <option value="HMI102">HMI102</option>
+                                        <option value="HMI103">HMI103</option>
+                                        <option value="HMI202">HMI202</option>
+                                        <option value="HMI133">HMI133</option>
+                                    </select>
+                                    <!-- <input type="text" class="form-control nanoSampProj"> -->
+                                </td>
+                                <td>
+                                    <select class="select2Class select2ClassNano nanoProgram" style="width: 150px;">
+                                        <option value="">None</option>
+                                        <option value="SafeHarbor">SafeHarbor</option>
+                                        <option value="Viral Contamination">Viral Contamination</option>
+                                        <option value="On Target">On Target</option>
+                                        <option value="Off Target">Off Target</option>
+                                        <option value="PKU_GT">PKU_GT</option>
+                                        <option value="PKU_GE">PKU_GE</option>
+                                        <option value="MLD_GT">MLD_GT</option>
+                                        <option value="FA_GT">FA_GT</option>
+                                        <option value="GSD1a_GE">GSD1a_GE</option>
+                                        <option value="HemB_GT">HemB_GT</option>
+                                        <option value="Hunters_GT">Hunters_GT</option>
+                                        <option value="RettsSyndrome_GT">RettsSyndrome_GT</option>
+                                        <option value="DMD_GE">DMD_GE</option>
+                                        <option value="CD34_CT">CD34_CT</option>
+                                        <option value="G6PC">G6PC</option>
                                     </select>
                                     <!-- <input type="text" class="form-control nanoSampProj"> -->
                                 </td>
@@ -394,15 +528,23 @@
                                         style="width: 150px;">
 
                                     </select> -->
-                                    <input type="text" class="form-control nanoConstruct" style="height: 40px; width: 150px;">
+                                    <input type="text" class="form-control nanoConstruct"
+                                        style="height: 40px; width: 150px;">
                                 </td>
                                 <td>
-                                    <select class="select2Class select2ClassNano nanoCapsid"
-                                        style="width: 150px;">
+                                    <select class="select2Class select2ClassNano nanoCapsid" style="width: 150px;">
                                         <option value="">None</option>
-                                        <option value="1">Capsid 1</option>
-                                        <option value="2">Capsid 2</option>
-                                        <option value="3">Capsid 3</option>
+                                        <option value="AAVHSC1">AAVHSC1</option>
+                                        <option value="AAVHSC3">AAVHSC3</option>
+                                        <option value="AAVHSC4">AAVHSC4</option>
+                                        <option value="AAVHSC6">AAVHSC6</option>
+                                        <option value="AAVHSC8">AAVHSC8</option>
+                                        <option value="AAVHSC9">AAVHSC9</option>
+                                        <option value="AAVHSC15">AAVHSC15</option>
+                                        <option value="AAVHSC16">AAVHSC16</option>
+                                        <option value="AAVHSC17">AAVHSC17</option>
+                                        <option value="AAV9">AAV9</option>
+                                        <option value="AAV2">AAV2</option>
 
                                     </select>
                                     <!-- <input type="text" class="form-control nanoCapsid"> -->
@@ -413,8 +555,7 @@
                                 </td>
 
                                 <td>
-                                    <select class="select2Class select2ClassNano nanoSampRef"
-                                        style="width: 150px;">
+                                    <select class="select2Class select2ClassNano nanoSampRef" style="width: 150px;">
                                         <option value="1">Reference 1</option>
                                         <option value="2">Referencee2</option>
                                         <option value="3">Reference 3</option>
@@ -442,6 +583,20 @@
                     </table>
                 </div>
                 <br />
+                <br />
+
+                <!-- input for uploading pre made sample sheet -->
+                <h4>-- Or upload Nanopore Samplesheet --</h4>
+                <div class="mb-3 row">
+                    <label class="col-form-label col-sm-2 required-field" for="inputNanoporeSampleSheet">Attach Nanopore
+                        Samplesheet:</label>
+                    <div class="col-sm-5" style="display: flex;">
+                        <input class="form-control" type="file" id="inputNanoporeSampleSheet" multiple>
+                        <i class="bi bi-info-circle nanoporeSampleSheetInfo" style="margin-left: 5px;"
+                            data-toggle="popover" title="Samplesheet Info"></i>
+                    </div>
+
+                </div>
 
 
             </div>

@@ -19,7 +19,10 @@ $(document).ready(function () {
         container: 'body',
         content: "Capsid Info."
     })
-    
+    $('.nanoExtraInfo').popover({
+        container: 'body',
+        content: "Add additional sample information here. Ex: Cell_Type, Polarity, idk"
+    })
     // initialize select2 boxes
     $('.select2ClassNano').select2({
         placeholder: 'None' // ,
@@ -37,6 +40,18 @@ $(document).ready(function () {
     Array.from(sampIds).forEach(x => {
         x.addEventListener('input', noSpecialChars)
     })
+    document.getElementById('inputFilterReadsSwitch').addEventListener('change', () => {
+        if (document.getElementById('filterReadsHideDiv').style.display === 'block'){
+            document.getElementById('filterReadsHideDiv').style.display = 'none'
+            addFilter = false
+        } else {
+            document.getElementById('filterReadsHideDiv').style.display = 'block'
+            addFilter = true
+        }
+    })
+
+
+
 
     // hey its not pretty but it works
     document.getElementById('add1NanoRow').addEventListener('click', create_tr)
@@ -54,7 +69,7 @@ $(document).ready(function () {
 
 });
 
-
+let addFilter = true;
 export let nanoExpName = ''
 export let nanoDynamicFile = ''
 // switch to stop jira ticket creation if samplesheet fails
