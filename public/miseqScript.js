@@ -41,15 +41,76 @@ let i7BarcodeKits = {
             ]
         },
         {
-            "text": "Test Barcode Kit 2",
+            "text": "MissionBio",
             "children": [
                 {
-                    "id": "GACCATTG",
-                    "text": "GACCATTG"
+                    "id": "CTGATCGT",
+                    "text": "CTGATCGT"
                 },
                 {
-                    "id": "CAGATAAT",
-                    "text": "CAGATAAT"
+                    "id": "ACTCTCGA",
+                    "text": "ACTCTCGA"
+                },
+                {
+                    "id": "TGAGCTAG",
+                    "text": "TGAGCTAG"
+                },
+                {
+                    "id": "GAGACGAT",
+                    "text": "GAGACGAT"
+                },
+                {
+                    "id": "CTTGTCGA",
+                    "text": "CTTGTCGA"
+                },
+                {
+                    "id": "TTCCAAGG",
+                    "text": "TTCCAAGG"
+                },
+                {
+                    "id": "CGCATGAT",
+                    "text": "CGCATGAT"
+                },
+                {
+                    "id": "ACGGAACA",
+                    "text": "ACGGAACA"
+                }
+            ]
+        },
+        {
+            "text": "IDT",
+            "children": [
+                {
+                    "id": "CGGCTAAT",
+                    "text": "CGGCTAAT"
+                },
+                {
+                    "id": "ATCGATCG",
+                    "text": "ATCGATCG"
+                },
+                {
+                    "id": "GCAAGATC",
+                    "text": "GCAAGATC"
+                },
+                {
+                    "id": "GCTATCCT",
+                    "text": "GCTATCCT"
+                },
+                {
+                    "id": "TACGCTAC",
+                    "text": "TACGCTAC"
+                },
+                {
+                    "id": "TGGACTCT",
+                    "text": "TGGACTCT"
+                },
+                {
+                    "id": "AGAGTAGC",
+                    "text": "AGAGTAGC"
+                },
+                {
+                    "id": "ATCCAGAG",
+                    "text": "ATCCAGAG"
                 }
             ]
         },
@@ -104,16 +165,76 @@ let i5BarcodeKits = {
             ]
         },
         {
-            "text": "Test Barcode Kit 2",
+            "text": "MissionBio",
             "children": [
                 {
-                    "id": "AGCTTTTC",
-                    "text": "AGCTTTTC"
+                    "id": "ATATGCGC",
+                    "text": "ATATGCGC"
                 },
-                ,
                 {
-                    "id": "AGGGGTTC",
-                    "text": "AGGGGTTC"
+                    "id": "TGGTACAG",
+                    "text": "TGGTACAG"
+                },
+                {
+                    "id": "AACCGTTC",
+                    "text": "AACCGTTC"
+                },
+                {
+                    "id": "TAACCGGT",
+                    "text": "TAACCGGT"
+                },
+                {
+                    "id": "GAACATCG",
+                    "text": "GAACATCG"
+                },
+                {
+                    "id": "CCTTGTAG",
+                    "text": "CCTTGTAG"
+                },
+                {
+                    "id": "TCAGGCTT",
+                    "text": "TCAGGCTT"
+                },
+                {
+                    "id": "GTTCTCGT",
+                    "text": "GTTCTCGT"
+                }
+            ]
+        },
+        {
+            "text": "IDT",
+            "children": [
+                {
+                    "id": "AGAACGAG",
+                    "text": "AGAACGAG"
+                },
+                {
+                    "id": "TGCTTCCA",
+                    "text": "TGCTTCCA"
+                },
+                {
+                    "id": "CTTCGACT",
+                    "text": "CTTCGACT"
+                },
+                {
+                    "id": "CACCTGTT",
+                    "text": "CACCTGTT"
+                },
+                {
+                    "id": "ATCACACG",
+                    "text": "ATCACACG"
+                },
+                {
+                    "id": "CCGTAAGA",
+                    "text": "CCGTAAGA"
+                },
+                {
+                    "id": "TACGCCTT",
+                    "text": "TACGCCTT"
+                },
+                {
+                    "id": "CGACGTTA",
+                    "text": "CGACGTTA"
                 }
             ]
         },
