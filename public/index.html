@@ -602,7 +602,7 @@
 
             <div id="projectInfo">
 
-                <div class="row mb-3">
+                <div style="display:none;" class="row mb-3">
                     <div class="col-sm-2">
                         <label class="form-label" for="inputJiraTicketID">Jira Ticket ID:</label>
                     </div>
@@ -683,10 +683,10 @@
                         <select class="form-select select2Class disableWhenJiraTicket" name="jiraProjectInputs"
                             id="jiraProjectDrop">
                             <option value="MISEQ" selected="selected">MiSeq Sequencing</option>
-                            <option value="NT">New Targets</option>
-                            <option value="PAC">PacBio</option>
-                            <option value="OXN">Oxford Nanopore</option>
-                            <option value="BFX">Bioinformatics</option>
+                            <option value="NT" disabled>New Targets</option>
+                            <option value="PAC" disabled>PacBio</option>
+                            <option value="OXN" disabled>Oxford Nanopore</option>
+                            <option value="BFX" disabled>Bioinformatics</option>
                             <option value="TES">Test Roadmap</option>
                         </select>
                         <i class="bi bi-info-circle projectInfo" style="margin-left: 5px;" data-toggle="popover"

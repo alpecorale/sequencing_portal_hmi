@@ -306,6 +306,7 @@ async function submitForm(e) {
 
     // get values from form
     jiraTicketID = document.getElementById('inputJiraTicketID').value
+    jiraTicketID = '' //safety device before completely deactivating updating tickets
     descriptionInfo = document.getElementById('inputDescriptionInfo').value // extra - comments
     experimentalist = document.getElementById('inputExperimentalist').value
     stakeholders = [...document.getElementById('inputStakeholder').selectedOptions].map(x => x.value)
