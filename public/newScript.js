@@ -485,6 +485,8 @@ async function submitForm(e) {
             console.log(json)
         })
 
+        alert('Jira Ticket ' + returnedIssueKey + ' has successfully been created.', 'success')
+
         // add attachment to this issue
         csvFileToPass.append('jiraId', returnedIssueKey)
 

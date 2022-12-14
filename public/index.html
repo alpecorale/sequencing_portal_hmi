@@ -227,9 +227,7 @@
                     <div class="col-sm-3" style="display: flex;">
                         <select class="form-select select2ClassAdd" name="moduleInputs" id="moduleDrop">
                             <option value="GenerateFASTQ" selected="selected">GenerateFASTQ</option>
-                            <option value="module2">module2</option>
-                            <option value="module3">module3</option>
-                            <option value="module4">module4</option>
+                            
                         </select>
                         <i class="bi bi-info-circle helpfulInfo" style="margin-left: 5px;" data-toggle="popover"
                             title="Info"></i>
@@ -239,9 +237,7 @@
                     <div class="col-sm-3">
                         <select class="form-select select2ClassAdd" name="workflowInputs" id="workflowDrop">
                             <option value="GenerateFASTQ" selected="selected">GenerateFASTQ</option>
-                            <option value="workflow2">workflow2</option>
-                            <option value="workflow3">workflow3</option>
-                            <option value="workflow4">workflow4</option>
+                            
                         </select>
                     </div>
                 </div>
@@ -252,9 +248,7 @@
                     <div class="col-sm-3">
                         <select class="form-select select2ClassAdd" name="libraryInputs" id="libraryDrop">
                             <option value="Custom" selected="selected">Custom</option>
-                            <option value="library2">library2</option>
-                            <option value="library3">library3</option>
-                            <option value="library4">library4</option>
+                            
                         </select>
                     </div>
                     <div class="col-sm-1"></div>
@@ -262,9 +256,7 @@
                     <div class="col-sm-3">
                         <select class="form-select select2ClassAdd" name="indexKitInputs" id="indexKitDrop">
                             <option value="Custom" selected="selected">Custom</option>
-                            <option value="indexKit2">indexKit2</option>
-                            <option value="indexKit3">indexKit3</option>
-                            <option value="indexKit4">indexKit4</option>
+                            
                         </select>
                     </div>
                 </div>
@@ -275,9 +267,7 @@
                     <div class="col-sm-3">
                         <select class="form-select select2ClassAdd" name="chemistryInputs" id="chemistryDrop">
                             <option value="Amplicon" selected="selected">Amplicon</option>
-                            <option value="chemistry2">chemistry2</option>
-                            <option value="chemistry3">chemistry3</option>
-                            <option value="chemistry4">chemistry4</option>
+                            
                         </select>
                     </div>
                 </div>
@@ -692,10 +682,12 @@
                     <div class="col-sm-3" style="display: flex;">
                         <select class="form-select select2Class disableWhenJiraTicket" name="jiraProjectInputs"
                             id="jiraProjectDrop">
-                            <option value="TES" selected="selected">Test Roadmap</option>
+                            <option value="MISEQ" selected="selected">MiSeq Sequencing</option>
                             <option value="NT">New Targets</option>
                             <option value="PAC">PacBio</option>
+                            <option value="OXN">Oxford Nanopore</option>
                             <option value="BFX">Bioinformatics</option>
+                            <option value="TES">Test Roadmap</option>
                         </select>
                         <i class="bi bi-info-circle projectInfo" style="margin-left: 5px;" data-toggle="popover"
                             title="Project Info"></i>
@@ -759,9 +751,9 @@
                             <select class="form-select select2Class disableWhenJiraTicket" name="jiraCategoryInputs"
                                 id="jiraCategoryDrop">
                                 <option value="Sequencing" selected="selected">Sequencing</option>
-                                <option value="Task">Task</option>
-                                <option value="Story">Story</option>
-                                <option value="Epic">Epic</option>
+                                <option value="Task" disabled>Task</option>
+                                <option value="Story" disabled>Story</option>
+                                <option value="Epic" disabled>Epic</option>
                             </select>
                             <i class="bi bi-info-circle categoryInfo" style="margin-left: 5px;" data-toggle="popover"
                                 title="Category Info"></i>
