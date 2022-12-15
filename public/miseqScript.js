@@ -374,16 +374,16 @@ $(document).ready(function () {
 
 
 let samples = [];
-let reads1 = 151; // miseq
-let reads2 = 151; // miseq
-let lrmaId = 10000 // miseq
-export let miseqExpName = "" // miseq
+let reads1 = 151;
+let reads2 = 151;
+let lrmaId = Math.floor(1000 + Math.random() * 9000);
+export let miseqExpName = ""
 let date = new Date();
-let module = ""; // miseq
-let workflow = ""; // miseq
-let libPrepKit = ""; // miseq
-let indexKit = ""; // miseq
-let chemistry = ""; // miseq
+let module = "";
+let workflow = "";
+let libPrepKit = "";
+let indexKit = "";
+let chemistry = "";
 
 
 
