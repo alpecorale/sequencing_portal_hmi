@@ -798,7 +798,7 @@ function makeMiseqSampleSheet(samplesList, callback) {
             let tempPlateWell = x.splice(7,1)
             x.unshift(tempLane)
             x.splice(3, 0, tempPlateWell)
-            x.splice(6,2) // splice out I5 Index?
+            // x.splice(6,2) // splice out I5 Index?
             csvSampleSheetMiSeq += x.join(',') + "\n"
 
         })
