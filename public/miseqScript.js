@@ -40,6 +40,108 @@ let i7BarcodeKits = {
 
             ]
         },
+        /*{
+            "text": "TruSeq",
+            "children": [
+                {
+                    "id": "CCGCGGTT",
+                    "text": "UDI0001"
+                },
+                {
+                    "id": "TTATAACC",
+                    "text": "UDI0002"
+                },
+                {
+                    "id": "GGACTTGG",
+                    "text": "UDI0003"
+                },
+                {
+                    "id": "AAGTCCAA",
+                    "text": "UDI0004"
+                },
+                {
+                    "id": "ATCCACTG",
+                    "text": "UDI0005"
+                },
+                {
+                    "id": "GCTTGTCA",
+                    "text": "UDI0006"
+                },
+                {
+                    "id": "CAAGCTAG",
+                    "text": "UDI0007"
+                },
+                {
+                    "id": "TGGATCGA",
+                    "text": "UDI0008"
+                },
+                {
+                    "id": "AGTTCAGG",
+                    "text": "UDI0009"
+                },
+                {
+                    "id": "GACCTGAA",
+                    "text": "UDI0010"
+                },
+                {
+                    "id": "TCTCTACT",
+                    "text": "UDI0011"
+                },
+                {
+                    "id": "CTCTCGTC",
+                    "text": "UDI0012"
+                },
+                {
+                    "id": "CCAAGTCT",
+                    "text": "UDI0013"
+                },
+                {
+                    "id": "TTGGACTC",
+                    "text": "UDI0014"
+                },
+                {
+                    "id": "GGCTTAAG",
+                    "text": "UDI0015"
+                },
+                {
+                    "id": "AATCCGGA",
+                    "text": "UDI0016"
+                },
+                {
+                    "id": "TAATACAG",
+                    "text": "UDI0017"
+                },
+                {
+                    "id": "CGGCGTGA",
+                    "text": "UDI0018"
+                },
+                {
+                    "id": "ATGTAAGT",
+                    "text": "UDI0019"
+                },
+                {
+                    "id": "GCACGGAC",
+                    "text": "UDI0020"
+                },
+                {
+                    "id": "GGTACCTT",
+                    "text": "UDI0021"
+                },
+                {
+                    "id": "AACGTTCC",
+                    "text": "UDI0022"
+                },
+                {
+                    "id": "GCAGAATT",
+                    "text": "UDI0023"
+                },
+                {
+                    "id": "ATGAGGCC",
+                    "text": "UDI0024"
+                }
+                
+            ]
+        },*/
         {
             "text": "MissionBio",
             "children": [
@@ -164,6 +266,108 @@ let i5BarcodeKits = {
                 }
             ]
         },
+        /*{
+            "text": "TruSeq",
+            "children": [
+                {
+                    "id": "AGCGCTAG",
+                    "text": "UDI0001"
+                },
+                {
+                    "id": "GATATCGA",
+                    "text": "UDI0002"
+                },
+                {
+                    "id": "CGCAGACG",
+                    "text": "UDI0003"
+                },
+                {
+                    "id": "TATGAGTA",
+                    "text": "UDI0004"
+                },
+                {
+                    "id": "AGGTGCGT",
+                    "text": "UDI0005"
+                },
+                {
+                    "id": "GAACATAC",
+                    "text": "UDI0006"
+                },
+                {
+                    "id": "ACATAGCG",
+                    "text": "UDI0007"
+                },
+                {
+                    "id": "GTGCGATA",
+                    "text": "UDI0008"
+                },
+                {
+                    "id": "CCAACAGA",
+                    "text": "UDI0009"
+                },
+                {
+                    "id": "TTGGTGAG",
+                    "text": "UDI0010"
+                },
+                {
+                    "id": "CGCGGTTC",
+                    "text": "UDI0011"
+                },
+                {
+                    "id": "TATAACCT",
+                    "text": "UDI0012"
+                },
+                {
+                    "id": "AAGGATGA",
+                    "text": "UDI0013"
+                },
+                {
+                    "id": "GGAAGCAG",
+                    "text": "UDI0014"
+                },
+                {
+                    "id": "TCGTGACC",
+                    "text": "UDI0015"
+                },
+                {
+                    "id": "CTACAGTT",
+                    "text": "UDI0016"
+                },
+                {
+                    "id": "ATATTCAC",
+                    "text": "UDI0017"
+                },
+                {
+                    "id": "GCGCCTGT",
+                    "text": "UDI0018"
+                },
+                {
+                    "id": "ACTCTATG",
+                    "text": "UDI0019"
+                },
+                {
+                    "id": "GTCTCGCA",
+                    "text": "UDI0020"
+                },
+                {
+                    "id": "AAGACGTC",
+                    "text": "UDI0021"
+                },
+                {
+                    "id": "GGAGTACT",
+                    "text": "UDI0022"
+                },
+                {
+                    "id": "ACCGGCCA",
+                    "text": "UDI0023"
+                },
+                {
+                    "id": "GTTAATTG",
+                    "text": "UDI0024"
+                }
+                
+            ]
+        },*/
         {
             "text": "MissionBio",
             "children": [
@@ -278,7 +482,7 @@ let selectReferenceData = {
 
 }
 
-
+let isTruSeq = false
 
 $(document).ready(function () {
 
@@ -355,6 +559,27 @@ $(document).ready(function () {
     document.getElementById('inputReads1').addEventListener('input', numbersOnly)
     document.getElementById('inputReads2').addEventListener('input', numbersOnly)
 
+    $('#libraryDrop').on('select2:select', (e) => {
+        const value = e.params.data.id
+
+        if (value === 'TruSeq HT') {
+            isTruSeq = true
+            document.getElementById('truSeqAdapterDiv').style.display = 'block'
+            document.getElementById('miseq_extra_1').value = 'Lane'
+            document.getElementById('miseq_extra_2').value = 'Index_Plate_Well'
+            document.getElementById('miseq_extra_1').disabled = true
+            document.getElementById('miseq_extra_2').disabled = true
+        } else {
+            isTruSeq = false
+            document.getElementById('truSeqAdapterDiv').style.display = 'none'
+            document.getElementById('miseq_extra_1').value = ''
+            document.getElementById('miseq_extra_2').value = ''
+            document.getElementById('miseq_extra_1').disabled = false
+            document.getElementById('miseq_extra_2').disabled = false
+        }
+    })
+    document.getElementById('adapterInput').addEventListener('input', indexInputFilter)
+    document.getElementById('adapterRead2Input').addEventListener('input', indexInputFilter)
 
     // hey its not pretty but it works
     document.getElementById('add1MiseqRow').addEventListener('click', create_tr)
@@ -384,6 +609,9 @@ let workflow = "";
 let libPrepKit = "";
 let indexKit = "";
 let chemistry = "";
+let adapter = ""
+let adapterRead2 = ""
+// let assay = ""
 
 
 
@@ -444,13 +672,15 @@ async function handleMiSeqSampleSheet(callback) {
 
     // get values from form
     miseqExpName = document.getElementById('miseqExperimentName').value // probably pull out of miseq
-    reads1 = document.getElementById('inputReads1').value // miseq
-    reads2 = document.getElementById('inputReads2').value // miseq
-    module = document.getElementById('moduleDrop').value // miseq
-    workflow = document.getElementById('workflowDrop').value // miseq
-    libPrepKit = document.getElementById('libraryDrop').value // miseq
-    indexKit = document.getElementById('indexKitDrop').value // miseq
-    chemistry = document.getElementById('chemistryDrop').value // miseq
+    reads1 = document.getElementById('inputReads1').value
+    reads2 = document.getElementById('inputReads2').value
+    adapter = document.getElementById('adapterInput').value // truseq
+    adapterRead2 = document.getElementById('adapterRead2Input').value // truseq
+    module = document.getElementById('moduleDrop').value
+    workflow = document.getElementById('workflowDrop').value
+    libPrepKit = document.getElementById('libraryDrop').value
+    indexKit = document.getElementById('indexKitDrop').value
+    chemistry = document.getElementById('chemistryDrop').value
 
     // set set samples from table
     samples = [] // empty sample array for mistakes
@@ -475,6 +705,11 @@ async function handleMiSeqSampleSheet(callback) {
         errors = true
     }
 
+    // check adapter and adapterRead2 are not empty for truseq
+    if (isTruSeq && (adapter === '' || adapterRead2 === '')) {
+        alert('Please fill in adapter values for TruSeq', 'danger')
+        errors = true
+    }
 
     if (errors || anyMiSeqErrors) {
         miseqSampleSheetCreationSuccess = false
@@ -511,7 +746,12 @@ function makeMiseqSampleSheet(samplesList, callback) {
     csvSampleSheetMiSeq += "Date," + date.toISOString().split('T')[0] + '\n'
     csvSampleSheetMiSeq += "Module," + module + '\n'
     csvSampleSheetMiSeq += "Workflow," + workflow + '\n'
-    csvSampleSheetMiSeq += "Library Prep Kit," + libPrepKit + '\n'
+    if (!isTruSeq) {
+        csvSampleSheetMiSeq += "Library Prep Kit," + libPrepKit + '\n'
+    } else {
+        // truseq uses Assay
+        csvSampleSheetMiSeq += "Assay," + libPrepKit + '\n'
+    }
     csvSampleSheetMiSeq += "Index Kit," + indexKit + '\n'
     csvSampleSheetMiSeq += "Chemistry," + chemistry + '\n'
 
@@ -520,34 +760,50 @@ function makeMiseqSampleSheet(samplesList, callback) {
     csvSampleSheetMiSeq += reads2 + '\n'
 
     csvSampleSheetMiSeq += "\n[Settings]\n"
+    if (isTruSeq) {
+        csvSampleSheetMiSeq += "Adapter," + adapter + '\n'
+        csvSampleSheetMiSeq += "AdapterRead2," + adapterRead2 + '\n'
+    }
 
     csvSampleSheetMiSeq += "\n[Data]\n"
 
     // add header names
-    csvSampleSheetMiSeq += miSeqTableHeadersOg.join(',') + "\n" // want og headers
+    if (!isTruSeq) {
+        csvSampleSheetMiSeq += miSeqTableHeadersOg.join(',') + "\n" // want og headers
+    } else {
+        csvSampleSheetMiSeq += truSeqTableHeadersOg.join(',') + "\n" // want og headers
+    }
 
-    // add samples
-    samplesList.forEach((x) => {
-        // slice to get original rows
-        x = x.slice(0, 8)
-        csvSampleSheetMiSeq += x.join(',') + "\n"
 
-    })
-    // samplesList.forEach((x, index) => {
-    //     let cheese = x
-    //     // check if any extra cols and remove if
-    //     if (miSeqTableHeaders.length === miSeqTableHeadersOg.length) {
-    //         // no extra columns so fine
-    //         csvSampleSheetMiSeq += cheese.join(',') + "\n"
-    //     } else {
-    //         // pop the difference
-    //         let difference = miSeqTableHeaders.length - miSeqTableHeadersOg.length
-    //         for (let i = 0; i < difference; i++) {
-    //             cheese.pop()
-    //         }
-    //         // proceed as normal
-    //         csvSampleSheetMiSeq += cheese.join(',') + "\n"
-    //     }
+    if (!isTruSeq) {
+        // add samples
+        samplesList.forEach((x) => {
+            // slice to get original rows
+            x = x.slice(0, 8)
+            csvSampleSheetMiSeq += x.join(',') + "\n"
+
+        })
+    } else {
+        // add samples
+        samplesList.forEach((x) => {
+            // slice to get original rows
+            if (x.length === 12) {
+                x.pop()
+            }
+            x.splice(8, 1)
+            // reorganize stuff
+            let tempDes = x.splice(2,1)
+            x.push(tempDes)
+            let tempLane = x.splice(7,1)
+            let tempPlateWell = x.splice(7,1)
+            x.unshift(tempLane)
+            x.splice(3, 0, tempPlateWell)
+            x.splice(6,2) // splice out I5 Index?
+            csvSampleSheetMiSeq += x.join(',') + "\n"
+
+        })
+    }
+
 
 
     // })
@@ -580,7 +836,12 @@ function makeDynamicSampleSheet(samplesList, callback) {
     csvSampleSheetMiSeq += "Date," + date.toISOString().split('T')[0] + '\n'
     csvSampleSheetMiSeq += "Module," + module + '\n'
     csvSampleSheetMiSeq += "Workflow," + workflow + '\n'
-    csvSampleSheetMiSeq += "Library Prep Kit," + libPrepKit + '\n'
+    if (!isTruSeq) {
+        csvSampleSheetMiSeq += "Library Prep Kit," + libPrepKit + '\n'
+    } else {
+        // truseq uses Assay
+        csvSampleSheetMiSeq += "Assay," + libPrepKit + '\n'
+    }
     csvSampleSheetMiSeq += "Index Kit," + indexKit + '\n'
     csvSampleSheetMiSeq += "Chemistry," + chemistry + '\n'
 
@@ -589,6 +850,10 @@ function makeDynamicSampleSheet(samplesList, callback) {
     csvSampleSheetMiSeq += reads2 + '\n'
 
     csvSampleSheetMiSeq += "\n[Settings]\n"
+    if (isTruSeq) {
+        csvSampleSheetMiSeq += "Adapter," + adapter + '\n'
+        csvSampleSheetMiSeq += "AdapterRead2," + adapterRead2 + '\n'
+    }
 
     csvSampleSheetMiSeq += "\n[Data]\n"
 
@@ -1020,6 +1285,8 @@ async function getSamplesErrors(callback) {
 
 let miSeqTableHeaders = ['Sample_ID', 'Sample_Name', 'Description', 'I7_Index_ID', 'index', 'I5_Index_ID', 'index2', 'Sample_Project', 'Reference']
 let miSeqTableHeadersOg = ['Sample_ID', 'Sample_Name', 'Description', 'I7_Index_ID', 'index', 'I5_Index_ID', 'index2', 'Sample_Project']
+// let truSeqTableHeaders = ['Sample_ID', 'Sample_Name', 'Description', 'I7_Index_ID', 'index', 'I5_Index_ID', 'index2', 'Sample_Project', 'Reference']
+let truSeqTableHeadersOg = ['Lane', 'Sample_ID', 'Sample_Name', 'Index_Plate_Well', 'I7_Index_ID', 'index', 'I5_Index_ID', 'index2', 'Sample_Project', 'Description']
 let anyMiSeqErrors = false
 /*
 * Pulls all of sample information frome the table... 
@@ -1142,5 +1409,6 @@ function numbersOnly(e) {
 function indexInputFilter(e) {
     let input = e.target
     let regex = /[^AGTCN]/gi;
+    input.value = input.value.toUpperCase()
     input.value = input.value.replace(regex, "")
 }

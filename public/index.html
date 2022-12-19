@@ -86,8 +86,102 @@
             <div class="container" id="miSeqSampleSheetDiv" style="display: block;">
 
                 <h3>MiSeq Samplesheet:</h3>
+
+
+
+
+
                 <br>
 
+                <div class="mb-3 row">
+                    <label class="col-sm-2 col-form-label required-field" for="miseqExperimentName">Experiment
+                        Name:</label>
+                    <div class="col-sm-5">
+                        <input class="form-control" type="text" id="miseqExperimentName">
+                    </div>
+                </div>
+
+                <div class="mb-3 row">
+                    <label class="col-sm-2 col-form-label bold required-field" for="inputReads1">Reads 1:</label>
+                    <div class="col-sm-1">
+                        <input class="form-control" type="text" id="inputReads1" value="151" style="text-align: right">
+                    </div>
+                    <div class="col-sm-3"></div>
+                    <label class="col-sm-2 col-form-label required-field" for="inputReads2">Reads 2:</label>
+                    <div class="col-sm-1">
+                        <input class="form-control" type="text" id="inputReads2" value="151" style="text-align: right">
+                    </div>
+                </div>
+
+
+                <div class="mb-3 row">
+                    <label class="col-sm-2 col-form-label required-field" for="moduleDrop">Module:</label>
+                    <div class="col-sm-3" style="display: flex;">
+                        <select class="form-select select2ClassAdd" name="moduleInputs" id="moduleDrop">
+                            <option value="GenerateFASTQ - 3.0.1" selected="selected">GenerateFASTQ - 3.0.1</option>
+
+                        </select>
+                        <i class="bi bi-info-circle helpfulInfo" style="margin-left: 5px;" data-toggle="popover"
+                            title="Info"></i>
+                    </div>
+                    <div class="col-sm-1"></div>
+                    <label class="col-sm-2 col-form-label required-field" for="workflowDrop">Workflow:</label>
+                    <div class="col-sm-3">
+                        <select class="form-select select2ClassAdd" name="workflowInputs" id="workflowDrop">
+                            <option value="GenerateFASTQ" selected="selected">GenerateFASTQ</option>
+
+                        </select>
+                    </div>
+                </div>
+
+
+                <div class="mb-3 row">
+                    <label class="col-sm-2 col-form-label required-field" for="libraryDrop">Library Prep Kit:</label>
+                    <div class="col-sm-3">
+                        <select class="form-select select2ClassAdd" name="libraryInputs" id="libraryDrop">
+                            <option value="Custom" selected="selected">Custom</option>
+                            <option value="TruSeq HT">TruSeq HT</option>
+
+                        </select>
+                    </div>
+                    <div class="col-sm-1"></div>
+                    <label class="col-sm-2 col-form-label required-field" for="indexKitDrop">Index Kit:</label>
+                    <div class="col-sm-3">
+                        <select class="form-select select2ClassAdd" name="indexKitInputs" id="indexKitDrop">
+                            <option value="Custom" selected="selected">Custom</option>
+                            <option value="IDT-ILMN TruSeq DNA-RNA UD 24 Indexes">IDT-ILMN TruSeq DNA-RNA UD 24 Indexes
+                            </option>
+                        </select>
+                    </div>
+                </div>
+
+
+                <div class="mb-3 row">
+                    <label class="col-sm-2 col-form-label required-field" for="chemistryDrop">Chemistry:</label>
+                    <div class="col-sm-3">
+                        <select class="form-select select2ClassAdd" name="chemistryInputs" id="chemistryDrop">
+                            <option value="Amplicon" selected="selected">Amplicon</option>
+
+                        </select>
+                    </div>
+                </div>
+                <div id="truSeqAdapterDiv" style="display: none;">
+
+
+                    <div class="mb-3 row">
+                        <label class="col-sm-2 col-form-label bold required-field" for="adapterInput">Adapter:</label>
+                        <div class="col-sm-3">
+                            <input class="form-control" type="text" id="adapterInput">
+                        </div>
+                        <div class="col-sm-1"></div>
+                        <label class="col-sm-2 col-form-label required-field" for="adapterRead2Input">Adapter Read
+                            2:</label>
+                        <div class="col-sm-3">
+                            <input class="form-control" type="text" id="adapterRead2Input">
+                        </div>
+                    </div>
+                </div>
+                
                 <div class="container overflow-auto" style="height: 400px">
                     <table class="table">
                         <thead class="thead-light">
@@ -195,82 +289,7 @@
                         </tbody>
                     </table>
                 </div>
-
-
-
-
                 <br>
-
-                <div class="mb-3 row">
-                    <label class="col-sm-2 col-form-label required-field" for="miseqExperimentName">Experiment
-                        Name:</label>
-                    <div class="col-sm-5">
-                        <input class="form-control" type="text" id="miseqExperimentName">
-                    </div>
-                </div>
-
-                <div class="mb-3 row">
-                    <label class="col-sm-2 col-form-label bold required-field" for="inputReads1">Reads 1:</label>
-                    <div class="col-sm-1">
-                        <input class="form-control" type="text" id="inputReads1" value="151" style="text-align: right">
-                    </div>
-                    <div class="col-sm-3"></div>
-                    <label class="col-sm-2 col-form-label required-field" for="inputReads2">Reads 2:</label>
-                    <div class="col-sm-1">
-                        <input class="form-control" type="text" id="inputReads2" value="151" style="text-align: right">
-                    </div>
-                </div>
-
-
-                <div class="mb-3 row">
-                    <label class="col-sm-2 col-form-label required-field" for="moduleDrop">Module:</label>
-                    <div class="col-sm-3" style="display: flex;">
-                        <select class="form-select select2ClassAdd" name="moduleInputs" id="moduleDrop">
-                            <option value="GenerateFASTQ" selected="selected">GenerateFASTQ</option>
-                            
-                        </select>
-                        <i class="bi bi-info-circle helpfulInfo" style="margin-left: 5px;" data-toggle="popover"
-                            title="Info"></i>
-                    </div>
-                    <div class="col-sm-1"></div>
-                    <label class="col-sm-2 col-form-label required-field" for="workflowDrop">Workflow:</label>
-                    <div class="col-sm-3">
-                        <select class="form-select select2ClassAdd" name="workflowInputs" id="workflowDrop">
-                            <option value="GenerateFASTQ" selected="selected">GenerateFASTQ</option>
-                            
-                        </select>
-                    </div>
-                </div>
-
-
-                <div class="mb-3 row">
-                    <label class="col-sm-2 col-form-label required-field" for="libraryDrop">Library Prep Kit:</label>
-                    <div class="col-sm-3">
-                        <select class="form-select select2ClassAdd" name="libraryInputs" id="libraryDrop">
-                            <option value="Custom" selected="selected">Custom</option>
-                            
-                        </select>
-                    </div>
-                    <div class="col-sm-1"></div>
-                    <label class="col-sm-2 col-form-label required-field" for="indexKitDrop">Index Kit:</label>
-                    <div class="col-sm-3">
-                        <select class="form-select select2ClassAdd" name="indexKitInputs" id="indexKitDrop">
-                            <option value="Custom" selected="selected">Custom</option>
-                            
-                        </select>
-                    </div>
-                </div>
-
-
-                <div class="mb-3 row">
-                    <label class="col-sm-2 col-form-label required-field" for="chemistryDrop">Chemistry:</label>
-                    <div class="col-sm-3">
-                        <select class="form-select select2ClassAdd" name="chemistryInputs" id="chemistryDrop">
-                            <option value="Amplicon" selected="selected">Amplicon</option>
-                            
-                        </select>
-                    </div>
-                </div>
 
             </div>
 
