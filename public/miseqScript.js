@@ -40,6 +40,107 @@ let i7BarcodeKits = {
 
             ]
         },
+        {
+            "text": "TruSeq Single Index",
+            "children": [
+                {
+                    "id": "ATCACG",
+                    "text": "ATCACG"
+                },
+                {
+                    "id": "CGATGT",
+                    "text": "CGATGT"
+                },
+                {
+                    "id": "TTAGGC",
+                    "text": "TTAGGC"
+                },
+                {
+                    "id": "TGACCA",
+                    "text": "TGACCA"
+                },
+                {
+                    "id": "ACAGTG",
+                    "text": "ACAGTG"
+                },
+                {
+                    "id": "GCCAAT",
+                    "text": "GCCAAT"
+                },
+                {
+                    "id": "CAGATC",
+                    "text": "CAGATC"
+                },
+                {
+                    "id": "ACTTGA",
+                    "text": "ACTTGA"
+                },
+                {
+                    "id": "GATCAG",
+                    "text": "GATCAG"
+                },
+                {
+                    "id": "TAGCTT",
+                    "text": "TAGCTT"
+                },
+                {
+                    "id": "GGCTAC",
+                    "text": "GGCTAC"
+                },
+                {
+                    "id": "CTTGTA",
+                    "text": "CTTGTA"
+                },
+                {
+                    "id": "AGTCAA",
+                    "text": "AGTCAA"
+                },
+                {
+                    "id": "AGTTCC",
+                    "text": "AGTTCC"
+                },
+                {
+                    "id": "ATGTCA",
+                    "text": "ATGTCA"
+                },
+                {
+                    "id": "CCGTCC",
+                    "text": "CCGTCC"
+                },
+                {
+                    "id": "GTCCGC",
+                    "text": "GTCCGC"
+                },
+                {
+                    "id": "GTGAAA",
+                    "text": "GTGAAA"
+                },
+                {
+                    "id": "GTGGCC",
+                    "text": "GTGGCC"
+                },
+                {
+                    "id": "GTTTCG",
+                    "text": "GTTTCG"
+                },
+                {
+                    "id": "CGTACG",
+                    "text": "CGTACG"
+                },
+                {
+                    "id": "GAGTGG",
+                    "text": "GAGTGG"
+                },
+                {
+                    "id": "ACTGAT",
+                    "text": "ACTGAT"
+                },
+                {
+                    "id": "ATTCCT",
+                    "text": "ATTCCT"
+                }
+            ]
+        },
         /*{
             "text": "TruSeq",
             "children": [
@@ -792,13 +893,13 @@ function makeMiseqSampleSheet(samplesList, callback) {
             }
             x.splice(8, 1)
             // reorganize stuff
-            let tempDes = x.splice(2,1)
+            let tempDes = x.splice(2, 1)
             x.push(tempDes)
-            let tempLane = x.splice(7,1)
-            let tempPlateWell = x.splice(7,1)
+            let tempLane = x.splice(7, 1)
+            let tempPlateWell = x.splice(7, 1)
             x.unshift(tempLane)
             x.splice(3, 0, tempPlateWell)
-            // x.splice(6,2) // splice out I5 Index?
+            x.splice(6, 2) // splice out I5 Index?
             csvSampleSheetMiSeq += x.join(',') + "\n"
 
         })
@@ -1157,7 +1258,7 @@ async function getSamplesErrors(callback) {
             alert('Missing I7 Index in Sample ' + (i + 1), 'danger')
             internalErrors = true
         }
-        if (!x[5]) {
+        if (!x[5] && !isTruSeq) { // only check for i5 when not trueseq
             alert('Missing I5 Index in Sample ' + (i + 1), 'danger')
             internalErrors = true
         }
@@ -1176,13 +1277,16 @@ async function getSamplesErrors(callback) {
         // }
 
         // make sure i5 and i7 index are not the same
-        if (x[3] === x[5] && x[3] && x[5]) {
+        if (x[3] === x[5] && x[3] && x[5] && !isTruSeq) {
             alert('I5 and I7 Index in Sample ' + (i + 1) + ' cannot be the same', 'danger')
             internalErrors = true
         }
 
         // add I7 and I5 pair to list
-        i7andi5Pairs.push({ 'i7': x[3], 'i5': x[5] })
+        if (!isTruSeq) {
+            i7andi5Pairs.push({ 'i7': x[3], 'i5': x[5] })
+        }
+
 
         // add all sample Ids/Names to list
         allSampleIds.push(x[0])
@@ -1197,76 +1301,81 @@ async function getSamplesErrors(callback) {
     })
 
     // check that all I7 and I5 pairs are unique
-    i7andi5Pairs.forEach((x, xi) => {
-        i7andi5Pairs.forEach((y, yi) => {
-            // skip checked pairs
-            if (xi >= yi) { return; }
-            // compare each pair to see if any matches
-            if (_.isEqual(x, y)) {
-                alert('I5_I7 Pair is repeated in Samples ' + (xi + 1) + ' and ' + (yi + 1), 'danger')
-                internalErrors = true
-            }
+    if (!isTruSeq) {
+        i7andi5Pairs.forEach((x, xi) => {
+            i7andi5Pairs.forEach((y, yi) => {
+                // skip checked pairs
+                if (xi >= yi) { return; }
+                // compare each pair to see if any matches
+                if (_.isEqual(x, y)) {
+                    alert('I5_I7 Pair is repeated in Samples ' + (xi + 1) + ' and ' + (yi + 1), 'danger')
+                    internalErrors = true
+                }
+            })
         })
-    })
+    }
 
     // check that all I7 and I5 pairs are from same barcoding kit (group)
-    i7andi5Pairs.forEach((x, xi) => {
-        let i7Kit = ''
-        let i5Kit = ''
-        // let foundMatch = false
+    if (!isTruSeq) {
+        i7andi5Pairs.forEach((x, xi) => {
+            let i7Kit = ''
+            let i5Kit = ''
+            // let foundMatch = false
 
 
-        // this can be done a lot better with lodash.contains probably
-        // or litterly any other way to see inside objects
-        i7BarcodeKits.results.forEach((y, yi) => {
-            if (i7Kit !== '') { return } // already found
-            if (yi === 0) { return } // skip none value
-            // a .contains would be nice here
-            y.children.forEach(z => {
-                if (i7Kit !== '') { return }
-                if (z.id === x.i7) {
-                    i7Kit = y.text
-                }
+
+
+            // this can be done a lot better with lodash.contains probably
+            // or litterly any other way to see inside objects
+            i7BarcodeKits.results.forEach((y, yi) => {
+                if (i7Kit !== '') { return } // already found
+                if (yi === 0) { return } // skip none value
+                // a .contains would be nice here
+                y.children.forEach(z => {
+                    if (i7Kit !== '') { return }
+                    if (z.id === x.i7) {
+                        i7Kit = y.text
+                    }
+                })
+
             })
 
-        })
+            i5BarcodeKits.results.forEach((y, yi) => {
+                if (i5Kit !== '') { return } // already found
+                if (yi === 0) { return } // skip none value
+                // a .contains would be nice here
+                y.children.forEach(z => {
+                    if (i5Kit !== '') { return }
+                    if (z.id === x.i5) {
+                        i5Kit = y.text
+                    }
+                })
 
-        i5BarcodeKits.results.forEach((y, yi) => {
-            if (i5Kit !== '') { return } // already found
-            if (yi === 0) { return } // skip none value
-            // a .contains would be nice here
-            y.children.forEach(z => {
-                if (i5Kit !== '') { return }
-                if (z.id === x.i5) {
-                    i5Kit = y.text
-                }
             })
 
+            // i5BarcodeKits.results.forEach((y, yi) => {
+            //     if (yi === 0) { return } // skip first
+            //     if (y.text === i7Kit) {
+            //         //.contains would be nice here
+            //         y.children.forEach(z => {
+            //             if (foundMatch) { return } // already found
+            //             if (z.id === x.i5) {
+            //                 foundMatch = true
+            //             }
+            //         })
+            //     }
+
+            // })
+
+
+            // if (!foundMatch) {
+            if (i5Kit !== i7Kit) {
+                alert('I7 & I5 Barcodes in Sample ' + (xi + 1) + ' do not come from the same barcoding kit ', 'danger')
+                internalErrors = true
+            }
+
         })
-
-        // i5BarcodeKits.results.forEach((y, yi) => {
-        //     if (yi === 0) { return } // skip first
-        //     if (y.text === i7Kit) {
-        //         //.contains would be nice here
-        //         y.children.forEach(z => {
-        //             if (foundMatch) { return } // already found
-        //             if (z.id === x.i5) {
-        //                 foundMatch = true
-        //             }
-        //         })
-        //     }
-
-        // })
-
-
-        // if (!foundMatch) {
-        if (i5Kit !== i7Kit) {
-            alert('I7 & I5 Barcodes in Sample ' + (xi + 1) + ' do not come from the same barcoding kit ', 'danger')
-            internalErrors = true
-        }
-
-    })
-
+    }
     // check that all sample_Ids and names are unique
     if (allSampleIds.length !== _.uniq(allSampleIds).length) {
         alert('Please make sure all sample Ids are unique', 'danger')
@@ -1286,7 +1395,7 @@ async function getSamplesErrors(callback) {
 let miSeqTableHeaders = ['Sample_ID', 'Sample_Name', 'Description', 'I7_Index_ID', 'index', 'I5_Index_ID', 'index2', 'Sample_Project', 'Reference']
 let miSeqTableHeadersOg = ['Sample_ID', 'Sample_Name', 'Description', 'I7_Index_ID', 'index', 'I5_Index_ID', 'index2', 'Sample_Project']
 // let truSeqTableHeaders = ['Sample_ID', 'Sample_Name', 'Description', 'I7_Index_ID', 'index', 'I5_Index_ID', 'index2', 'Sample_Project', 'Reference']
-let truSeqTableHeadersOg = ['Lane', 'Sample_ID', 'Sample_Name', 'Index_Plate_Well', 'I7_Index_ID', 'index', 'I5_Index_ID', 'index2', 'Sample_Project', 'Description']
+let truSeqTableHeadersOg = ['Lane', 'Sample_ID', 'Sample_Name', 'Index_Plate_Well', 'I7_Index_ID', 'index', 'Sample_Project', 'Description']
 let anyMiSeqErrors = false
 /*
 * Pulls all of sample information frome the table... 
