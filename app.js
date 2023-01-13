@@ -138,7 +138,7 @@ app.get('/getIssues', (req, res) => {
 */
 app.post('/makeIssue', bodyParser.json(), (req, res) => {
 
-  jira.addNewIssue({
+  let issueObject = {
     fields: {
       project: {
         key: req.body.project // uncomment when ready
@@ -162,7 +162,16 @@ app.post('/makeIssue', bodyParser.json(), (req, res) => {
         console.log("issue: ", issue)
       }
     }
-  }).then(result => {
+  }
+
+  let date = new Date()
+  date = date.toISOString().split("T")[0]
+
+  if (req.body.project === 'MISEQ' || req.body.project === 'TES') {
+    issueObject.fields.customfield_10300 = date
+  }
+
+  jira.addNewIssue(issueObject).then(result => {
     console.log('Result', result)
     let resultKey2 = result.key
 
@@ -177,42 +186,42 @@ app.post('/makeIssue', bodyParser.json(), (req, res) => {
 
     // add linked Issue stuff
     // if (req.body.linkIssue) {
-      /*req.body.linkIssue.forEach(async (linkTo) => {
-  
-        let link = {}
-        switch (req.body.howLink) {
-          case 'blocks':
-            link = {
-              "name": 'Blocks',
-              "inward": 'Blocks',
-              "outward": 'Blocked By'
-            }
-            break;
-  
-          case 'blockedBy':
-            link = {
-              "name": 'Blocked By',
-              "inward": 'Blocked By',
-              "outward": 'Blocks'
-            }
-            break;
-  
-          case 'clones':
-            link = {
-              "name": 'Clones',
-              "inward": "Clones",
-              "outward": "Cloned by"
-            }
-            break;
-        }
-  
-        let input = {
-          "type": link,
-          "inwardIssue": resultKey2,
-          "outwardIssue": linkTo
-        }
-        await jira.issueLink(input).then(result3 => { res.send(result3) })
-      })*/
+    /*req.body.linkIssue.forEach(async (linkTo) => {
+ 
+      let link = {}
+      switch (req.body.howLink) {
+        case 'blocks':
+          link = {
+            "name": 'Blocks',
+            "inward": 'Blocks',
+            "outward": 'Blocked By'
+          }
+          break;
+ 
+        case 'blockedBy':
+          link = {
+            "name": 'Blocked By',
+            "inward": 'Blocked By',
+            "outward": 'Blocks'
+          }
+          break;
+ 
+        case 'clones':
+          link = {
+            "name": 'Clones',
+            "inward": "Clones",
+            "outward": "Cloned by"
+          }
+          break;
+      }
+ 
+      let input = {
+        "type": link,
+        "inwardIssue": resultKey2,
+        "outwardIssue": linkTo
+      }
+      await jira.issueLink(input).then(result3 => { res.send(result3) })
+    })*/
     // }
 
     res.send(result);
@@ -266,42 +275,42 @@ app.put('/updateIssue', bodyParser.json(), (req, res) => {
 
     // add linked Issue stuff
     // if (req.body.linkIssue) {
-      /*req.body.linkIssue.forEach(async (linkTo) => {
-  
-        let link = {}
-        switch (req.body.howLink) {
-          case 'blocks':
-            link = {
-              "name": 'Blocks',
-              "inward": 'Blocks',
-              "outward": 'Blocked By'
-            }
-            break;
-  
-          case 'blockedBy':
-            link = {
-              "name": 'Blocked By',
-              "inward": 'Blocked By',
-              "outward": 'Blocks'
-            }
-            break;
-  
-          case 'clones':
-            link = {
-              "name": 'Clones',
-              "inward": "Clones",
-              "outward": "Cloned by"
-            }
-            break;
-        }
-  
-        let input = {
-          "type": link,
-          "inwardIssue": resultKey2,
-          "outwardIssue": linkTo
-        }
-        await jira.issueLink(input).then(result3 => { res.send(result3) })
-      })*/
+    /*req.body.linkIssue.forEach(async (linkTo) => {
+ 
+      let link = {}
+      switch (req.body.howLink) {
+        case 'blocks':
+          link = {
+            "name": 'Blocks',
+            "inward": 'Blocks',
+            "outward": 'Blocked By'
+          }
+          break;
+ 
+        case 'blockedBy':
+          link = {
+            "name": 'Blocked By',
+            "inward": 'Blocked By',
+            "outward": 'Blocks'
+          }
+          break;
+ 
+        case 'clones':
+          link = {
+            "name": 'Clones',
+            "inward": "Clones",
+            "outward": "Cloned by"
+          }
+          break;
+      }
+ 
+      let input = {
+        "type": link,
+        "inwardIssue": resultKey2,
+        "outwardIssue": linkTo
+      }
+      await jira.issueLink(input).then(result3 => { res.send(result3) })
+    })*/
     // }
 
     res.send(result);
@@ -329,16 +338,22 @@ const Data = multer({ storage: storage });
 * adds them as an attachment to prexisting issue
 * Need cronjob to clear directory periodically or after successfull upload
 */
-app.post('/addAttachment2Issue', Data.any('files'), (req, res, next) => {
+app.post('/addAttachment2Issue', Data.any("files"), (req, res, next) => {
 
   console.log("Req: ", req)
-
-
 
   // might want to move this section to seperate fxn/promise w/ await
   // also might want to uncomment the return idk
   if (req.files.length !== 0) {
     req.files.forEach(x => {
+
+      fs.mkdirSync("/grid/genomics/reference_genome/sequencing_portal/" + req.body.jiraId, {recursive: true})
+      fs.copyFile(x.path, "/grid/genomics/reference_genome/sequencing_portal/" + req.body.jiraId + "/" + x.path.split('/')[3], (err) => {
+        if (err) {
+          console.log("Error found: ", err)
+        }
+      })
+
       jira.addAttachmentOnIssue(req.body.jiraId, fs.createReadStream(x.path)).then(result => {
         console.log('Result', result)
         res.send(result);
@@ -353,6 +368,14 @@ app.post('/addAttachment2Issue', Data.any('files'), (req, res, next) => {
   // Catches all files already uploaded to references and adds them to jira ticket
   if (req.body.arr) {
     req.body.arr.forEach(x => {
+
+      fs.mkdirSync("/grid/genomics/reference_genome/sequencing_portal/" + req.body.jiraId, {recursive: true})
+      fs.copyFile("./References/" + x, "/grid/genomics/reference_genome/sequencing_portal/" + req.body.jiraId + "/" + x, (err) => {
+        if (err) {
+          console.log("Error found: ", err)
+        }
+      })
+
       jira.addAttachmentOnIssue(req.body.jiraId, fs.createReadStream('./References/' + x)).then(result => {
         console.log('Result', result)
         res.send(result);
@@ -360,8 +383,10 @@ app.post('/addAttachment2Issue', Data.any('files'), (req, res, next) => {
         console.log(err)
         //return
       })
+
     })
   }
+
 
 
   if (res.status(200)) {
@@ -371,11 +396,9 @@ app.post('/addAttachment2Issue', Data.any('files'), (req, res, next) => {
     res.end();
 
     // use exec() to remove file from the staging upload space
-
-
   }
-
 })
+
 
 // ***** Make function that stores the downloaded sample sheet file
 // ***** to a seperate location that will have a cron job sweeping it
@@ -396,6 +419,7 @@ const storageSampleSheet = multer.diskStorage({
 });
 
 const SampleSheetData = multer({ storage: storageSampleSheet });
+
 
 /*
 * Used for temporary attachment uploads (saves them in ./public/data/uploads)
@@ -429,14 +453,34 @@ const storageReferences = multer.diskStorage({
   },
 });
 
+
 const ReferencesData = multer({ storage: storageReferences });
 
+
+function refUpload(req, res, next) {
+  let storage2 = multer.diskStorage({
+    destination: (req, file, cb) => {
+      let path = "/grid/genomics/reference_genome/sequencing_portal/" + req.body.jiraId
+      fs.mkdirSync(path, { recursive: true })
+      cb(null, path);
+    },
+    filename: (req, file, cb) => {
+      cb(null, file.originalname);
+    },
+  });
+  const Data2 = multer({ storage: storage2 });
+
+  ReferencesData.any('files')(req, res, next);
+  Data2.any('files')(req, res, next);
+  next();
+}
 /*
 * Used for temporary attachment uploads (saves them in ./public/data/uploads)
 * adds them as an attachment to prexisting issue
 * Need cronjob to clear directory periodically or after successfull upload
 */
-app.post('/downloadReference', ReferencesData.any('files'), (req, res, next) => {
+app.post('/downloadReference', refUpload, (req, res, next) => {
+
 
   if (res.status(200)) {
     console.log("Your file has been uploaded successfully.");

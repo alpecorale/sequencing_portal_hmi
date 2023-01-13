@@ -38,7 +38,7 @@ export let i7BarcodeKits = {
             ]
         },
         {
-            "text": "TruSeq Single Index",
+            "text": "TruSeq Single Index Set A",
             "children": [
                 {
                     "id": "ATCACG",

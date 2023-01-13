@@ -81,7 +81,7 @@ $(document).ready(function () {
     $('#libraryDrop').on('select2:select', (e) => {
         const value = e.params.data.id
 
-        if (value === 'TruSeq HT') {
+        if (value === 'TruSeq Stranded mRNA') {
             isTruSeq = true
             document.getElementById('truSeqAdapterDiv').style.display = 'block'
             document.getElementById('miseq_extra_1').value = 'Lane'
@@ -276,12 +276,12 @@ function makeMiseqSampleSheet(samplesList, callback) {
 
     csvSampleSheetMiSeq += "\n[Reads]\n"
     csvSampleSheetMiSeq += reads1 + '\n'
-    csvSampleSheetMiSeq += reads2 + '\n'
+    if (!isTruSeq) {csvSampleSheetMiSeq += reads2 + '\n'}
 
     csvSampleSheetMiSeq += "\n[Settings]\n"
     if (isTruSeq) {
-        csvSampleSheetMiSeq += "Adapter," + adapter + '\n'
-        csvSampleSheetMiSeq += "AdapterRead2," + adapterRead2 + '\n'
+        csvSampleSheetMiSeq += "adapter," + adapter + '\n'
+        csvSampleSheetMiSeq += "adapterRead2," + adapterRead2 + '\n'
     }
 
     csvSampleSheetMiSeq += "\n[Data]\n"
@@ -813,7 +813,8 @@ async function getSamplesErrors(callback) {
 let miSeqTableHeaders = ['Sample_ID', 'Sample_Name', 'Description', 'I7_Index_ID', 'index', 'I5_Index_ID', 'index2', 'Sample_Project', 'Reference']
 let miSeqTableHeadersOg = ['Sample_ID', 'Sample_Name', 'Description', 'I7_Index_ID', 'index', 'I5_Index_ID', 'index2', 'Sample_Project']
 // let truSeqTableHeaders = ['Sample_ID', 'Sample_Name', 'Description', 'I7_Index_ID', 'index', 'I5_Index_ID', 'index2', 'Sample_Project', 'Reference']
-let truSeqTableHeadersOg = ['Lane', 'Sample_ID', 'Sample_Name', 'Index_Plate_Well', 'I7_Index_ID', 'index', 'Sample_Project', 'Description']
+let truSeqTableHeadersOg = ['Lane', 'Sample_ID', 'Sample_Name', 'Index_Plate_Well', 'I7_Index_ID', 'index', 'Sample_Project', 'Description'] // tech true
+// let truSeqTableHeadersOg = ['Sample_ID', 'Sample_Name', 'I7_Index_ID', 'index', 'Sample_Project', 'Description']
 let anyMiSeqErrors = false
 /*
 * Pulls all of sample information frome the table... 

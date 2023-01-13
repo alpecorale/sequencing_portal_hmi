@@ -408,6 +408,7 @@ async function submitForm(e) {
     if (jiraTicketID) {
 
         csvFileToPass.append('jiraId', jiraTicketID)
+        refFilesToPass.append('jiraId', jiraTicketID)
 
         // attach document to jira issue
         await fetch("/addAttachment2Issue", {
@@ -490,6 +491,8 @@ async function submitForm(e) {
 
         // add attachment to this issue
         csvFileToPass.append('jiraId', returnedIssueKey)
+        refFilesToPass.append('jiraId', returnedIssueKey)
+
 
         // attach document to jira issue
         await fetch("/addAttachment2Issue", {
