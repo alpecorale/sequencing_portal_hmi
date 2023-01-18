@@ -403,6 +403,13 @@ async function submitForm(e) {
         csvFileToPass.append('arr[]', addXXXFileAlt[i]);
     }
 
+
+    // testing mode switch to turn off jira tickets
+    let testingMode = false
+    if (testingMode) {
+        return
+    }
+
     // attach document and update issue if Jira ticket Id exists
     // otherwise create a JiraTicket for the run
     if (jiraTicketID) {

@@ -88,6 +88,10 @@ $(document).ready(function () {
             document.getElementById('miseq_extra_2').value = 'Index_Plate_Well'
             document.getElementById('miseq_extra_1').disabled = true
             document.getElementById('miseq_extra_2').disabled = true
+            document.querySelectorAll('.read2Div').forEach(a => a.style.display = "none")
+            document.querySelectorAll('.sampI5Col').forEach(a => a.style.display = "none")
+            document.getElementById('inputReads1').value = "300"
+           //document.getElementById('inputReads1').text == "300"
         } else {
             isTruSeq = false
             document.getElementById('truSeqAdapterDiv').style.display = 'none'
@@ -95,6 +99,9 @@ $(document).ready(function () {
             document.getElementById('miseq_extra_2').value = ''
             document.getElementById('miseq_extra_1').disabled = false
             document.getElementById('miseq_extra_2').disabled = false
+            document.querySelectorAll('.read2Div').forEach(a => a.style.display = "block")
+            document.querySelectorAll('.sampI5Col').forEach(a => a.style.display = "block")
+            document.getElementById('inputReads1').value = "151"
         }
     })
     document.getElementById('adapterInput').addEventListener('input', indexInputFilter)
@@ -265,12 +272,13 @@ function makeMiseqSampleSheet(samplesList, callback) {
     csvSampleSheetMiSeq += "Date," + date.toISOString().split('T')[0] + '\n'
     csvSampleSheetMiSeq += "Module," + module + '\n'
     csvSampleSheetMiSeq += "Workflow," + workflow + '\n'
-    if (!isTruSeq) {
-        csvSampleSheetMiSeq += "Library Prep Kit," + libPrepKit + '\n'
-    } else {
-        // truseq uses Assay
-        csvSampleSheetMiSeq += "Assay," + libPrepKit + '\n'
-    }
+    csvSampleSheetMiSeq += "Library Prep Kit," + libPrepKit + '\n'
+    // if (!isTruSeq) {
+    //     csvSampleSheetMiSeq += "Library Prep Kit," + libPrepKit + '\n'
+    // } else {
+    //     // truseq uses Assay
+    //     csvSampleSheetMiSeq += "Assay," + libPrepKit + '\n'
+    // }
     csvSampleSheetMiSeq += "Index Kit," + indexKit + '\n'
     csvSampleSheetMiSeq += "Chemistry," + chemistry + '\n'
 
@@ -305,19 +313,13 @@ function makeMiseqSampleSheet(samplesList, callback) {
     } else {
         // add samples
         samplesList.forEach((x) => {
-            // slice to get original rows
+            // slice to get original rows :ie not last extra row
             if (x.length === 12) {
-                x.pop()
+                x.pop() // pop extra row at end
             }
-            x.splice(8, 1)
-            // reorganize stuff
-            let tempDes = x.splice(2, 1)
-            x.push(tempDes)
-            let tempLane = x.splice(7, 1)
-            let tempPlateWell = x.splice(7, 1)
-            x.unshift(tempLane)
-            x.splice(3, 0, tempPlateWell)
-            x.splice(6, 2) // splice out I5 Index?
+            x.splice(8, 1) // splice refernece out
+            x.splice(5, 2) // splice I5 index out
+
             csvSampleSheetMiSeq += x.join(',') + "\n"
 
         })
@@ -699,6 +701,9 @@ async function getSamplesErrors(callback) {
         // add I7 and I5 pair to list
         if (!isTruSeq) {
             i7andi5Pairs.push({ 'i7': x[3], 'i5': x[5] })
+        } else {
+            // add all i7 to list to check and make sure none are the same
+            i7andi5Pairs.push(x[3])
         }
 
 
@@ -727,6 +732,13 @@ async function getSamplesErrors(callback) {
                 }
             })
         })
+    } else {
+        // check to make sure no repeats
+        let i7Set = [...new Set(i7andi5Pairs)]
+        if (i7Set.length !== i7andi5Pairs.length) {
+            alert('I7 barcode cannot be repeated in Samples', 'danger')
+                    internalErrors = true
+        }
     }
 
     // check that all I7 and I5 pairs are from same barcoding kit (group)
@@ -781,7 +793,7 @@ async function getSamplesErrors(callback) {
 let miSeqTableHeaders = ['Sample_ID', 'Sample_Name', 'Description', 'I7_Index_ID', 'index', 'I5_Index_ID', 'index2', 'Sample_Project', 'Reference']
 let miSeqTableHeadersOg = ['Sample_ID', 'Sample_Name', 'Description', 'I7_Index_ID', 'index', 'I5_Index_ID', 'index2', 'Sample_Project']
 // let truSeqTableHeaders = ['Sample_ID', 'Sample_Name', 'Description', 'I7_Index_ID', 'index', 'I5_Index_ID', 'index2', 'Sample_Project', 'Reference']
-let truSeqTableHeadersOg = ['Lane', 'Sample_ID', 'Sample_Name', 'Index_Plate_Well', 'I7_Index_ID', 'index', 'Sample_Project', 'Description'] // tech true
+let truSeqTableHeadersOg = ['Sample_ID','Sample_Name','Description','I7_Index_ID','index','Sample_Project','Lane','Index_Plate_Well'] // tech true
 // let truSeqTableHeadersOg = ['Sample_ID', 'Sample_Name', 'I7_Index_ID', 'index', 'Sample_Project', 'Description']
 let anyMiSeqErrors = false
 /*

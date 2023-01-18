@@ -105,9 +105,9 @@
                         <input class="form-control" type="text" id="inputReads1" value="151" style="text-align: right">
                     </div>
                     <div class="col-sm-3"></div>
-                    <label class="col-sm-2 col-form-label required-field" for="inputReads2">Reads 2:</label>
+                    <label class="col-sm-2 col-form-label required-field read2Div" for="inputReads2">Reads 2:</label>
                     <div class="col-sm-1">
-                        <input class="form-control" type="text" id="inputReads2" value="151" style="text-align: right">
+                        <input class="form-control read2Div" type="text" id="inputReads2" value="151" style="text-align: right">
                     </div>
                 </div>
 
@@ -149,7 +149,7 @@
                             <option value="Custom" selected="selected">Custom</option>
                             <option value="IDT-ILMN TruSeq DNA-RNA UD 24 Indexes">IDT-ILMN TruSeq DNA-RNA UD 24 Indexes
                             </option>
-                            <option value="TruSeq RNA Single Indexes Set A">TruSeq RNA Single Indexes</option>
+                            <option value="TruSeq RNA Single Indexes Set A">TruSeq RNA Single Indexes Set A</option>
                         </select>
                     </div>
                 </div>
@@ -159,8 +159,8 @@
                     <label class="col-sm-2 col-form-label required-field" for="chemistryDrop">Chemistry:</label>
                     <div class="col-sm-3">
                         <select class="form-select select2ClassAdd" name="chemistryInputs" id="chemistryDrop">
-                            <option value="Amplicon" selected="selected">Amplicon</option>
-                            <option value="Default">Default</option>
+                            <option value="Amplicon">Amplicon</option>
+                            <option value="Default" selected="selected">Default</option>
 
                         </select>
                     </div>
@@ -195,7 +195,7 @@
                                         title="Common I7 Indexes"></i>
                                 </th>
                                 <!-- <th>index</th> -->
-                                <th class="required-field">I5_Index <i class="bi bi-info-circle indexInfo"
+                                <th class="required-field sampI5Col">I5_Index <i class="bi bi-info-circle indexInfo"
                                         data-toggle="popover" title="Common I5 Indexes"></i>
                                 </th>
                                 <!-- <th>index2</th> -->
@@ -253,7 +253,7 @@
                                     </select>
                                 </td>
 
-                                <td>
+                                <td class="sampI5Col">
                                     <select class="select2ClassAddMiSeq select2ClassAddMiSeqI5 sampI5"
                                         style="width: 150px;">
 
