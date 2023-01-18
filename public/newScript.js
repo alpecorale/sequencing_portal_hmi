@@ -427,10 +427,10 @@ async function submitForm(e) {
             id: jiraTicketID,
             // project: jiraProject, // shouldnt need because already in project
             // category: jiraCategory, // dont want to change category
-            tags: inputTagsArray, // done
-            info: descriptionInfo, // done -- added as commment
+            tags: inputTagsArray,
+            info: descriptionInfo,
             // user: experimentalist, // assignee (should already be set )
-            watchers: stakeholders, // done -- untested
+            watchers: stakeholders,
             assignEpic: assignToEpic, // I remove option above but may need to make sure not setting to blank
             // howLink: howLinkIssue, // yah gonna need to check this stuff 
             // linkIssue: inputLinkedIssuesArray

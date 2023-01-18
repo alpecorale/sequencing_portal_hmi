@@ -668,10 +668,6 @@ async function getSamplesErrors(callback) {
             alert('Missing Sample_ID in Sample ' + (i + 1), 'danger')
             internalErrors = true
         }
-        // if (!x[1]) {
-        //     alert('Missing Sample_Name in Sample ' + (i + 1), 'danger')
-        //     internalErrors = true
-        // }
         if (!x[3]) {
             alert('Missing I7 Index in Sample ' + (i + 1), 'danger')
             internalErrors = true
@@ -738,10 +734,6 @@ async function getSamplesErrors(callback) {
         i7andi5Pairs.forEach((x, xi) => {
             let i7Kit = ''
             let i5Kit = ''
-            // let foundMatch = false
-
-
-
 
             // this can be done a lot better with lodash.contains probably
             // or litterly any other way to see inside objects
@@ -755,7 +747,6 @@ async function getSamplesErrors(callback) {
                         i7Kit = y.text
                     }
                 })
-
             })
 
             i5BarcodeKits.results.forEach((y, yi) => {
@@ -768,25 +759,8 @@ async function getSamplesErrors(callback) {
                         i5Kit = y.text
                     }
                 })
-
             })
 
-            // i5BarcodeKits.results.forEach((y, yi) => {
-            //     if (yi === 0) { return } // skip first
-            //     if (y.text === i7Kit) {
-            //         //.contains would be nice here
-            //         y.children.forEach(z => {
-            //             if (foundMatch) { return } // already found
-            //             if (z.id === x.i5) {
-            //                 foundMatch = true
-            //             }
-            //         })
-            //     }
-
-            // })
-
-
-            // if (!foundMatch) {
             if (i5Kit !== i7Kit) {
                 alert('I7 & I5 Barcodes in Sample ' + (xi + 1) + ' do not come from the same barcoding kit ', 'danger')
                 internalErrors = true
@@ -799,12 +773,6 @@ async function getSamplesErrors(callback) {
         alert('Please make sure all sample Ids are unique', 'danger')
         internalErrors = true
     }
-
-    // if (allSampleNames.length !== _.uniq(allSampleNames).length) {
-    //     alert('Please make sure all sample Names are unique', 'danger')
-    //     internalErrors = true
-    // }
-
 
     callback(internalErrors)
 }
@@ -877,6 +845,9 @@ async function getAllMiSeqTableVals(callback) {
             return;
         }
 
+        // clean commas from des
+        des.split(',').join(' ')
+
         rowVals.push(id)
         // rowVals.push(name)
         rowVals.push(id)
@@ -922,7 +893,7 @@ const delay = ms => new Promise(res => setTimeout(res, ms));
 function noSpecialChars(e) {
     let input = e.target
     //let regex = /[^a-z]/gi; only allows letters
-    let regex = /[!@#$%^&*()/?:;[\]'"{},.`~=+\\]/gi; // allows anything but these characters
+    let regex = /[<>!@#$%^&*()|/?:;[\]'"{},.`~=+\\]/gi; // allows anything but these characters
     input.value = input.value.replace(regex, "")
 }
 
