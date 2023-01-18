@@ -29,7 +29,7 @@ $(document).ready(function () {
         tags: true,
         createTag: (params) => {
 
-            let regex = /^([ATGCN]{8})$/;
+            let regex = /^([ATGCN]{6,8})$/;
             let regexPass = regex.test(params.term)
             if (regexPass) {
                 return {
@@ -47,7 +47,7 @@ $(document).ready(function () {
         tags: true,
         createTag: (params) => {
 
-            let regex = /^([ATGCN]{8})$/;
+            let regex = /^([ATGCN]{6,8})$/;
             let regexPass = regex.test(params.term)
             if (regexPass) {
                 return {
@@ -340,7 +340,7 @@ function makeMiseqSampleSheet(samplesList, callback) {
     let hiddenElement = document.createElement('a');
     hiddenElement.href = csvUrl;
     hiddenElement.target = '_blank';
-    hiddenElement.download = 'PortalCreatedSampleSheet.csv'; // edit this to properly name the sample sheet
+    hiddenElement.download = fileName; // edit this to properly name the sample sheet
     hiddenElement.click();
     callback(true)
 }
@@ -448,7 +448,7 @@ function create_tr() {
         tags: true,
         createTag: (params) => {
 
-            let regex = /^([ATGCN]{8})$/;
+            let regex = /^([ATGCN]{6,8})$/;
             let regexPass = regex.test(params.term)
             if (regexPass) {
                 // return addOptionI7(params.term)
@@ -469,7 +469,7 @@ function create_tr() {
         tags: true,
         createTag: (params) => {
 
-            let regex = /^([ATGCN]{8})$/;
+            let regex = /^([ATGCN]{6,8})$/;
             let regexPass = regex.test(params.term)
             if (regexPass) {
                 return {
@@ -572,7 +572,7 @@ function addOptionI7(term) {
         tags: true,
         createTag: (params) => {
 
-            let regex = /^([ATGCN]{8})$/;
+            let regex = /^([ATGCN]{6,8})$/;
             let regexPass = regex.test(params.term)
             if (regexPass) {
                 return {
@@ -603,7 +603,7 @@ function addOptionI5(term) {
         tags: true,
         createTag: (params) => {
 
-            let regex = /^([ATGCN]{8})$/;
+            let regex = /^([ATGCN]{6,8})$/;
             let regexPass = regex.test(params.term)
             if (regexPass) {
                 return {
