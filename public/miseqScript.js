@@ -1,4 +1,4 @@
-import {i5BarcodeKits, i7BarcodeKits, selectReferenceData} from '/barcodeKits.js'
+import { i5BarcodeKits, i7BarcodeKits, selectReferenceData } from '/barcodeKits.js'
 
 
 let isTruSeq = false
@@ -91,7 +91,7 @@ $(document).ready(function () {
             document.querySelectorAll('.read2Div').forEach(a => a.style.display = "none")
             document.querySelectorAll('.sampI5Col').forEach(a => a.style.display = "none")
             document.getElementById('inputReads1').value = "300"
-           //document.getElementById('inputReads1').text == "300"
+            //document.getElementById('inputReads1').text == "300"
         } else {
             isTruSeq = false
             document.getElementById('truSeqAdapterDiv').style.display = 'none'
@@ -284,7 +284,7 @@ function makeMiseqSampleSheet(samplesList, callback) {
 
     csvSampleSheetMiSeq += "\n[Reads]\n"
     csvSampleSheetMiSeq += reads1 + '\n'
-    if (!isTruSeq) {csvSampleSheetMiSeq += reads2 + '\n'}
+    if (!isTruSeq) { csvSampleSheetMiSeq += reads2 + '\n' }
 
     csvSampleSheetMiSeq += "\n[Settings]\n"
     if (isTruSeq) {
@@ -687,10 +687,18 @@ async function getSamplesErrors(callback) {
         //     alert('Invalid characters present in I5 or I7 Index for Sample ' + (i + 1), 'danger')
         //     internalErrors = true;
         // }
-        // if (x[3].length != 8 || x[5].length != 8) {
-        //     alert('I5 or I7 Index length is incorrect length for Sample ' + (i + 1), 'danger')
-        //     internalErrors = true;
-        // }
+        if (isTruSeq) {
+            if (x[3].length != 6) {
+                alert('I7 Index length is incorrect length for Sample ' + (i + 1), 'danger')
+                internalErrors = true;
+            }
+        } else {
+            if (x[3].length != 8 || x[5].length != 8) {
+                alert('I5 or I7 Index length is incorrect length for Sample ' + (i + 1), 'danger')
+                internalErrors = true;
+            }
+        }
+
 
         // make sure i5 and i7 index are not the same
         if (x[3] === x[5] && x[3] && x[5] && !isTruSeq) {
@@ -737,7 +745,7 @@ async function getSamplesErrors(callback) {
         let i7Set = [...new Set(i7andi5Pairs)]
         if (i7Set.length !== i7andi5Pairs.length) {
             alert('I7 barcode cannot be repeated in Samples', 'danger')
-                    internalErrors = true
+            internalErrors = true
         }
     }
 
@@ -793,7 +801,7 @@ async function getSamplesErrors(callback) {
 let miSeqTableHeaders = ['Sample_ID', 'Sample_Name', 'Description', 'I7_Index_ID', 'index', 'I5_Index_ID', 'index2', 'Sample_Project', 'Reference']
 let miSeqTableHeadersOg = ['Sample_ID', 'Sample_Name', 'Description', 'I7_Index_ID', 'index', 'I5_Index_ID', 'index2', 'Sample_Project']
 // let truSeqTableHeaders = ['Sample_ID', 'Sample_Name', 'Description', 'I7_Index_ID', 'index', 'I5_Index_ID', 'index2', 'Sample_Project', 'Reference']
-let truSeqTableHeadersOg = ['Sample_ID','Sample_Name','Description','I7_Index_ID','index','Sample_Project','Lane','Index_Plate_Well'] // tech true
+let truSeqTableHeadersOg = ['Sample_ID', 'Sample_Name', 'Description', 'I7_Index_ID', 'index', 'Sample_Project', 'Lane', 'Index_Plate_Well'] // tech true
 // let truSeqTableHeadersOg = ['Sample_ID', 'Sample_Name', 'I7_Index_ID', 'index', 'Sample_Project', 'Description']
 let anyMiSeqErrors = false
 /*
