@@ -285,7 +285,6 @@ async function handleMiSeqSampleSheet(callback) {
 export let miSeqDynamicFile
 
 
-
 // 
 // Alert Stuff
 //
@@ -432,7 +431,7 @@ function remove_tr() {
 // event listeners to call add to select2 options
 $('.select2ClassAddMiSeqI7').on('select2:select', function (e) {
     let item = e.params.data.id
-    // check if item is in original dataset
+    // check if item is in original dataset -- nvm
     // jk idk but it works this way
     addOptionI7(item)
 });
@@ -450,10 +449,13 @@ $('.select2ClassAddMiSeqRef').on('select2:select', function (e) {
 });
 
 
+let addedI7List = []
 // code for adding new tags to data in samplesheet table
 function addOptionI7(term) {
-    $('.select2ClassAddMiSeqI7').select2('destroy')
 
+    if (addedI7List.includes(term)) { return }
+
+    $('.select2ClassAddMiSeqI7').select2('destroy')
     $('.select2ClassAddMiSeqI7').select2({
         data: [{ "id": term, "text": term }],
         placeholder: 'None',
@@ -474,6 +476,7 @@ function addOptionI7(term) {
 
         }
     })
+    addedI7List.push(term)
     // idk why this is needed her but it works
     $('.select2ClassAddMiSeqI7').on('select2:select', function (e) {
         let item = e.params.data.id
@@ -482,9 +485,13 @@ function addOptionI7(term) {
     // return { "id": term, "text": term }
 }
 
-function addOptionI5(term) {
-    $('.select2ClassAddMiSeqI5').select2('destroy')
 
+let addedI5List = []
+function addOptionI5(term) {
+
+    if (addedI5List.includes(term)) { return }
+
+    $('.select2ClassAddMiSeqI5').select2('destroy')
     $('.select2ClassAddMiSeqI5').select2({
         data: [{ "id": term, "text": term }],
         placeholder: 'None',
@@ -504,6 +511,8 @@ function addOptionI5(term) {
 
         }
     })
+    addedI5List.push(term)
+
     // idk why this is needed her but it works
     $('.select2ClassAddMiSeqI5').on('select2:select', function (e) {
         let item = e.params.data.id
@@ -511,14 +520,18 @@ function addOptionI5(term) {
     });
 }
 
+let addedRefList = []
 function addOptionRef(term) {
-    $('.select2ClassAddMiSeqRef').select2('destroy')
 
+    if (addedRefList.includes(term)) { return }
+    
+    $('.select2ClassAddMiSeqRef').select2('destroy')
     $('.select2ClassAddMiSeqRef').select2({
         data: [{ "id": term, "text": term }],
         placeholder: 'None',
         tags: true
     })
+    addedRefList.push(term)
     // idk why this is needed her but it works
     $('.select2ClassAddMiSeqRef').on('select2:select', function (e) {
         let item = e.params.data.id
