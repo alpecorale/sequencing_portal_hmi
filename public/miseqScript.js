@@ -431,26 +431,19 @@ function remove_tr() {
 // event listeners to call add to select2 options
 $('.select2ClassAddMiSeqI7').on('select2:select', function (e) {
     let item = e.params.data.id
-    // check if item is in original dataset -- nvm
-    // jk idk but it works this way
     addOptionI7(item)
 });
 $('.select2ClassAddMiSeqI5').on('select2:select', function (e) {
     let item = e.params.data.id
-    // check if item is in original dataset
-    // jk idk but it works this way
     addOptionI5(item)
 });
 $('.select2ClassAddMiSeqRef').on('select2:select', function (e) {
     let item = e.params.data.id
-    // check if item is in original dataset
-    // jk idk but it works this way
     addOptionRef(item)
 });
 
-
-let addedI7List = []
 // code for adding new tags to data in samplesheet table
+let addedI7List = []
 function addOptionI7(term) {
 
     if (addedI7List.includes(term)) { return }
@@ -484,7 +477,6 @@ function addOptionI7(term) {
     });
     // return { "id": term, "text": term }
 }
-
 
 let addedI5List = []
 function addOptionI5(term) {
