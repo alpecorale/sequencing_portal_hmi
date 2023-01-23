@@ -545,7 +545,7 @@ const alert = (message, type) => {
 function noSpecialChars(e) {
     let input = e.target
     //let regex = /[^a-z]/gi; only allows letters
-    let regex = /[!@#$%^&*()/?:;[\]'"{},.`~=+\\]/gi; // allows anything but these characters
+    let regex = /[<>!@#$%^&*()|/?:;[\]'"{},.`~=+\\]/gi; // allows anything but these characters
     input.value = input.value.replace(regex, "")
 }
 
