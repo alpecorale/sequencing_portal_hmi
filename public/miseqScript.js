@@ -1,4 +1,5 @@
-import { i5BarcodeKits, i7BarcodeKits, selectReferenceData } from '/barcodeKits.js'
+import { customIndexKit, truSeqSingleIndexSetAKit, missionBioIndexKit, selectReferenceData } from '/barcodeKits.js'
+// import * as BarcodKit from '/barcodeKits.js'
 import { CustomKit, TruSeqKit } from '/prepKits.js';
 
 
@@ -26,41 +27,22 @@ $(document).ready(function () {
         tags: true
     })
     $('.select2ClassAddMiSeqI7').select2({
-        data: i7BarcodeKits.results,
+        data: customIndexKit.i7Barcodes,
         tags: true,
-        createTag: (params) => {
-
-            let regex = /^([ATGCN]{6,8})$/;
-            let regexPass = regex.test(params.term)
-            if (regexPass) {
-                return {
-                    id: params.term,
-                    text: params.term
-                }
-            }
-
-            return null
-
-        }
+        createTag: (params) => indexCreateTag(params) 
     })
     $('.select2ClassAddMiSeqI5').select2({
-        data: i5BarcodeKits.results,
+        data: customIndexKit.i5Barcodes,
         tags: true,
-        createTag: (params) => {
-
-            let regex = /^([ATGCN]{6,8})$/;
-            let regexPass = regex.test(params.term)
-            if (regexPass) {
-                return {
-                    id: params.term,
-                    text: params.term
-                }
-            }
-            return null
-        }
+        createTag: (params) => indexCreateTag(params) 
     })
     $('.select2ClassAddMiSeqRef').select2({
         data: selectReferenceData.results
+    })
+
+    // load available kits from hotKit
+    $('#indexKitDrop').select2({
+        data: hotKit.indexKits
     })
 
 
@@ -78,6 +60,9 @@ $(document).ready(function () {
     document.getElementById('inputReads1').addEventListener('input', numbersOnly)
     document.getElementById('inputReads2').addEventListener('input', numbersOnly)
 
+    // Handle switching between Library Prep kits
+    // makes/destroys columns from sample sheet as needed
+    // populates index kit drop down with valid index kits
     $('#libraryDrop').on('select2:select', (e) => {
         const value = e.params.data.id
 
@@ -93,6 +78,21 @@ $(document).ready(function () {
                 document.querySelectorAll('.read2Div').forEach(a => a.style.display = "block")
                 document.querySelectorAll('.sampI5Col').forEach(a => a.style.display = "block")
                 document.getElementById('inputReads1').value = "151"
+                $('#indexKitDrop').select2('destroy')
+                $('#indexKitDrop').empty()
+                $('#indexKitDrop').select2({
+                    data: hotKit.indexKits
+                })
+                $('.select2ClassAddMiSeqI5').select2('destroy')
+                $('.select2ClassAddMiSeqI5').empty()
+                $('.select2ClassAddMiSeqI5').select2({
+                    data: customIndexKit.i5Barcodes
+                })
+                $('.select2ClassAddMiSeqI7').select2('destroy')
+                $('.select2ClassAddMiSeqI7').empty()
+                $('.select2ClassAddMiSeqI7').select2({
+                    data: customIndexKit.i7Barcodes
+                })
                 break;
 
             case 'TruSeq Stranded mRNA':
@@ -105,12 +105,83 @@ $(document).ready(function () {
                 document.querySelectorAll('.read2Div').forEach(a => a.style.display = "none")
                 document.querySelectorAll('.sampI5Col').forEach(a => a.style.display = "none")
                 document.getElementById('inputReads1').value = "300"
+                $('#indexKitDrop').select2('destroy')
+                $('#indexKitDrop').empty()
+                $('#indexKitDrop').select2({
+                    data: hotKit.indexKits
+                })
+                $('.select2ClassAddMiSeqI7').select2('destroy')
+                $('.select2ClassAddMiSeqI7').empty()
+                $('.select2ClassAddMiSeqI7').select2({
+                    data: truSeqSingleIndexSetAKit.i7Barcodes
+                })
+                break;
+        }
+    })
+
+    // Handle switching between index kits 
+    // loads appropriate i7 and i5 kits into dropdowns to remove clutter
+    // does empty out all dropdown so if items are created they will be removed
+    $('#indexKitDrop').on('select2:select', (e) => {
+
+        const value = e.params.data.id
+
+        switch (value) {
+            case 'Custom':
+                $('.select2ClassAddMiSeqI5').select2('destroy')
+                $('.select2ClassAddMiSeqI5').empty()
+                $('.select2ClassAddMiSeqI5').select2({
+                    data: customIndexKit.i5Barcodes,
+                    tags: true,
+                    createTag: (params) => indexCreateTag(params) 
+                })
+                $('.select2ClassAddMiSeqI7').select2('destroy')
+                $('.select2ClassAddMiSeqI7').empty()
+                $('.select2ClassAddMiSeqI7').select2({
+                    data: customIndexKit.i7Barcodes,
+                    tags: true,
+                    createTag: (params) => indexCreateTag(params) 
+                })
+                break;
+
+            case 'TruSeq Single Index Set A':
+                $('.select2ClassAddMiSeqI7').select2('destroy')
+                $('.select2ClassAddMiSeqI7').empty()
+                $('.select2ClassAddMiSeqI7').select2({
+                    data: truSeqSingleIndexSetAKit.i7Barcodes,
+                    tags: true,
+                    createTag: (params) => indexCreateTag(params) 
+                })
+                break;
+
+            case 'Mission Bio':
+                $('.select2ClassAddMiSeqI5').select2('destroy')
+                $('.select2ClassAddMiSeqI5').empty()
+                $('.select2ClassAddMiSeqI5').select2({
+                    data: missionBioIndexKit.i5Barcodes,
+                    tags: true,
+                    createTag: (params) => indexCreateTag(params) 
+                })
+                $('.select2ClassAddMiSeqI7').select2('destroy')
+                $('.select2ClassAddMiSeqI7').empty()
+                $('.select2ClassAddMiSeqI7').select2({
+                    data: missionBioIndexKit.i7Barcodes,
+                    tags: true,
+                    createTag: (params) => indexCreateTag(params) 
+                })
                 break;
 
         }
 
+        // added incase lists were full and someone tried to 
+        // readd something but it wouldnt let them bc in list already
+        addedI7List = []
+        addedI5List = []
+        // can also choose not to add all items automatically rather than empty
+
 
     })
+
     document.getElementById('adapterInput').addEventListener('input', indexInputFilter)
     document.getElementById('adapterRead2Input').addEventListener('input', indexInputFilter)
 
@@ -333,41 +404,13 @@ function create_tr() {
     $('.select2ClassAddMiSeqI7').select2({
         placeholder: 'None',
         tags: true,
-        createTag: (params) => {
-
-            let regex = /^([ATGCN]{6,8})$/;
-            let regexPass = regex.test(params.term)
-            if (regexPass) {
-                // return addOptionI7(params.term)
-
-                return {
-                    id: params.term,
-                    text: params.term
-                }
-            }
-
-            return null
-
-        }
+        createTag: (params) => indexCreateTag(params) 
     })
 
     $('.select2ClassAddMiSeqI5').select2({
         placeholder: 'None',
         tags: true,
-        createTag: (params) => {
-
-            let regex = /^([ATGCN]{6,8})$/;
-            let regexPass = regex.test(params.term)
-            if (regexPass) {
-                return {
-                    id: params.term,
-                    text: params.term
-                }
-            }
-
-            return null
-
-        }
+        createTag: (params) => indexCreateTag(params) 
     })
 
     // Re add event listeners everywhere
@@ -453,21 +496,7 @@ function addOptionI7(term) {
         data: [{ "id": term, "text": term }],
         placeholder: 'None',
         tags: true,
-        createTag: (params) => {
-
-            let regex = /^([ATGCN]{6,8})$/;
-            let regexPass = regex.test(params.term)
-            if (regexPass) {
-                return {
-                    id: params.term,
-                    text: params.term
-                }
-                // return addOptionI7(params.term)
-            }
-
-            return null
-
-        }
+        createTag: (params) => indexCreateTag(params) 
     })
     addedI7List.push(term)
     // idk why this is needed her but it works
@@ -488,20 +517,7 @@ function addOptionI5(term) {
         data: [{ "id": term, "text": term }],
         placeholder: 'None',
         tags: true,
-        createTag: (params) => {
-
-            let regex = /^([ATGCN]{6,8})$/;
-            let regexPass = regex.test(params.term)
-            if (regexPass) {
-                return {
-                    id: params.term,
-                    text: params.term
-                }
-            }
-
-            return null
-
-        }
+        createTag: (params) => indexCreateTag(params) 
     })
     addedI5List.push(term)
 
@@ -512,11 +528,24 @@ function addOptionI5(term) {
     });
 }
 
+function indexCreateTag(params) {
+    params.term = params.term.toUpperCase()
+    let regex = /^([ATGCN]{6,8})$/;
+            let regexPass = regex.test(params.term)
+            if (regexPass) {
+                return {
+                    id: params.term,
+                    text: params.term
+                }
+            }
+            return null
+}
+
 let addedRefList = []
 function addOptionRef(term) {
 
     if (addedRefList.includes(term)) { return }
-    
+
     $('.select2ClassAddMiSeqRef').select2('destroy')
     $('.select2ClassAddMiSeqRef').select2({
         data: [{ "id": term, "text": term }],

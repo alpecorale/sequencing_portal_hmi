@@ -7,6 +7,17 @@ export class CustomKit {
     sampleSheetToPass = new FormData();
     miSeqDynamicFile
 
+    indexKits = [
+        {
+            "id": "Custom",
+            "text": "Custom"
+        }, 
+        {
+            "id": "Mission Bio",
+            "text": "Mission Bio"
+        }
+    ]
+
 
     // make SampleSheet
     makeMiseqSampleSheet(samplesList, metaData, callback) {
@@ -231,6 +242,11 @@ export class TruSeqKit {
 
     sampleSheetToPass = new FormData();
     miSeqDynamicFile
+
+    indexKits = [{
+        "id": "TruSeq Single Index Set A",
+        "text": "TruSeq Single Index Set A"
+    }]
 
 
     // make SampleSheet
