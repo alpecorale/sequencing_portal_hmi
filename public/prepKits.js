@@ -1,4 +1,4 @@
-import { customIndexKit, truSeqSingleIndexSetAKit, missionBioIndexKit, selectReferenceData } from '/barcodeKits.js'
+import * as barcodeKit from '/barcodeKits.js'
 // import * as BarcodKit from '/barcodeKits.js'
 
 export class CustomKit { // Custom
@@ -9,16 +9,18 @@ export class CustomKit { // Custom
     sampleSheetToPass = new FormData();
     miSeqDynamicFile
 
+    defaultReads = [151, 151]
+
     indexKits = [
         {
             "id": "Custom",
             "text": "Custom",
-            "kit": customIndexKit
+            "kit": barcodeKit.customIndexKit
         },
         {
             "id": "Mission Bio",
             "text": "Mission Bio",
-            "kit": missionBioIndexKit
+            "kit": barcodeKit.missionBioIndexKit
         }
     ]
 
@@ -249,14 +251,28 @@ export class TruSeqKit { // TruSeq Stranded mRNA
     sampleSheetToPass = new FormData();
     miSeqDynamicFile
 
-    indexKits = [{
-        "id": "TruSeq Single Index Set A",
-        "text": "TruSeq Single Index Set A",
-        "kit": truSeqSingleIndexSetAKit
-    }]
+    defaultReads = [76, 76]
+
+    indexKits = [
+        {
+            "id": "TruSeq Single Index Set A",
+            "text": "TruSeq Single Index Set A",
+            "kit": barcodeKit.truSeqSingleIndexSetAKit
+        },
+        {
+            "id": "TruSeq Single Index Set B",
+            "text": "TruSeq Single Index Set B",
+            "kit": barcodeKit.truSeqSingleIndexSetBKit
+        },
+        {
+            "id": "TruSeq Single Index Set A B",
+            "text": "TruSeq Single Index Set A B",
+            "kit": barcodeKit.truSeqSingleIndexSetABKit
+        }
+    ]
 
     readType = 'single'
-    
+
     // might set adapters here rather then leave them as inputs
 
 

@@ -36,107 +36,217 @@ const customI7 = {
     ]
 }
 
-const truSeqSingleIndexSetAI7 = {
-    "text": "TruSeq Single Index Set A",
+const truSeqSingleIndexSetABI7 = {
+    "text": "TruSeq Single Index Set A B",
     "children": [
         {
-            "id": "ATCACG",
+            "id": "ATCACG", // 1
             "text": "ATCACG"
         },
         {
-            "id": "CGATGT",
+            "id": "CGATGT", // 2
             "text": "CGATGT"
         },
         {
-            "id": "TTAGGC",
+            "id": "TTAGGC", // 3
             "text": "TTAGGC"
         },
         {
-            "id": "TGACCA",
+            "id": "TGACCA", // 4
             "text": "TGACCA"
         },
         {
-            "id": "ACAGTG",
+            "id": "ACAGTG", // 5
             "text": "ACAGTG"
         },
         {
-            "id": "GCCAAT",
+            "id": "GCCAAT", // 6
             "text": "GCCAAT"
         },
         {
-            "id": "CAGATC",
+            "id": "CAGATC", // 7
             "text": "CAGATC"
         },
         {
-            "id": "ACTTGA",
+            "id": "ACTTGA", // 8
             "text": "ACTTGA"
         },
         {
-            "id": "GATCAG",
+            "id": "GATCAG", // 9
             "text": "GATCAG"
         },
         {
-            "id": "TAGCTT",
+            "id": "TAGCTT", // 10
             "text": "TAGCTT"
         },
         {
-            "id": "GGCTAC",
+            "id": "GGCTAC", // 11
             "text": "GGCTAC"
         },
         {
-            "id": "CTTGTA",
+            "id": "CTTGTA", // 12
             "text": "CTTGTA"
         },
         {
-            "id": "AGTCAA",
+            "id": "AGTCAA", // 13
             "text": "AGTCAA"
         },
         {
-            "id": "AGTTCC",
+            "id": "AGTTCC", // 14
             "text": "AGTTCC"
         },
         {
-            "id": "ATGTCA",
+            "id": "ATGTCA", // 15
             "text": "ATGTCA"
         },
         {
-            "id": "CCGTCC",
+            "id": "CCGTCC", // 16
             "text": "CCGTCC"
         },
         {
-            "id": "GTCCGC",
+            "id": "GTCCGC", // 18
             "text": "GTCCGC"
         },
         {
-            "id": "GTGAAA",
+            "id": "GTGAAA", // 19
             "text": "GTGAAA"
         },
         {
-            "id": "GTGGCC",
+            "id": "GTGGCC", // 20
             "text": "GTGGCC"
         },
         {
-            "id": "GTTTCG",
+            "id": "GTTTCG", // 21
             "text": "GTTTCG"
         },
         {
-            "id": "CGTACG",
+            "id": "CGTACG", // 22
             "text": "CGTACG"
         },
         {
-            "id": "GAGTGG",
+            "id": "GAGTGG", // 23
             "text": "GAGTGG"
         },
         {
-            "id": "ACTGAT",
+            "id": "ACTGAT", // 25
             "text": "ACTGAT"
         },
         {
-            "id": "ATTCCT",
+            "id": "ATTCCT", // 27
             "text": "ATTCCT"
         }
     ]
 }
+
+const truSeqSingleIndexSetAI7 = {
+    "text": "TruSeq Single Index Set A",
+    "children": [
+
+        {
+            "id": "CGATGT", // 2
+            "text": "CGATGT"
+        },
+        {
+            "id": "TGACCA", // 4
+            "text": "TGACCA"
+        },
+        {
+            "id": "ACAGTG", // 5
+            "text": "ACAGTG"
+        },
+        {
+            "id": "GCCAAT", // 6
+            "text": "GCCAAT"
+        },
+        {
+            "id": "CAGATC", // 7
+            "text": "CAGATC"
+        },
+        {
+            "id": "CTTGTA", // 12
+            "text": "CTTGTA"
+        },
+        {
+            "id": "AGTCAA", // 13
+            "text": "AGTCAA"
+        },
+        {
+            "id": "AGTTCC", // 14
+            "text": "AGTTCC"
+        },
+        {
+            "id": "ATGTCA", // 15
+            "text": "ATGTCA"
+        },
+        {
+            "id": "CCGTCC", // 16
+            "text": "CCGTCC"
+        },
+        {
+            "id": "GTCCGC", // 18
+            "text": "GTCCGC"
+        },
+        {
+            "id": "GTGAAA", // 19
+            "text": "GTGAAA"
+        }
+    ]
+}
+
+const truSeqSingleIndexSetBI7 = {
+    "text": "TruSeq Single Index Set B",
+    "children": [
+        {
+            "id": "ATCACG", // 1
+            "text": "ATCACG"
+        },
+        {
+            "id": "TTAGGC", // 3
+            "text": "TTAGGC"
+        },
+        {
+            "id": "ACTTGA", // 8
+            "text": "ACTTGA"
+        },
+        {
+            "id": "GATCAG", // 9
+            "text": "GATCAG"
+        },
+        {
+            "id": "TAGCTT", // 10
+            "text": "TAGCTT"
+        },
+        {
+            "id": "GGCTAC", // 11
+            "text": "GGCTAC"
+        },
+        {
+            "id": "GTGGCC", // 20
+            "text": "GTGGCC"
+        },
+        {
+            "id": "GTTTCG", // 21
+            "text": "GTTTCG"
+        },
+        {
+            "id": "CGTACG", // 22
+            "text": "CGTACG"
+        },
+        {
+            "id": "GAGTGG", // 23
+            "text": "GAGTGG"
+        },
+        {
+            "id": "ACTGAT", // 25
+            "text": "ACTGAT"
+        },
+        {
+            "id": "ATTCCT", // 27
+            "text": "ATTCCT"
+        }
+    ]
+}
+
 
 const otherTruSeqI7 = {
     "text": "TruSeq",
@@ -563,7 +673,9 @@ export const customIndexKit = {
         blankKit,
         customI5,
         otherKit
-    ]
+    ],
+
+    "sequence_length": 8
 }
 
 export const truSeqSingleIndexSetAKit = {
@@ -571,7 +683,29 @@ export const truSeqSingleIndexSetAKit = {
         blankKit,
         truSeqSingleIndexSetAI7,
         otherKit
-    ]
+    ], 
+
+    "sequence_length": 6
+}
+
+export const truSeqSingleIndexSetBKit = {
+    "i7Barcodes": [
+        blankKit,
+        truSeqSingleIndexSetBI7,
+        otherKit
+    ], 
+
+    "sequence_length": 6
+}
+
+export const truSeqSingleIndexSetABKit = {
+    "i7Barcodes": [
+        blankKit,
+        truSeqSingleIndexSetABI7,
+        otherKit
+    ], 
+
+    "sequence_length": 6
 }
 
 export const missionBioIndexKit = {
@@ -585,7 +719,9 @@ export const missionBioIndexKit = {
         blankKit,
         missionBioI5,
         otherKit
-    ]
+    ],
+
+    "sequence_length": 8
 }
 
 export let selectReferenceData = {
