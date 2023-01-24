@@ -28,12 +28,12 @@ $(document).ready(function () {
     $('.select2ClassAddMiSeqI7').select2({
         data: hotKit.indexKits[0].kit.i7Barcodes,
         tags: true,
-        createTag: (params) => indexCreateTag(params) 
+        createTag: (params) => indexCreateTag(params)
     })
     $('.select2ClassAddMiSeqI5').select2({
         data: hotKit.indexKits[0].kit.i5Barcodes,
         tags: true,
-        createTag: (params) => indexCreateTag(params) 
+        createTag: (params) => indexCreateTag(params)
     })
     $('.select2ClassAddMiSeqRef').select2({
         data: selectReferenceData.results
@@ -126,59 +126,15 @@ $(document).ready(function () {
         const value = e.params.data.id
         let kitData
         let foundKit = false
-        hotKit.indexKits.forEach((x,i) => {
+        hotKit.indexKits.forEach((x, i) => {
             if (foundKit) { return }
             if (x.id === value) {
                 kitData = x.kit
             }
         })
 
-        switch (value) {
-            case 'Custom':
-                $('.select2ClassAddMiSeqI5').select2('destroy')
-                $('.select2ClassAddMiSeqI5').empty()
-                $('.select2ClassAddMiSeqI5').select2({
-                    data: kitData.i5Barcodes,
-                    tags: true,
-                    createTag: (params) => indexCreateTag(params) 
-                })
-                $('.select2ClassAddMiSeqI7').select2('destroy')
-                $('.select2ClassAddMiSeqI7').empty()
-                $('.select2ClassAddMiSeqI7').select2({
-                    data: kitData.i7Barcodes,
-                    tags: true,
-                    createTag: (params) => indexCreateTag(params) 
-                })
-                break;
-
-            case 'TruSeq Single Index Set A':
-                $('.select2ClassAddMiSeqI7').select2('destroy')
-                $('.select2ClassAddMiSeqI7').empty()
-                $('.select2ClassAddMiSeqI7').select2({
-                    data: kitData.i7Barcodes,
-                    tags: true,
-                    createTag: (params) => indexCreateTag(params) 
-                })
-                break;
-
-            case 'Mission Bio':
-                $('.select2ClassAddMiSeqI5').select2('destroy')
-                $('.select2ClassAddMiSeqI5').empty()
-                $('.select2ClassAddMiSeqI5').select2({
-                    data: kitData.i5Barcodes,
-                    tags: true,
-                    createTag: (params) => indexCreateTag(params) 
-                })
-                $('.select2ClassAddMiSeqI7').select2('destroy')
-                $('.select2ClassAddMiSeqI7').empty()
-                $('.select2ClassAddMiSeqI7').select2({
-                    data: kitData.i7Barcodes,
-                    tags: true,
-                    createTag: (params) => indexCreateTag(params) 
-                })
-                break;
-
-        }
+        // clears and reloads data in i7 and i5 index columns
+        reloadIndexes(kitData)
 
         // added incase lists were full and someone tried to 
         // readd something but it wouldnt let them bc in list already
@@ -411,13 +367,13 @@ function create_tr() {
     $('.select2ClassAddMiSeqI7').select2({
         placeholder: 'None',
         tags: true,
-        createTag: (params) => indexCreateTag(params) 
+        createTag: (params) => indexCreateTag(params)
     })
 
     $('.select2ClassAddMiSeqI5').select2({
         placeholder: 'None',
         tags: true,
-        createTag: (params) => indexCreateTag(params) 
+        createTag: (params) => indexCreateTag(params)
     })
 
     // Re add event listeners everywhere
@@ -503,7 +459,7 @@ function addOptionI7(term) {
         data: [{ "id": term, "text": term }],
         placeholder: 'None',
         tags: true,
-        createTag: (params) => indexCreateTag(params) 
+        createTag: (params) => indexCreateTag(params)
     })
     addedI7List.push(term)
     // idk why this is needed her but it works
@@ -524,7 +480,7 @@ function addOptionI5(term) {
         data: [{ "id": term, "text": term }],
         placeholder: 'None',
         tags: true,
-        createTag: (params) => indexCreateTag(params) 
+        createTag: (params) => indexCreateTag(params)
     })
     addedI5List.push(term)
 
@@ -538,14 +494,14 @@ function addOptionI5(term) {
 function indexCreateTag(params) {
     params.term = params.term.toUpperCase()
     let regex = /^([ATGCN]{6,8})$/;
-            let regexPass = regex.test(params.term)
-            if (regexPass) {
-                return {
-                    id: params.term,
-                    text: params.term
-                }
-            }
-            return null
+    let regexPass = regex.test(params.term)
+    if (regexPass) {
+        return {
+            id: params.term,
+            text: params.term
+        }
+    }
+    return null
 }
 
 let addedRefList = []
@@ -660,6 +616,29 @@ async function getAllMiSeqTableVals(callback) {
         samples = miSeqTableVals
         callback(miSeqTableVals)
     })
+
+}
+
+// reloads indexes with values from kits
+function reloadIndexes(kitData) {
+    
+    $('.select2ClassAddMiSeqI7').select2('destroy')
+    $('.select2ClassAddMiSeqI7').empty()
+    $('.select2ClassAddMiSeqI7').select2({
+        data: kitData.i7Barcodes,
+        tags: true,
+        createTag: (params) => indexCreateTag(params)
+    })
+
+    if (kitData.i5Barcodes) {
+        $('.select2ClassAddMiSeqI5').select2('destroy')
+        $('.select2ClassAddMiSeqI5').empty()
+        $('.select2ClassAddMiSeqI5').select2({
+            data: kitData.i5Barcodes,
+            tags: true,
+            createTag: (params) => indexCreateTag(params)
+        })
+    }
 
 }
 
