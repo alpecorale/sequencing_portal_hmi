@@ -1,5 +1,7 @@
+import { customIndexKit, truSeqSingleIndexSetAKit, missionBioIndexKit, selectReferenceData } from '/barcodeKits.js'
+// import * as BarcodKit from '/barcodeKits.js'
 
-export class CustomKit {
+export class CustomKit { // Custom
 
     miSeqTableHeadersOg = ['Sample_ID', 'Sample_Name', 'Description', 'I7_Index_ID', 'index', 'I5_Index_ID', 'index2', 'Sample_Project']
     miSeqTableHeaders = ['Sample_ID', 'Sample_Name', 'Description', 'I7_Index_ID', 'index', 'I5_Index_ID', 'index2', 'Sample_Project', 'Reference']
@@ -10,13 +12,17 @@ export class CustomKit {
     indexKits = [
         {
             "id": "Custom",
-            "text": "Custom"
-        }, 
+            "text": "Custom",
+            "kit": customIndexKit
+        },
         {
             "id": "Mission Bio",
-            "text": "Mission Bio"
+            "text": "Mission Bio",
+            "kit": missionBioIndexKit
         }
     ]
+
+    readType = 'both' // 'single', 'paired'
 
 
     // make SampleSheet
@@ -235,7 +241,7 @@ export class CustomKit {
 
 }
 
-export class TruSeqKit {
+export class TruSeqKit { // TruSeq Stranded mRNA
 
     truSeqTableHeadersOg = ['Sample_ID', 'Sample_Name', 'Description', 'I7_Index_ID', 'index', 'Sample_Project', 'Lane', 'Index_Plate_Well']
     miSeqTableHeaders = ['Sample_ID', 'Sample_Name', 'Description', 'I7_Index_ID', 'index', 'I5_Index_ID', 'index2', 'Sample_Project', 'Reference']
@@ -245,8 +251,13 @@ export class TruSeqKit {
 
     indexKits = [{
         "id": "TruSeq Single Index Set A",
-        "text": "TruSeq Single Index Set A"
+        "text": "TruSeq Single Index Set A",
+        "kit": truSeqSingleIndexSetAKit
     }]
+
+    readType = 'single'
+    
+    // might set adapters here rather then leave them as inputs
 
 
     // make SampleSheet

@@ -1,5 +1,4 @@
-import { customIndexKit, truSeqSingleIndexSetAKit, missionBioIndexKit, selectReferenceData } from '/barcodeKits.js'
-// import * as BarcodKit from '/barcodeKits.js'
+import { selectReferenceData } from '/barcodeKits.js'
 import { CustomKit, TruSeqKit } from '/prepKits.js';
 
 
@@ -27,12 +26,12 @@ $(document).ready(function () {
         tags: true
     })
     $('.select2ClassAddMiSeqI7').select2({
-        data: customIndexKit.i7Barcodes,
+        data: hotKit.indexKits[0].kit.i7Barcodes,
         tags: true,
         createTag: (params) => indexCreateTag(params) 
     })
     $('.select2ClassAddMiSeqI5').select2({
-        data: customIndexKit.i5Barcodes,
+        data: hotKit.indexKits[0].kit.i5Barcodes,
         tags: true,
         createTag: (params) => indexCreateTag(params) 
     })
@@ -86,12 +85,12 @@ $(document).ready(function () {
                 $('.select2ClassAddMiSeqI5').select2('destroy')
                 $('.select2ClassAddMiSeqI5').empty()
                 $('.select2ClassAddMiSeqI5').select2({
-                    data: customIndexKit.i5Barcodes
+                    data: hotKit.indexKits[0].kit.i5Barcodes
                 })
                 $('.select2ClassAddMiSeqI7').select2('destroy')
                 $('.select2ClassAddMiSeqI7').empty()
                 $('.select2ClassAddMiSeqI7').select2({
-                    data: customIndexKit.i7Barcodes
+                    data: hotKit.indexKits[0].kit.i7Barcodes
                 })
                 break;
 
@@ -113,7 +112,7 @@ $(document).ready(function () {
                 $('.select2ClassAddMiSeqI7').select2('destroy')
                 $('.select2ClassAddMiSeqI7').empty()
                 $('.select2ClassAddMiSeqI7').select2({
-                    data: truSeqSingleIndexSetAKit.i7Barcodes
+                    data: hotKit.indexKits[0].kit.i7Barcodes
                 })
                 break;
         }
@@ -125,20 +124,28 @@ $(document).ready(function () {
     $('#indexKitDrop').on('select2:select', (e) => {
 
         const value = e.params.data.id
+        let kitData
+        let foundKit = false
+        hotKit.indexKits.forEach((x,i) => {
+            if (foundKit) { return }
+            if (x.id === value) {
+                kitData = x.kit
+            }
+        })
 
         switch (value) {
             case 'Custom':
                 $('.select2ClassAddMiSeqI5').select2('destroy')
                 $('.select2ClassAddMiSeqI5').empty()
                 $('.select2ClassAddMiSeqI5').select2({
-                    data: customIndexKit.i5Barcodes,
+                    data: kitData.i5Barcodes,
                     tags: true,
                     createTag: (params) => indexCreateTag(params) 
                 })
                 $('.select2ClassAddMiSeqI7').select2('destroy')
                 $('.select2ClassAddMiSeqI7').empty()
                 $('.select2ClassAddMiSeqI7').select2({
-                    data: customIndexKit.i7Barcodes,
+                    data: kitData.i7Barcodes,
                     tags: true,
                     createTag: (params) => indexCreateTag(params) 
                 })
@@ -148,7 +155,7 @@ $(document).ready(function () {
                 $('.select2ClassAddMiSeqI7').select2('destroy')
                 $('.select2ClassAddMiSeqI7').empty()
                 $('.select2ClassAddMiSeqI7').select2({
-                    data: truSeqSingleIndexSetAKit.i7Barcodes,
+                    data: kitData.i7Barcodes,
                     tags: true,
                     createTag: (params) => indexCreateTag(params) 
                 })
@@ -158,14 +165,14 @@ $(document).ready(function () {
                 $('.select2ClassAddMiSeqI5').select2('destroy')
                 $('.select2ClassAddMiSeqI5').empty()
                 $('.select2ClassAddMiSeqI5').select2({
-                    data: missionBioIndexKit.i5Barcodes,
+                    data: kitData.i5Barcodes,
                     tags: true,
                     createTag: (params) => indexCreateTag(params) 
                 })
                 $('.select2ClassAddMiSeqI7').select2('destroy')
                 $('.select2ClassAddMiSeqI7').empty()
                 $('.select2ClassAddMiSeqI7').select2({
-                    data: missionBioIndexKit.i7Barcodes,
+                    data: kitData.i7Barcodes,
                     tags: true,
                     createTag: (params) => indexCreateTag(params) 
                 })
