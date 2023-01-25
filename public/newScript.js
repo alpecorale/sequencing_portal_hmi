@@ -71,7 +71,6 @@ let expName = '';
 let descriptionInfo = '';
 let experimentalist = ''; // Assignee
 let stakeholders = []; // Watchers
-let date = new Date();
 let jiraCategory = ''
 let jiraProject = ''
 
@@ -560,6 +559,7 @@ function numbersOnly(e) {
 function indexInputFilter(e) {
     let input = e.target
     let regex = /[^AGTCN]/gi;
+    input.value = input.value.toUpperCase()
     input.value = input.value.replace(regex, "")
 }
 

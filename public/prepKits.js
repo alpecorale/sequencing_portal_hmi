@@ -1,5 +1,4 @@
 import * as barcodeKit from '/barcodeKits.js'
-// import * as BarcodKit from '/barcodeKits.js'
 
 export class CustomKit { // Custom
 
@@ -27,25 +26,16 @@ export class CustomKit { // Custom
     readType = 'both' // 'single', 'paired'
 
 
+
+
     // make SampleSheet
     makeMiseqSampleSheet(samplesList, metaData, callback) {
 
-        let csvSampleSheetMiSeq = '[Header]\n';
-        csvSampleSheetMiSeq += "Local Run Manager Analysis Id," + metaData.lrmaId + '\n'
-        csvSampleSheetMiSeq += "Experiment Name," + metaData.miseqExpName + '\n'
-        csvSampleSheetMiSeq += "Date," + metaData.date.toISOString().split('T')[0] + '\n'
-        csvSampleSheetMiSeq += "Module," + metaData.module + '\n'
-        csvSampleSheetMiSeq += "Workflow," + metaData.workflow + '\n'
-        csvSampleSheetMiSeq += "Library Prep Kit," + metaData.libPrepKit + '\n'
+        let csvSampleSheetMiSeq = ''
+        
+        // make header/settings/reads etc
+        csvSampleSheetMiSeq += this.#makeHeader(metaData)
 
-        csvSampleSheetMiSeq += "Index Kit," + metaData.indexKit + '\n'
-        csvSampleSheetMiSeq += "Chemistry," + metaData.chemistry + '\n'
-
-        csvSampleSheetMiSeq += "\n[Reads]\n"
-        csvSampleSheetMiSeq += metaData.reads1 + '\n'
-        csvSampleSheetMiSeq += metaData.reads2 + '\n'
-
-        csvSampleSheetMiSeq += "\n[Settings]\n"
         csvSampleSheetMiSeq += "\n[Data]\n"
 
         // add header names
@@ -60,7 +50,7 @@ export class CustomKit { // Custom
         })
 
         // })
-        let fileName = metaData.miseqExpName + '_' + metaData.date.toISOString().split('T')[0].split('-').join('_') + '_SampleSheet.csv'
+        let fileName = metaData.miseqExpName + '_' + metaData.date.split('-').join('_') + '_SampleSheet.csv'
         let csvSampleSheetMiSeqData = new Blob([csvSampleSheetMiSeq], { type: 'text/csv' });
 
         // need to grab this later
@@ -80,21 +70,10 @@ export class CustomKit { // Custom
     // make dynamic SampleSheet
     makeDynamicSampleSheet(samplesList, metaData, callback) {
 
-        let csvSampleSheetMiSeq = '[Header]\n';
-        csvSampleSheetMiSeq += "Local Run Manager Analysis Id," + metaData.lrmaId + '\n'
-        csvSampleSheetMiSeq += "Experiment Name," + metaData.miseqExpName + '\n'
-        csvSampleSheetMiSeq += "Date," + metaData.date.toISOString().split('T')[0] + '\n'
-        csvSampleSheetMiSeq += "Module," + metaData.module + '\n'
-        csvSampleSheetMiSeq += "Workflow," + metaData.workflow + '\n'
-        csvSampleSheetMiSeq += "Library Prep Kit," + metaData.libPrepKit + '\n'
-        csvSampleSheetMiSeq += "Index Kit," + metaData.indexKit + '\n'
-        csvSampleSheetMiSeq += "Chemistry," + metaData.chemistry + '\n'
-
-        csvSampleSheetMiSeq += "\n[Reads]\n"
-        csvSampleSheetMiSeq += metaData.reads1 + '\n'
-        csvSampleSheetMiSeq += metaData.reads2 + '\n'
-
-        csvSampleSheetMiSeq += "\n[Settings]\n"
+        let csvSampleSheetMiSeq = ''
+        
+        // make header/settings/reads etc
+        csvSampleSheetMiSeq += this.#makeHeader(metaData)
 
         csvSampleSheetMiSeq += "\n[Data]\n"
 
@@ -108,16 +87,34 @@ export class CustomKit { // Custom
         })
 
 
-        let fileName = metaData.miseqExpName + '_' + metaData.date.toISOString().split('T')[0].split('-').join('_') + '_Additional_Info.csv'
+        let fileName = metaData.miseqExpName + '_' + metaData.date.split('-').join('_') + '_Additional_Info.csv'
         let csvDataDynamic = new Blob([csvSampleSheetMiSeq], { type: 'text/csv' });
 
         this.miSeqDynamicFile = new File([csvDataDynamic], fileName)
 
         callback(true)
     }
-
+    
+    #makeHeader(metaData) {
+        let csvSampleSheetMiSeq = ''
+        csvSampleSheetMiSeq += '[Header]\n';
+        csvSampleSheetMiSeq += "Local Run Manager Analysis Id," + metaData.lrmaId + '\n'
+        csvSampleSheetMiSeq += "Experiment Name," + metaData.miseqExpName + '\n'
+        csvSampleSheetMiSeq += "Date," + metaData.date + '\n'
+        csvSampleSheetMiSeq += "Module," + metaData.module + '\n'
+        csvSampleSheetMiSeq += "Workflow," + metaData.workflow + '\n'
+        csvSampleSheetMiSeq += "Library Prep Kit," + metaData.libPrepKit + '\n'
+        csvSampleSheetMiSeq += "Index Kit," + metaData.indexKit + '\n'
+        csvSampleSheetMiSeq += "Chemistry," + metaData.chemistry + '\n'
+        csvSampleSheetMiSeq += "\n[Reads]\n"
+        csvSampleSheetMiSeq += metaData.reads1 + '\n'
+        csvSampleSheetMiSeq += metaData.reads2 + '\n'
+        csvSampleSheetMiSeq += "\n[Settings]\n"
+        return csvSampleSheetMiSeq
+    }
     // Get Samples ERRORS code
     getSamplesErrors(samples, metaData, callback) {
+        
         let internalErrors = false
 
         let i7andi5Pairs = []
@@ -279,23 +276,10 @@ export class TruSeqKit { // TruSeq Stranded mRNA
     // make SampleSheet
     makeMiseqSampleSheet(samplesList, metaData, callback) {
 
-        let csvSampleSheetMiSeq = '[Header]\n';
-        csvSampleSheetMiSeq += "Local Run Manager Analysis Id," + metaData.lrmaId + '\n'
-        csvSampleSheetMiSeq += "Experiment Name," + metaData.miseqExpName + '\n'
-        csvSampleSheetMiSeq += "Date," + metaData.date.toISOString().split('T')[0] + '\n'
-        csvSampleSheetMiSeq += "Module," + metaData.module + '\n'
-        csvSampleSheetMiSeq += "Workflow," + metaData.workflow + '\n'
-        csvSampleSheetMiSeq += "Library Prep Kit," + metaData.libPrepKit + '\n'
-        csvSampleSheetMiSeq += "Index Kit," + metaData.indexKit + '\n'
-        csvSampleSheetMiSeq += "Chemistry," + metaData.chemistry + '\n'
-
-        csvSampleSheetMiSeq += "\n[Reads]\n"
-        csvSampleSheetMiSeq += metaData.reads1 + '\n'
-
-        csvSampleSheetMiSeq += "\n[Settings]\n"
-        csvSampleSheetMiSeq += "adapter," + metaData.adapter + '\n'
-        csvSampleSheetMiSeq += "adapterRead2," + metaData.adapterRead2 + '\n'
-
+        let csvSampleSheetMiSeq = ''
+        
+        // make header/settings/reads etc
+        csvSampleSheetMiSeq += this.#makeHeader(metaData)
 
         csvSampleSheetMiSeq += "\n[Data]\n"
 
@@ -318,7 +302,7 @@ export class TruSeqKit { // TruSeq Stranded mRNA
 
 
         // })
-        let fileName = metaData.miseqExpName + '_' + metaData.date.toISOString().split('T')[0].split('-').join('_') + '_SampleSheet.csv'
+        let fileName = metaData.miseqExpName + '_' + metaData.date.split('-').join('_') + '_SampleSheet.csv'
         let csvSampleSheetMiSeqData = new Blob([csvSampleSheetMiSeq], { type: 'text/csv' });
 
         this.sampleSheetToPass.append('file', new File([csvSampleSheetMiSeqData], fileName))
@@ -337,23 +321,10 @@ export class TruSeqKit { // TruSeq Stranded mRNA
     // make dynamic SampleSheet
     makeDynamicSampleSheet(samplesList, metaData, callback) {
 
-        let csvSampleSheetMiSeq = '[Header]\n';
-        csvSampleSheetMiSeq += "Local Run Manager Analysis Id," + metaData.lrmaId + '\n'
-        csvSampleSheetMiSeq += "Experiment Name," + metaData.miseqExpName + '\n'
-        csvSampleSheetMiSeq += "Date," + metaData.date.toISOString().split('T')[0] + '\n'
-        csvSampleSheetMiSeq += "Module," + metaData.module + '\n'
-        csvSampleSheetMiSeq += "Workflow," + metaData.workflow + '\n'
-        csvSampleSheetMiSeq += "Library Prep Kit," + metaData.libPrepKit + '\n'
-        csvSampleSheetMiSeq += "Index Kit," + metaData.indexKit + '\n'
-        csvSampleSheetMiSeq += "Chemistry," + metaData.chemistry + '\n'
+        let csvSampleSheetMiSeq = ''
 
-        csvSampleSheetMiSeq += "\n[Reads]\n"
-        csvSampleSheetMiSeq += metaData.reads1 + '\n'
-
-        csvSampleSheetMiSeq += "\n[Settings]\n"
-        csvSampleSheetMiSeq += "Adapter," + metaData.adapter + '\n'
-        csvSampleSheetMiSeq += "AdapterRead2," + metaData.adapterRead2 + '\n'
-
+        // make header/settings/reads etc
+        csvSampleSheetMiSeq += this.#makeHeader(metaData)
 
         csvSampleSheetMiSeq += "\n[Data]\n"
 
@@ -367,12 +338,31 @@ export class TruSeqKit { // TruSeq Stranded mRNA
         })
 
 
-        let fileName = metaData.miseqExpName + '_' + metaData.date.toISOString().split('T')[0].split('-').join('_') + '_Additional_Info.csv'
+        let fileName = metaData.miseqExpName + '_' + metaData.date.split('-').join('_') + '_Additional_Info.csv'
         let csvDataDynamic = new Blob([csvSampleSheetMiSeq], { type: 'text/csv' });
 
         this.miSeqDynamicFile = new File([csvDataDynamic], fileName)
 
         callback(true)
+    }
+
+    #makeHeader(metaData) {
+        let csvSampleSheetMiSeq = ''
+        csvSampleSheetMiSeq += '[Header]\n';
+        csvSampleSheetMiSeq += "Local Run Manager Analysis Id," + metaData.lrmaId + '\n'
+        csvSampleSheetMiSeq += "Experiment Name," + metaData.miseqExpName + '\n'
+        csvSampleSheetMiSeq += "Date," + metaData.date + '\n'
+        csvSampleSheetMiSeq += "Module," + metaData.module + '\n'
+        csvSampleSheetMiSeq += "Workflow," + metaData.workflow + '\n'
+        csvSampleSheetMiSeq += "Library Prep Kit," + metaData.libPrepKit + '\n'
+        csvSampleSheetMiSeq += "Index Kit," + metaData.indexKit + '\n'
+        csvSampleSheetMiSeq += "Chemistry," + metaData.chemistry + '\n'
+        csvSampleSheetMiSeq += "\n[Reads]\n"
+        csvSampleSheetMiSeq += metaData.reads1 + '\n'
+        csvSampleSheetMiSeq += "\n[Settings]\n"
+        csvSampleSheetMiSeq += "adapter," + metaData.adapter + '\n'
+        csvSampleSheetMiSeq += "adapterRead2," + metaData.adapterRead2 + '\n'
+        return csvSampleSheetMiSeq
     }
 
     // Get Samples ERRORS code

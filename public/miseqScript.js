@@ -170,7 +170,7 @@ let reads1 = 151;
 let reads2 = 151;
 let lrmaId = Math.floor(1000 + Math.random() * 9000);
 export let miseqExpName = ""
-let date = new Date();
+let date = new Date().toISOString().split('T')[0];
 let module = "";
 let workflow = "";
 let libPrepKit = "";
@@ -178,7 +178,7 @@ let indexKit = "";
 let chemistry = "";
 let adapter = ""
 let adapterRead2 = ""
-// let assay = ""
+
 
 
 
@@ -493,9 +493,11 @@ function addOptionI5(term) {
 
 function indexCreateTag(params) {
     params.term = params.term.toUpperCase()
-    let regex = /^([ATGCN]{6,8})$/;
+    let currSeqLen = hotKit.indexKits[0].kit.sequence_length
+    let regex = /^[ATGCN]+$/;
+    // let regex = /^([ATGCN]{6,8})$/;
     let regexPass = regex.test(params.term)
-    if (regexPass) {
+    if (regexPass && params.term.length == currSeqLen) {
         return {
             id: params.term,
             text: params.term
@@ -583,12 +585,9 @@ async function getAllMiSeqTableVals(callback) {
         let ex3 = $(this).find(".sampEx3").val()
 
         // if everything (important) is empty then just skip row
-        if (!id && !i7 && !i5) {
-            // console.log("Skip This Row")
-            return;
-        }
+        if (!id && !i7 && !i5) { return }
 
-        // clean commas from des
+        // clean commas from description
         des.split(',').join(' ')
 
         rowVals.push(id)
@@ -601,7 +600,6 @@ async function getAllMiSeqTableVals(callback) {
         rowVals.push(i5)
         rowVals.push(proj)
         rowVals.push(ref)
-
 
         if (hasExtra1) { rowVals.push(ex1) }
         if (hasExtra2) { rowVals.push(ex2) }
