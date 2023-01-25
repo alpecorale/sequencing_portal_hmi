@@ -59,12 +59,30 @@ $(document).ready(function () {
     document.getElementById('inputReads1').addEventListener('input', numbersOnly)
     document.getElementById('inputReads2').addEventListener('input', numbersOnly)
 
+    // clean this up at some point
+    $('#readTypeSwitch').on('select2:select', (e) => {
+        const value = e.params.data.id
+
+        // toggle read2 and i5 col
+        switch (value) {
+            case 'paired':
+                document.querySelectorAll('.read2Div').forEach(a => a.style.display = "block")
+                document.querySelectorAll('.sampI5Col').forEach(a => a.style.display = "block")
+                break;
+
+            case 'single':
+                document.querySelectorAll('.read2Div').forEach(a => a.style.display = "none")
+                document.querySelectorAll('.sampI5Col').forEach(a => a.style.display = "none")
+                break;
+        }
+
+    })
+
     // Handle switching between Library Prep kits
     // makes/destroys columns from sample sheet as needed
     // populates index kit drop down with valid index kits
     $('#libraryDrop').on('select2:select', (e) => {
         const value = e.params.data.id
-
 
         switch (value) {
             case 'Custom':
@@ -74,8 +92,10 @@ $(document).ready(function () {
                 document.getElementById('miseq_extra_2').value = ''
                 document.getElementById('miseq_extra_1').disabled = false
                 document.getElementById('miseq_extra_2').disabled = false
-                document.querySelectorAll('.read2Div').forEach(a => a.style.display = "block")
-                document.querySelectorAll('.sampI5Col').forEach(a => a.style.display = "block")
+
+                // swap read type
+                swapReadType(hotKit.validReadTypes)
+
                 document.getElementById('inputReads1').value = "151"
                 $('#indexKitDrop').select2('destroy')
                 $('#indexKitDrop').empty()
@@ -101,8 +121,10 @@ $(document).ready(function () {
                 document.getElementById('miseq_extra_2').value = 'Index_Plate_Well'
                 document.getElementById('miseq_extra_1').disabled = true
                 document.getElementById('miseq_extra_2').disabled = true
-                document.querySelectorAll('.read2Div').forEach(a => a.style.display = "none")
-                document.querySelectorAll('.sampI5Col').forEach(a => a.style.display = "none")
+
+                // swap read type
+                swapReadType(hotKit.validReadTypes)
+
                 document.getElementById('inputReads1').value = "300"
                 $('#indexKitDrop').select2('destroy')
                 $('#indexKitDrop').empty()
@@ -178,6 +200,7 @@ let indexKit = "";
 let chemistry = "";
 let adapter = ""
 let adapterRead2 = ""
+let readType = "paired"
 
 
 
@@ -249,6 +272,8 @@ async function handleMiSeqSampleSheet(callback) {
     libPrepKit = document.getElementById('libraryDrop').value
     indexKit = document.getElementById('indexKitDrop').value
     chemistry = document.getElementById('chemistryDrop').value
+    readType = document.getElementById('readTypeSwitch').value
+
 
     let metaDataPackage = {
         lrmaId: lrmaId,
@@ -262,7 +287,8 @@ async function handleMiSeqSampleSheet(callback) {
         reads1: reads1,
         reads2: reads2,
         adapter: adapter,
-        adapterRead2: adapterRead2
+        adapterRead2: adapterRead2,
+        readType: readType
     }
 
     // set set samples from table
@@ -619,7 +645,7 @@ async function getAllMiSeqTableVals(callback) {
 
 // reloads indexes with values from kits
 function reloadIndexes(kitData) {
-    
+
     $('.select2ClassAddMiSeqI7').select2('destroy')
     $('.select2ClassAddMiSeqI7').empty()
     $('.select2ClassAddMiSeqI7').select2({
@@ -640,6 +666,45 @@ function reloadIndexes(kitData) {
 
 }
 
+function swapReadType(value) {
+    // change options in select to reflect options of hotKit
+    $('#readTypeSwitch').select2('destroy')
+    $('#readTypeSwitch').empty()
+    switch (value) {
+        case 'both':
+            $('#readTypeSwitch').select2({
+                data: [{ "id": 'single', 'text': 'Single' }, { "id": 'paired', 'text': 'Paired' }]
+            })
+            break;
+
+        case 'single':
+            $('#readTypeSwitch').select2({
+                data: [{ "id": 'single', 'text': 'Single' }]
+            })
+            break;
+
+        case 'paired':
+            $('#readTypeSwitch').select2({
+                data: [{ "id": 'paired', 'text': 'Paired' }]
+            })
+            break;
+    }
+
+    if (value === 'both') { // default to paired when given choice
+        value = 'paired'
+    }
+
+    $('#readTypeSwitch').val(value)
+    $('#readTypeSwitch').trigger('change')
+    $('#readTypeSwitch').trigger({
+        type: 'select2:select',
+        params: {
+            data: { 'id': value, 'text': value }
+        }
+    });
+
+
+}
 
 // no special characters
 function noSpecialChars(e) {

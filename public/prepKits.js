@@ -23,8 +23,7 @@ export class CustomKit { // Custom
         }
     ]
 
-    readType = 'both' // 'single', 'paired'
-
+    validReadTypes = 'both' // 'single', 'paired'
 
 
 
@@ -38,16 +37,21 @@ export class CustomKit { // Custom
 
         csvSampleSheetMiSeq += "\n[Data]\n"
 
-        // add header names
-        csvSampleSheetMiSeq += this.miSeqTableHeadersOg.join(',') + "\n" // want og headers
+        if (metaData.readType === 'paired') {
+            // add header names
+            csvSampleSheetMiSeq += this.miSeqTableHeadersOg.join(',') + "\n" // want og headers
 
-        // add samples
-        samplesList.forEach((x) => {
-            // slice to get original rows
-            x = x.slice(0, 8)
-            csvSampleSheetMiSeq += x.join(',') + "\n"
+            // add samples
+            samplesList.forEach((x) => {
+                // slice to get original rows
+                x = x.slice(0, 8)
+                csvSampleSheetMiSeq += x.join(',') + "\n"
 
-        })
+            })
+
+        } else { // single end
+            
+        }
 
         // })
         let fileName = metaData.miseqExpName + '_' + metaData.date.split('-').join('_') + '_SampleSheet.csv'
@@ -268,7 +272,7 @@ export class TruSeqKit { // TruSeq Stranded mRNA
         }
     ]
 
-    readType = 'single'
+    validReadTypes = 'single'
 
     // might set adapters here rather then leave them as inputs
 
