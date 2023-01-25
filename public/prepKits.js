@@ -50,10 +50,9 @@ export class CustomKit { // Custom
             })
 
         } else { // single end
-
+            csvSampleSheetMiSeq += 'This feature hasnt been added yet'
         }
 
-        // convertToFileDownload(csvSampleSheetMiSeq, metaData)
 
         let fileName = metaData.miseqExpName + '_' + metaData.date.split('-').join('_') + '_SampleSheet.csv'
         let csvSampleSheetMiSeqData = new Blob([csvSampleSheetMiSeq], { type: 'text/csv' });
@@ -267,12 +266,25 @@ export class TruSeqKit { // TruSeq Stranded mRNA
 
         csvSampleSheetMiSeq += "\n[Data]\n"
 
-        // add header names
-        csvSampleSheetMiSeq += this.truSeqTableHeadersOg.join(',') + "\n" // want og headers
 
         if (metaData.readType === 'paired') {
+            csvSampleSheetMiSeq += 'This feature hasnt been added yet'
+            // // add header names
+            // csvSampleSheetMiSeq += this.truSeqTableHeadersOg.join(',') + "\n" // want og headers
+
+            // // add samples
+            // samplesList.forEach((x) => {
+            //     // slice to get original rows
+            //     x = x.slice(0, 8)
+            //     csvSampleSheetMiSeq += x.join(',') + "\n"
+
+            // })
 
         } else {
+
+            // add header names
+            csvSampleSheetMiSeq += this.truSeqTableHeadersOg.join(',') + "\n" // want og headers
+
             // add samples
             samplesList.forEach((x) => {
                 // slice to get original rows :ie not last extra row
@@ -287,7 +299,6 @@ export class TruSeqKit { // TruSeq Stranded mRNA
             })
         }
 
-        // convertToFileDownload(csvSampleSheetMiSeq, metaData)
 
         let fileName = metaData.miseqExpName + '_' + metaData.date.split('-').join('_') + '_SampleSheet.csv'
         let csvSampleSheetMiSeqData = new Blob([csvSampleSheetMiSeq], { type: 'text/csv' });
@@ -466,20 +477,4 @@ export class TruSeqKit { // TruSeq Stranded mRNA
 
         callback(internalErrors)
     }
-}
-
-function convertToFileDownload(csvSampleSheetMiSeq, metaData) {
-    let fileName = metaData.miseqExpName + '_' + metaData.date.split('-').join('_') + '_SampleSheet.csv'
-    let csvSampleSheetMiSeqData = new Blob([csvSampleSheetMiSeq], { type: 'text/csv' });
-
-    // need to grab this later
-    this.sampleSheetToPass.append('file', new File([csvSampleSheetMiSeqData], fileName))
-
-    // // old way of downloading sample sheet directly to user
-    let csvUrl = URL.createObjectURL(csvSampleSheetMiSeqData);
-    let hiddenElement = document.createElement('a');
-    hiddenElement.href = csvUrl;
-    hiddenElement.target = '_blank';
-    hiddenElement.download = fileName; // edit this to properly name the sample sheet
-    hiddenElement.click();
 }

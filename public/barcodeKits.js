@@ -675,7 +675,7 @@ export const customIndexKit = {
     ],
 
     "sequence_length": 8,
-    "validReadTypes": 'single'
+    "validReadTypes": 'both'
 
 }
 

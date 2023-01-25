@@ -90,49 +90,41 @@ $(document).ready(function () {
                 document.querySelectorAll('.indexWellCol').forEach(x => x.style.display = 'none')
                 // document.querySelectorAll('.laneCol').forEach(x => x.style.display = 'none')
 
-
                 // swap read type
                 swapReadType(hotKit.indexKits[0].kit.validReadTypes)
 
                 document.getElementById('inputReads1').value = "151"
+                document.getElementById('inputReads2').value = "151"
+
                 $('#indexKitDrop').select2('destroy')
                 $('#indexKitDrop').empty()
                 $('#indexKitDrop').select2({
                     data: hotKit.indexKits
                 })
-                $('.select2ClassAddMiSeqI5').select2('destroy')
-                $('.select2ClassAddMiSeqI5').empty()
-                $('.select2ClassAddMiSeqI5').select2({
-                    data: hotKit.indexKits[0].kit.i5Barcodes
-                })
-                $('.select2ClassAddMiSeqI7').select2('destroy')
-                $('.select2ClassAddMiSeqI7').empty()
-                $('.select2ClassAddMiSeqI7').select2({
-                    data: hotKit.indexKits[0].kit.i7Barcodes
-                })
+
+                reloadIndexes(hotKit.indexKits[0].kit)
+
                 break;
 
             case 'TruSeq Stranded mRNA':
                 hotKit = new TruSeqKit();
-                document.querySelectorAll('.indexWellCol').forEach(x => x.style.display = 'block')
+                // document.querySelectorAll('.indexWellCol').forEach(x => x.style.display = 'block')
                 // document.querySelectorAll('.laneCol').forEach(x => x.style.display = 'block')
                 
-
                 // swap read type
                 swapReadType(hotKit.indexKits[0].kit.validReadTypes)
 
                 document.getElementById('inputReads1').value = "300"
                 document.getElementById('inputReads2').value = "300"
+
                 $('#indexKitDrop').select2('destroy')
                 $('#indexKitDrop').empty()
                 $('#indexKitDrop').select2({
                     data: hotKit.indexKits
                 })
-                $('.select2ClassAddMiSeqI7').select2('destroy')
-                $('.select2ClassAddMiSeqI7').empty()
-                $('.select2ClassAddMiSeqI7').select2({
-                    data: hotKit.indexKits[0].kit.i7Barcodes
-                })
+
+                reloadIndexes(hotKit.indexKits[0].kit)
+
                 break;
         }
     })
@@ -561,6 +553,7 @@ async function getAllMiSeqTableVals(callback) {
     // reset just in case
     // let miSeqTableVals = []
     miSeqTableHeaders = ['Sample_ID', 'Sample_Name', 'Description', 'I7_Index_ID', 'index', 'I5_Index_ID', 'index2', 'Sample_Project', 'Reference']
+    // miSeqTableHeaders = ['Sample_ID', 'Sample_Name', 'Description', 'Index_Plate_well', 'I7_Index_ID', 'index', 'I5_Index_ID', 'index2', 'Sample_Project', 'Reference']
 
     // see if any of the extra fields were filled in
     let miseqExtra1Col = $('#miseq_extra_1').val().split(' ').join('_').split('-').join('_')
