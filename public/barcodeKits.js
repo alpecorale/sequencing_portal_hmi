@@ -247,7 +247,6 @@ const truSeqSingleIndexSetBI7 = {
     ]
 }
 
-
 const otherTruSeqI7 = {
     "text": "TruSeq",
     "children": [
@@ -668,14 +667,16 @@ export const customIndexKit = {
         customI7,
         otherKit
     ],
-    
+
     "i5Barcodes": [
         blankKit,
         customI5,
         otherKit
     ],
 
-    "sequence_length": 8
+    "sequence_length": 8,
+    "validReadTypes": 'single'
+
 }
 
 export const truSeqSingleIndexSetAKit = {
@@ -683,9 +684,13 @@ export const truSeqSingleIndexSetAKit = {
         blankKit,
         truSeqSingleIndexSetAI7,
         otherKit
-    ], 
+    ],
 
-    "sequence_length": 6
+    "sequence_length": 6,
+    "validReadTypes": 'single',
+    "adapter": "AGATCGGAAGAGCACACGTCTGAACTCCAGTCA",
+    "adapterRead2": "AGATCGGAAGAGCGTCGTGTAGGGAAAGAGTGT"
+
 }
 
 export const truSeqSingleIndexSetBKit = {
@@ -693,9 +698,13 @@ export const truSeqSingleIndexSetBKit = {
         blankKit,
         truSeqSingleIndexSetBI7,
         otherKit
-    ], 
+    ],
 
-    "sequence_length": 6
+    "sequence_length": 6,
+    "validReadTypes": 'single',
+    "adapter": "AGATCGGAAGAGCACACGTCTGAACTCCAGTCA",
+    "adapterRead2": "AGATCGGAAGAGCGTCGTGTAGGGAAAGAGTGT"
+
 }
 
 export const truSeqSingleIndexSetABKit = {
@@ -703,9 +712,13 @@ export const truSeqSingleIndexSetABKit = {
         blankKit,
         truSeqSingleIndexSetABI7,
         otherKit
-    ], 
+    ],
 
-    "sequence_length": 6
+    "sequence_length": 6,
+    "validReadTypes": 'single',
+    "adapter": "AGATCGGAAGAGCACACGTCTGAACTCCAGTCA",
+    "adapterRead2": "AGATCGGAAGAGCGTCGTGTAGGGAAAGAGTGT"
+
 }
 
 export const missionBioIndexKit = {
@@ -714,14 +727,16 @@ export const missionBioIndexKit = {
         missionBioI7,
         otherKit
     ],
-    
+
     "i5Barcodes": [
         blankKit,
         missionBioI5,
         otherKit
     ],
 
-    "sequence_length": 8
+    "sequence_length": 8,
+    "validReadTypes": 'both'
+    
 }
 
 export let selectReferenceData = {
@@ -746,3 +761,79 @@ export let selectReferenceData = {
     ]
 
 }
+
+export let idtILMNNexteraDNAUDIndexesSetABCD = {
+    "i7Barcodes": [blankKit],
+    "i5Barcodes": [blankKit],
+    "sequence_length": 10,
+    "validReadTypes": 'both',
+    "adapter": "CTGTCTCTTATACACATCT"
+
+}
+
+function getNexteraXT() {
+    fetch('/libraryKits/nextera-dna-udi-lrm-library-kit-definition-iSeq-MiSeq-nextera-xt-set-a-b-c-d-2x151-384-samples.tsv', {
+        method: 'GET',
+        headers: {
+            "Content-Type": "application/json"
+        }
+    })
+        .then(response => response.text())
+        .then(text => {
+
+            // split data into sections
+            let kitArr = text.split('[Resources]')[0].split('\r\n')
+            kitArr.shift()
+            kitArr.pop()
+            kitArr.pop()
+            kitArr = kitArr.map(x => x.split('\t'))
+            let resourcesArr = text.split('[Resources]')[1].split('[Indices]')[0].split('\r\n')
+            resourcesArr.shift()
+            resourcesArr.pop()
+            resourcesArr = resourcesArr.map(x => x = x.split('\t'))
+            let indexesArr = text.split('[Indices]')[1].split('[SupportedModules]')[0].split('\r\n')
+            indexesArr.shift()
+            indexesArr.pop()
+            indexesArr.pop()
+            indexesArr.pop()
+            indexesArr = indexesArr.map(x => x = x.split('\t'))
+
+            // console.log(kitArr)
+            // console.log(resourcesArr)
+            // console.log(indexesArr)
+
+            // populate i7 and i5 list with barcodes
+            let tempI7List = []
+            let tempI5List = []
+            indexesArr.forEach(x => {
+                if (x.length < 1) { return } // skip blank row in middle
+
+                if (x[2] == 1) {
+                    tempI7List.push({
+                        "id": x[1],
+                        "text": x[0]
+                    })
+                }
+
+                if (x[2] == 2) {
+                    tempI5List.push({
+                        "id": x[1],
+                        "text": x[0]
+                    })
+                }
+
+            })
+
+            idtILMNNexteraDNAUDIndexesSetABCD.i7Barcodes.push({
+                "text": "IDT-ILMN Nextera DNA UD Indexes Set A B C D",
+                "children": tempI7List
+            })
+
+            idtILMNNexteraDNAUDIndexesSetABCD.i5Barcodes.push({
+                "text": "IDT-ILMN Nextera DNA UD Indexes Set A B C D",
+                "children": tempI5List
+            })
+
+        })
+}
+getNexteraXT()

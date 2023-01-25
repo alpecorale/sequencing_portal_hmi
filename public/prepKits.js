@@ -23,7 +23,7 @@ export class CustomKit { // Custom
         }
     ]
 
-    validReadTypes = 'both' // 'single', 'paired'
+    // validReadTypes = 'both' // 'single', 'paired'
 
 
 
@@ -31,7 +31,7 @@ export class CustomKit { // Custom
     makeMiseqSampleSheet(samplesList, metaData, callback) {
 
         let csvSampleSheetMiSeq = ''
-        
+
         // make header/settings/reads etc
         csvSampleSheetMiSeq += this.#makeHeader(metaData)
 
@@ -50,10 +50,11 @@ export class CustomKit { // Custom
             })
 
         } else { // single end
-            
+
         }
 
-        // })
+        // convertToFileDownload(csvSampleSheetMiSeq, metaData)
+
         let fileName = metaData.miseqExpName + '_' + metaData.date.split('-').join('_') + '_SampleSheet.csv'
         let csvSampleSheetMiSeqData = new Blob([csvSampleSheetMiSeq], { type: 'text/csv' });
 
@@ -75,7 +76,7 @@ export class CustomKit { // Custom
     makeDynamicSampleSheet(samplesList, metaData, callback) {
 
         let csvSampleSheetMiSeq = ''
-        
+
         // make header/settings/reads etc
         csvSampleSheetMiSeq += this.#makeHeader(metaData)
 
@@ -98,7 +99,7 @@ export class CustomKit { // Custom
 
         callback(true)
     }
-    
+
     #makeHeader(metaData) {
         let csvSampleSheetMiSeq = ''
         csvSampleSheetMiSeq += '[Header]\n';
@@ -112,13 +113,19 @@ export class CustomKit { // Custom
         csvSampleSheetMiSeq += "Chemistry," + metaData.chemistry + '\n'
         csvSampleSheetMiSeq += "\n[Reads]\n"
         csvSampleSheetMiSeq += metaData.reads1 + '\n'
-        csvSampleSheetMiSeq += metaData.reads2 + '\n'
+        if (metaData.readType === 'paired') {
+            csvSampleSheetMiSeq += metaData.reads2 + '\n'
+        }
         csvSampleSheetMiSeq += "\n[Settings]\n"
+
+        // add switch case here if elements have additional settings ie adapters
+
         return csvSampleSheetMiSeq
     }
+
     // Get Samples ERRORS code
     getSamplesErrors(samples, metaData, callback) {
-        
+
         let internalErrors = false
 
         let i7andi5Pairs = []
@@ -197,42 +204,10 @@ export class CustomKit { // Custom
 
 
         // check that all I7 and I5 pairs are from same barcoding kit (group)
-        i7andi5Pairs.forEach((x, xi) => {
-            let i7Kit = ''
-            let i5Kit = ''
+        // dont think we need to do this anymore as we are limiting options
+        // with exception of custom made ones
 
-            // this can be done a lot better with lodash.contains probably
-            // or litterly any other way to see inside objects
-            i7BarcodeKits.results.forEach((y, yi) => {
-                if (i7Kit !== '') { return } // already found
-                if (yi === 0) { return } // skip none value
-                // a .contains would be nice here
-                y.children.forEach(z => {
-                    if (i7Kit !== '') { return }
-                    if (z.id === x.i7) {
-                        i7Kit = y.text
-                    }
-                })
-            })
 
-            i5BarcodeKits.results.forEach((y, yi) => {
-                if (i5Kit !== '') { return } // already found
-                if (yi === 0) { return } // skip none value
-                // a .contains would be nice here
-                y.children.forEach(z => {
-                    if (i5Kit !== '') { return }
-                    if (z.id === x.i5) {
-                        i5Kit = y.text
-                    }
-                })
-            })
-
-            if (i5Kit !== i7Kit) {
-                alert('I7 & I5 Barcodes in Sample ' + (xi + 1) + ' do not come from the same barcoding kit ', 'danger')
-                internalErrors = true
-            }
-
-        })
         // check that all sample_Ids and names are unique
         if (allSampleIds.length !== _.uniq(allSampleIds).length) {
             alert('Please make sure all sample Ids are unique', 'danger')
@@ -269,10 +244,15 @@ export class TruSeqKit { // TruSeq Stranded mRNA
             "id": "TruSeq Single Index Set A B",
             "text": "TruSeq Single Index Set A B",
             "kit": barcodeKit.truSeqSingleIndexSetABKit
+        },
+        {
+            "id": "IDT-ILMN Nextera DNA UD Indexes Set A B C D",
+            "text": "IDT-ILMN Nextera DNA UD Indexes Set A B C D",
+            "kit": barcodeKit.idtILMNNexteraDNAUDIndexesSetABCD
         }
     ]
 
-    validReadTypes = 'single'
+    // validReadTypes = 'both'
 
     // might set adapters here rather then leave them as inputs
 
@@ -281,7 +261,7 @@ export class TruSeqKit { // TruSeq Stranded mRNA
     makeMiseqSampleSheet(samplesList, metaData, callback) {
 
         let csvSampleSheetMiSeq = ''
-        
+
         // make header/settings/reads etc
         csvSampleSheetMiSeq += this.#makeHeader(metaData)
 
@@ -290,35 +270,39 @@ export class TruSeqKit { // TruSeq Stranded mRNA
         // add header names
         csvSampleSheetMiSeq += this.truSeqTableHeadersOg.join(',') + "\n" // want og headers
 
+        if (metaData.readType === 'paired') {
 
-        // add samples
-        samplesList.forEach((x) => {
-            // slice to get original rows :ie not last extra row
-            if (x.length === 12) {
-                x.pop() // pop extra row at end
-            }
-            x.splice(8, 1) // splice refernece out
-            x.splice(5, 2) // splice I5 index out
+        } else {
+            // add samples
+            samplesList.forEach((x) => {
+                // slice to get original rows :ie not last extra row
+                if (x.length === 12) {
+                    x.pop() // pop extra row at end
+                }
+                x.splice(8, 1) // splice refernece out
+                x.splice(5, 2) // splice I5 index out
 
-            csvSampleSheetMiSeq += x.join(',') + "\n"
+                csvSampleSheetMiSeq += x.join(',') + "\n"
 
-        })
+            })
+        }
 
+        // convertToFileDownload(csvSampleSheetMiSeq, metaData)
 
-        // })
         let fileName = metaData.miseqExpName + '_' + metaData.date.split('-').join('_') + '_SampleSheet.csv'
         let csvSampleSheetMiSeqData = new Blob([csvSampleSheetMiSeq], { type: 'text/csv' });
 
+        // need to grab this later
         this.sampleSheetToPass.append('file', new File([csvSampleSheetMiSeqData], fileName))
 
         // // old way of downloading sample sheet directly to user
         let csvUrl = URL.createObjectURL(csvSampleSheetMiSeqData);
-
         let hiddenElement = document.createElement('a');
         hiddenElement.href = csvUrl;
         hiddenElement.target = '_blank';
         hiddenElement.download = fileName; // edit this to properly name the sample sheet
         hiddenElement.click();
+
         callback(true)
     }
 
@@ -363,9 +347,34 @@ export class TruSeqKit { // TruSeq Stranded mRNA
         csvSampleSheetMiSeq += "Chemistry," + metaData.chemistry + '\n'
         csvSampleSheetMiSeq += "\n[Reads]\n"
         csvSampleSheetMiSeq += metaData.reads1 + '\n'
+        if (metaData.readType === 'paired') {
+            csvSampleSheetMiSeq += metaData.reads2 + '\n'
+        }
         csvSampleSheetMiSeq += "\n[Settings]\n"
-        csvSampleSheetMiSeq += "adapter," + metaData.adapter + '\n'
-        csvSampleSheetMiSeq += "adapterRead2," + metaData.adapterRead2 + '\n'
+
+
+        switch (metaData.indexKit) {
+            case 'TruSeq Single Index Set A':
+                csvSampleSheetMiSeq += "adapter," + barcodeKit.truSeqSingleIndexSetAKit.adapter + '\n'
+                csvSampleSheetMiSeq += "adapterRead2," + barcodeKit.truSeqSingleIndexSetAKit.adapterRead2 + '\n'
+                break;
+
+            case 'TruSeq Single Index Set B':
+                csvSampleSheetMiSeq += "adapter," + barcodeKit.truSeqSingleIndexSetBKit.adapter + '\n'
+                csvSampleSheetMiSeq += "adapterRead2," + barcodeKit.truSeqSingleIndexSetBKit.adapterRead2 + '\n'
+                break;
+
+            case 'TruSeq Single Index Set A B':
+                csvSampleSheetMiSeq += "adapter," + barcodeKit.truSeqSingleIndexSetABKit.adapter + '\n'
+                csvSampleSheetMiSeq += "adapterRead2," + barcodeKit.truSeqSingleIndexSetABKit.adapterRead2 + '\n'
+                break;
+
+            case 'IDT-ILMN Nextera DNA UD Indexes Set A B C D':
+                csvSampleSheetMiSeq += "adapter," + barcodeKit.idtILMNNexteraDNAUDIndexesSetABCD.adapter + '\n'
+                break;
+
+        }
+
         return csvSampleSheetMiSeq
     }
 
@@ -416,7 +425,7 @@ export class TruSeqKit { // TruSeq Stranded mRNA
                 alert('Missing I7 Index in Sample ' + (i + 1), 'danger')
                 internalErrors = true
             }
-            if (!x[5] && !isTruSeq) { // only check for i5 when not trueseq
+            if (!x[5] && metaData.readType === 'paired') { // only check for i5 when readType is paired
                 alert('Missing I5 Index in Sample ' + (i + 1), 'danger')
                 internalErrors = true
             }
@@ -457,4 +466,20 @@ export class TruSeqKit { // TruSeq Stranded mRNA
 
         callback(internalErrors)
     }
+}
+
+function convertToFileDownload(csvSampleSheetMiSeq, metaData) {
+    let fileName = metaData.miseqExpName + '_' + metaData.date.split('-').join('_') + '_SampleSheet.csv'
+    let csvSampleSheetMiSeqData = new Blob([csvSampleSheetMiSeq], { type: 'text/csv' });
+
+    // need to grab this later
+    this.sampleSheetToPass.append('file', new File([csvSampleSheetMiSeqData], fileName))
+
+    // // old way of downloading sample sheet directly to user
+    let csvUrl = URL.createObjectURL(csvSampleSheetMiSeqData);
+    let hiddenElement = document.createElement('a');
+    hiddenElement.href = csvUrl;
+    hiddenElement.target = '_blank';
+    hiddenElement.download = fileName; // edit this to properly name the sample sheet
+    hiddenElement.click();
 }

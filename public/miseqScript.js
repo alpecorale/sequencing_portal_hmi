@@ -87,14 +87,12 @@ $(document).ready(function () {
         switch (value) {
             case 'Custom':
                 hotKit = new CustomKit();
-                document.getElementById('truSeqAdapterDiv').style.display = 'none'
-                document.getElementById('miseq_extra_1').value = ''
-                document.getElementById('miseq_extra_2').value = ''
-                document.getElementById('miseq_extra_1').disabled = false
-                document.getElementById('miseq_extra_2').disabled = false
+                document.querySelectorAll('.indexWellCol').forEach(x => x.style.display = 'none')
+                // document.querySelectorAll('.laneCol').forEach(x => x.style.display = 'none')
+
 
                 // swap read type
-                swapReadType(hotKit.validReadTypes)
+                swapReadType(hotKit.indexKits[0].kit.validReadTypes)
 
                 document.getElementById('inputReads1').value = "151"
                 $('#indexKitDrop').select2('destroy')
@@ -116,16 +114,15 @@ $(document).ready(function () {
 
             case 'TruSeq Stranded mRNA':
                 hotKit = new TruSeqKit();
-                document.getElementById('truSeqAdapterDiv').style.display = 'block'
-                document.getElementById('miseq_extra_1').value = 'Lane'
-                document.getElementById('miseq_extra_2').value = 'Index_Plate_Well'
-                document.getElementById('miseq_extra_1').disabled = true
-                document.getElementById('miseq_extra_2').disabled = true
+                document.querySelectorAll('.indexWellCol').forEach(x => x.style.display = 'block')
+                // document.querySelectorAll('.laneCol').forEach(x => x.style.display = 'block')
+                
 
                 // swap read type
-                swapReadType(hotKit.validReadTypes)
+                swapReadType(hotKit.indexKits[0].kit.validReadTypes)
 
                 document.getElementById('inputReads1').value = "300"
+                document.getElementById('inputReads2').value = "300"
                 $('#indexKitDrop').select2('destroy')
                 $('#indexKitDrop').empty()
                 $('#indexKitDrop').select2({
@@ -156,6 +153,7 @@ $(document).ready(function () {
         })
 
         // clears and reloads data in i7 and i5 index columns
+        swapReadType(kitData.validReadTypes)
         reloadIndexes(kitData)
 
         // added incase lists were full and someone tried to 
@@ -167,8 +165,6 @@ $(document).ready(function () {
 
     })
 
-    document.getElementById('adapterInput').addEventListener('input', indexInputFilter)
-    document.getElementById('adapterRead2Input').addEventListener('input', indexInputFilter)
 
     // hey its not pretty but it works
     document.getElementById('add1MiseqRow').addEventListener('click', create_tr)
@@ -198,8 +194,6 @@ let workflow = "";
 let libPrepKit = "";
 let indexKit = "";
 let chemistry = "";
-let adapter = ""
-let adapterRead2 = ""
 let readType = "paired"
 
 
@@ -265,8 +259,6 @@ async function handleMiSeqSampleSheet(callback) {
     miseqExpName = document.getElementById('miseqExperimentName').value // probably pull out of miseq
     reads1 = document.getElementById('inputReads1').value
     reads2 = document.getElementById('inputReads2').value
-    adapter = document.getElementById('adapterInput').value // truseq
-    adapterRead2 = document.getElementById('adapterRead2Input').value // truseq
     module = document.getElementById('moduleDrop').value
     workflow = document.getElementById('workflowDrop').value
     libPrepKit = document.getElementById('libraryDrop').value
@@ -286,8 +278,6 @@ async function handleMiSeqSampleSheet(callback) {
         chemistry: chemistry,
         reads1: reads1,
         reads2: reads2,
-        adapter: adapter,
-        adapterRead2: adapterRead2,
         readType: readType
     }
 
@@ -306,7 +296,7 @@ async function handleMiSeqSampleSheet(callback) {
     }
 
     // fix simple errors and type check etc
-    anyMiSeqErrors = await getSamplesErrorsPromise(samples, metaData)
+    anyMiSeqErrors = await getSamplesErrorsPromise(samples, metaDataPackage)
 
     // check only numbers in reads
     if (isNaN(reads1) || isNaN(reads2)) {

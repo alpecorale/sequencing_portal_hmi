@@ -173,41 +173,29 @@
                         <input class="form-control read2Div" type="text" id="inputReads2" value="151" style="text-align: right">
                     </div>
                 </div>
-
-                <div id="truSeqAdapterDiv" style="display: none;">
-
-
-                    <div class="mb-3 row">
-                        <label class="col-sm-2 col-form-label bold required-field" for="adapterInput">Adapter:</label>
-                        <div class="col-sm-3">
-                            <input class="form-control" type="text" value="AGATCGGAAGAGCACACGTCTGAACTCCAGTCA" id="adapterInput">
-                        </div>
-                        <div class="col-sm-1"></div>
-                        <label class="col-sm-2 col-form-label required-field" for="adapterRead2Input">Adapter Read
-                            2:</label>
-                        <div class="col-sm-3">
-                            <input class="form-control" type="text" value="AGATCGGAAGAGCGTCGTGTAGGGAAAGAGTGT" id="adapterRead2Input">
-                        </div>
-                    </div>
-                </div>
                 
                 <div class="container overflow-auto" style="height: 400px; background-color: floralwhite;">
                     <table class="table">
                         <thead class="thead-light">
                             <tr>
                                 <th></th>
+                                <th class="laneCol" style="display: none">Lane</th>
                                 <th class="required-field">Sample_ID</th>
                                 <!-- <th class="required-field">Sample_Name</th> -->
                                 <th>Description</th>
+
+                                <th class="required-field indexWellCol"  style="display: none">Index_Plate_Well
+                                    <!-- <i class="bi bi-info-circle indexInfo" data-toggle="popover"
+                                        title="Common I7 Indexes"></i> -->
+                                </th>
                                 <th class="required-field">I7_Index
                                     <i class="bi bi-info-circle indexInfo" data-toggle="popover"
                                         title="Common I7 Indexes"></i>
                                 </th>
-                                <!-- <th>index</th> -->
                                 <th class="required-field sampI5Col">I5_Index <i class="bi bi-info-circle indexInfo"
                                         data-toggle="popover" title="Common I5 Indexes"></i>
                                 </th>
-                                <!-- <th>index2</th> -->
+
                                 <th>Sample_Project</th>
                                 <th>Reference <i class="bi bi-info-circle sampleSheetRefInfo" data-toggle="popover"
                                         title="References"></i>
@@ -245,6 +233,9 @@
                         <tbody id="miseq_table_body">
                             <tr>
                                 <td>1</td>
+                                <td class="laneCol" style="display: none">
+                                    <input class="laneNum" type="text" class="form-control" value="1">
+                                </td>
                                 <td>
                                     <input class="sampId" type="text" class="form-control" placeholder="sample_id">
                                 </td>
@@ -254,6 +245,9 @@
                                 <td>
                                     <textarea class="form-control sampDes"
                                         style="height: 40px; width: 150px;"></textarea>
+                                </td>
+                                <td class="indexWellCol"  style="display: none">
+                                    <input class="indexWellInput" type="text" class="form-control" placeholder="A01">
                                 </td>
                                 <td>
                                     <select class="select2ClassAddMiSeqI7 select2ClassAddMiSeq sampI7"
