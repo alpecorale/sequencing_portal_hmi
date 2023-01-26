@@ -223,7 +223,7 @@ const makeMiseqSampleSheetPromise = (samplesList, metaData) => {
 const getSamplesErrorsPromise = (samplesInput, metaData) => {
     console.log("starting get Samples errors promise", samplesInput)
     return new Promise((res, rej) => {
-        hotKit.getSamplesErrors(samplesInput, metaData, (data) => {
+        getSamplesErrors(samplesInput, metaData, (data) => {
             res(data)
         })
     })
@@ -328,6 +328,110 @@ const alert = (message, type) => {
 
     alertPlaceholder.append(wrapper)
 }
+
+/*
+* Sample Errors
+*/
+function getSamplesErrors(samplesIn, metaData, callback) {
+
+    let internalErrors = false
+
+    if (samplesIn.length <= 1) {
+        alert('Please add samples', 'danger')
+        internalErrors = true
+        return;
+    }
+
+    let allSampleIds = []
+    let i7andi5Pairs = [] // paired
+    let i7list = [] // single
+
+
+    // check sample errors here
+    samplesIn.forEach((x, i) => {
+        if (i === 0) { return } // skip references
+
+        if (!x[0]) {
+            alert('Missing Sample_ID in Sample ' + (i + 1), 'danger')
+            internalErrors = true
+        }
+        if (!x[3]) {
+            alert('Missing I7 Index in Sample ' + (i + 1), 'danger')
+            internalErrors = true
+        }
+
+        // add all ids to list
+        allSampleIds.push(x[0])
+
+        if (metaData.readType === "single") {
+
+            // add all i7 to list to check and make sure none are the same
+            i7list.push(x[3])
+
+
+        } else {
+
+            if (!x[5]) {
+                alert('Missing I5 Index in Sample ' + (i + 1), 'danger')
+                internalErrors = true
+            }
+
+            // make sure i5 and i7 index are not the same
+            if (x[3] === x[5] && x[3] && x[5]) {
+                alert('I5 and I7 Index in Sample ' + (i + 1) + ' cannot be the same', 'danger')
+                internalErrors = true
+            }
+
+            // add I7 and I5 pair to list
+            i7andi5Pairs.push({ 'i7': x[3], 'i5': x[5] })
+
+
+        }
+
+        // // check for references in sample sheet being none/empty
+        // if (x[8] === 'None' || x[8] === '') {
+        //     // add alert and stop here if desired
+        //     // internalErrors = true
+        // }
+
+    })
+
+
+    if (metaData.readType === 'single') {
+
+        // check to make sure no repeats
+        let i7Set = [...new Set(i7list)]
+        if (i7Set.length !== i7list.length) {
+            alert('I7 barcode cannot be repeated in Samples', 'danger')
+            internalErrors = true
+        }
+
+    } else {
+
+        // check that all I7 and I5 pairs are unique
+        i7andi5Pairs.forEach((x, xi) => {
+            i7andi5Pairs.forEach((y, yi) => {
+                // skip checked pairs
+                if (xi >= yi) { return; }
+                // compare each pair to see if any matches
+                if (_.isEqual(x, y)) {
+                    alert('I5_I7 Pair is repeated in Samples ' + (xi + 1) + ' and ' + (yi + 1), 'danger')
+                    internalErrors = true
+                }
+            })
+        })
+
+    }
+
+    // check that all sample_Ids and names are unique
+    if (allSampleIds.length !== _.uniq(allSampleIds).length) {
+        alert('Please make sure all sample Ids are unique', 'danger')
+        internalErrors = true
+    }
+
+    callback(internalErrors)
+}
+
 
 
 
