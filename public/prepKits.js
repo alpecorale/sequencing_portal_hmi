@@ -96,8 +96,9 @@ export class CustomKit { // Custom
     getSamplesErrors(samples, metaData, callback) {
 
         let internalErrors = false
+        console.log('samplesError', samples.length)
 
-        if (samples.length < 1) {
+        if (samples.length <= 1) {
             alert('Please add samples', 'danger')
             internalErrors = true
             return;
@@ -322,7 +323,7 @@ export class TruSeqKit { // TruSeq Stranded mRNA
 
         let internalErrors = false
 
-        if (samples.length < 1) {
+        if (samples.length <= 1) {
             alert('Please add samples', 'danger')
             internalErrors = true
             return;
@@ -418,4 +419,22 @@ export class TruSeqKit { // TruSeq Stranded mRNA
 
         callback(internalErrors)
     }
+}
+
+
+// 
+// Alert Stuff
+//
+const alertPlaceholder = document.getElementById('liveAlertPlaceholder')
+
+const alert = (message, type) => {
+    const wrapper = document.createElement('div')
+    wrapper.innerHTML = [
+        `<div class="alert alert-${type} alert-dismissible" role="alert">`,
+        `   <div>${message}</div>`,
+        '   <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>',
+        '</div>'
+    ].join('')
+
+    alertPlaceholder.append(wrapper)
 }
