@@ -112,13 +112,6 @@ export class CustomKit { // Custom
         samples.forEach((x, i) => {
             if (i === 0) { return } // skip references
 
-            // convert - and ' ' to _
-            x[0] = x[0].split('-').join('_')
-            x[0] = x[0].split(' ').join('_')
-            x[1] = x[1].split('-').join('_')
-            x[1] = x[1].split(' ').join('_')
-
-
             if (!x[0]) {
                 alert('Missing Sample_ID in Sample ' + (i + 1), 'danger')
                 internalErrors = true
@@ -133,17 +126,11 @@ export class CustomKit { // Custom
 
             if (metaData.readType === "single") {
 
-                x[5] = x[5].split('-').join('_') // project
-                x[5] = x[5].split(' ').join('_') // project
-
                 // add all i7 to list to check and make sure none are the same
                 i7list.push(x[3])
 
 
             } else {
-
-                x[7] = x[7].split('-').join('_') // project
-                x[7] = x[7].split(' ').join('_') // project
 
                 if (!x[5]) {
                     alert('Missing I5 Index in Sample ' + (i + 1), 'danger')
@@ -350,13 +337,6 @@ export class TruSeqKit { // TruSeq Stranded mRNA
         samples.forEach((x, i) => {
             if (i === 0) { return } // skip references
 
-            // convert - and ' ' to _
-            x[0] = x[0].split('-').join('_')
-            x[0] = x[0].split(' ').join('_')
-            x[1] = x[1].split('-').join('_')
-            x[1] = x[1].split(' ').join('_')
-
-
             if (!x[0]) {
                 alert('Missing Sample_ID in Sample ' + (i + 1), 'danger')
                 internalErrors = true
@@ -371,17 +351,11 @@ export class TruSeqKit { // TruSeq Stranded mRNA
 
             if (metaData.readType === "single") {
 
-                x[5] = x[5].split('-').join('_') // project
-                x[5] = x[5].split(' ').join('_') // project
-
                 // add all i7 to list to check and make sure none are the same
                 i7list.push(x[3])
 
 
             } else {
-
-                x[7] = x[7].split('-').join('_') // project
-                x[7] = x[7].split(' ').join('_') // project
 
                 if (!x[5]) {
                     alert('Missing I5 Index in Sample ' + (i + 1), 'danger')

@@ -583,8 +583,13 @@ async function getAllMiSeqTableVals(callback) {
         // if everything (important) is empty then just skip row
         if (!id && !i7 && !i5) { return }
 
-        // clean commas from description
+        // clean certain characters
+        id = id.split('-').join('_')
+        id = id.split(' ').join('_')
         des.split(',').join(' ')
+        proj = proj.split('-').join('_')
+        proj = proj.split(' ').join('_')
+
 
         rowVals.push(id)
         rowVals.push(id) // sample name
