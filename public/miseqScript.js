@@ -108,9 +108,9 @@ $(document).ready(function () {
 
             case 'TruSeq Stranded mRNA':
                 hotKit = new TruSeqKit();
-                // document.querySelectorAll('.indexWellCol').forEach(x => x.style.display = 'block')
+                document.querySelectorAll('.indexWellCol').forEach(x => x.style.display = 'block')
                 // document.querySelectorAll('.laneCol').forEach(x => x.style.display = 'block')
-                
+
                 // swap read type
                 swapReadType(hotKit.indexKits[0].kit.validReadTypes)
 
@@ -160,16 +160,13 @@ $(document).ready(function () {
 
     // hey its not pretty but it works
     document.getElementById('add1MiseqRow').addEventListener('click', create_tr)
-    document.getElementById('add3MiseqRow').addEventListener('click', () => {
-        create_tr(); create_tr(); create_tr();
-    })
     document.getElementById('add5MiseqRow').addEventListener('click', () => {
         create_tr(); create_tr(); create_tr(); create_tr(); create_tr();
     })
 
     // auto pop with a few more rows
     create_tr(); create_tr(); create_tr(); create_tr(); create_tr();
-    create_tr(); create_tr(); create_tr(); create_tr(); create_tr();
+    create_tr(); create_tr(); create_tr(); create_tr();
 
 });
 
@@ -217,14 +214,6 @@ const makeMiseqSampleSheetPromise = (samplesList, metaData) => {
     return new Promise((res, rej) => {
         hotKit.makeMiseqSampleSheet(samplesList, metaData, (data) => {
             console.log("Finish make MiSeq Sample sheet promise", samples)
-            res(data)
-        })
-    })
-}
-
-const makeDynamicSampleSheetPromise = (samplesList, metaData) => {
-    return new Promise((res, rej) => {
-        hotKit.makeDynamicSampleSheet(samplesList, metaData, (data) => {
             res(data)
         })
         miSeqDynamicFile = hotKit.miSeqDynamicFile
@@ -303,11 +292,7 @@ async function handleMiSeqSampleSheet(callback) {
 
     miseqExpName = miseqExpName.split('-').join('_') // replace - with _
 
-
-    // make dynamic sample sheet
-    await makeDynamicSampleSheetPromise(samples, metaDataPackage)
-
-    // make samplesheet
+    // make samplesheet (now makes dynamic sample sheet in same fxn)
     await makeMiseqSampleSheetPromise(samples, metaDataPackage)
 
 
@@ -505,7 +490,7 @@ function indexCreateTag(params) {
     let regex = /^[ATGCN]+$/;
     // let regex = /^([ATGCN]{6,8})$/;
     let regexPass = regex.test(params.term)
-    if (regexPass && params.term.length == currSeqLen) {
+    if ((regexPass && libPrepKit === "Custom") || (regexPass && params.term.length == currSeqLen)) {
         return {
             id: params.term,
             text: params.term
@@ -534,35 +519,34 @@ function addOptionRef(term) {
 }
 
 
-let miSeqTableHeaders = ['Sample_ID', 'Sample_Name', 'Description', 'I7_Index_ID', 'index', 'I5_Index_ID', 'index2', 'Sample_Project', 'Reference']
-
 let anyMiSeqErrors = false
 /*
 * Pulls all of sample information frome the table... 
 * only pulls information from extra columns if title for those columns is filled in
 */
-let hasExtra1 = false
-let hasExtra2 = false
-let hasExtra3 = false
 let miSeqTableVals = []
 async function getAllMiSeqTableVals(callback) {
 
     miSeqTableVals = []
     anyMiSeqErrors = false
 
-    // reset just in case
-    // let miSeqTableVals = []
-    miSeqTableHeaders = ['Sample_ID', 'Sample_Name', 'Description', 'I7_Index_ID', 'index', 'I5_Index_ID', 'index2', 'Sample_Project', 'Reference']
-    // miSeqTableHeaders = ['Sample_ID', 'Sample_Name', 'Description', 'Index_Plate_well', 'I7_Index_ID', 'index', 'I5_Index_ID', 'index2', 'Sample_Project', 'Reference']
+    let miSeqTableHeaders = []
+
+    if (readType === 'paired') {
+        miSeqTableHeaders = ['Sample_ID', 'Sample_Name', 'Description', 'I7_Index_ID', 'index', 'I5_Index_ID', 'index2', 'Sample_Project', 'Index_Plate_Well', 'Reference']
+    } else {
+        miSeqTableHeaders = ['Sample_ID', 'Sample_Name', 'Description', 'I7_Index_ID', 'index', 'Sample_Project', 'Index_Plate_Well', 'Reference']
+
+    }
 
     // see if any of the extra fields were filled in
     let miseqExtra1Col = $('#miseq_extra_1').val().split(' ').join('_').split('-').join('_')
     let miseqExtra2Col = $('#miseq_extra_2').val().split(' ').join('_').split('-').join('_')
     let miseqExtra3Col = $('#miseq_extra_3').val().split(' ').join('_').split('-').join('_')
 
-    // let hasExtra1 = false
-    // let hasExtra2 = false
-    // let hasExtra3 = false
+    let hasExtra1 = false
+    let hasExtra2 = false
+    let hasExtra3 = false
 
     if (miseqExtra1Col) {
         hasExtra1 = true
@@ -577,14 +561,17 @@ async function getAllMiSeqTableVals(callback) {
         miSeqTableHeaders.push(miseqExtra3Col)
     }
 
+    // add headers to miSeqTableVals
+    miSeqTableVals.push(miSeqTableHeaders)
+
     // get values
     let geet = $("#miseq_table_body tr").each(async function (x) {
 
         let rowVals = []
 
         let id = $(this).find(".sampId").val()
-        // let name = $(this).find(".sampName").val()
         let des = $(this).find(".sampDes").val()
+        let indexWell = $(this).find(".indexWellInput").val()
         let i7 = $(this).find(".sampI7").val()
         let i5 = $(this).find(".sampI5").val()
         let proj = $(this).find(".sampProj").val()
@@ -600,14 +587,18 @@ async function getAllMiSeqTableVals(callback) {
         des.split(',').join(' ')
 
         rowVals.push(id)
-        // rowVals.push(name)
-        rowVals.push(id)
+        rowVals.push(id) // sample name
         rowVals.push(des)
         rowVals.push(i7)
         rowVals.push(i7)
-        rowVals.push(i5)
-        rowVals.push(i5)
+        if (readType === 'paired') {
+            rowVals.push(i5)
+            rowVals.push(i5)
+        }
         rowVals.push(proj)
+        if (libPrepKit !== "Custom") {
+            rowVals.push(indexWell)
+        }
         rowVals.push(ref)
 
         if (hasExtra1) { rowVals.push(ex1) }
@@ -619,7 +610,7 @@ async function getAllMiSeqTableVals(callback) {
     })
 
     $.when.apply(geet, miSeqTableVals).done(async () => {
-        console.log("starting geet promise")
+        // console.log("starting geet promise")
         samples = miSeqTableVals
         callback(miSeqTableVals)
     })
