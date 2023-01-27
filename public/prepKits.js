@@ -120,6 +120,26 @@ export class TruSeqKit { // TruSeq Stranded mRNA
             "id": "IDT-ILMN Nextera DNA UD Indexes Set A B C D",
             "text": "IDT-ILMN Nextera DNA UD Indexes Set A B C D",
             "kit": barcodeKit.idtILMNNexteraDNAUDIndexesSetABCD
+        },
+        {
+            "id": "IDT-ILMN Nextera DNA UD Indexes Set A",
+            "text": "IDT-ILMN Nextera DNA UD Indexes Set A",
+            "kit": barcodeKit.idtILMNNexteraDNAUDIndexesSetA
+        },
+        {
+            "id": "IDT-ILMN Nextera DNA UD Indexes Set B",
+            "text": "IDT-ILMN Nextera DNA UD Indexes Set B",
+            "kit": barcodeKit.idtILMNNexteraDNAUDIndexesSetB
+        },
+        {
+            "id": "IDT-ILMN Nextera DNA UD Indexes Set C",
+            "text": "IDT-ILMN Nextera DNA UD Indexes Set C",
+            "kit": barcodeKit.idtILMNNexteraDNAUDIndexesSetC
+        },
+        {
+            "id": "IDT-ILMN Nextera DNA UD Indexes Set D",
+            "text": "IDT-ILMN Nextera DNA UD Indexes Set D",
+            "kit": barcodeKit.idtILMNNexteraDNAUDIndexesSetD
         }
     ]
 

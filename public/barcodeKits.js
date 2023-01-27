@@ -771,6 +771,44 @@ export let idtILMNNexteraDNAUDIndexesSetABCD = {
 
 }
 
+export let idtILMNNexteraDNAUDIndexesSetA = {
+    "i7Barcodes": [blankKit],
+    "i5Barcodes": [blankKit],
+    "sequence_length": 10,
+    "validReadTypes": 'both',
+    "adapter": "CTGTCTCTTATACACATCT"
+
+}
+
+export let idtILMNNexteraDNAUDIndexesSetB = {
+    "i7Barcodes": [blankKit],
+    "i5Barcodes": [blankKit],
+    "sequence_length": 10,
+    "validReadTypes": 'both',
+    "adapter": "CTGTCTCTTATACACATCT"
+
+}
+
+export let idtILMNNexteraDNAUDIndexesSetC = {
+    "i7Barcodes": [blankKit],
+    "i5Barcodes": [blankKit],
+    "sequence_length": 10,
+    "validReadTypes": 'both',
+    "adapter": "CTGTCTCTTATACACATCT"
+
+}
+
+export let idtILMNNexteraDNAUDIndexesSetD = {
+    "i7Barcodes": [blankKit],
+    "i5Barcodes": [blankKit],
+    "sequence_length": 10,
+    "validReadTypes": 'both',
+    "adapter": "CTGTCTCTTATACACATCT"
+
+}
+
+
+
 function getNexteraXT() {
     fetch('/libraryKits/nextera-dna-udi-lrm-library-kit-definition-iSeq-MiSeq-nextera-xt-set-a-b-c-d-2x151-384-samples.tsv', {
         method: 'GET',
@@ -834,6 +872,44 @@ function getNexteraXT() {
                 "children": tempI5List
             })
 
+            idtILMNNexteraDNAUDIndexesSetA.i7Barcodes.push({
+                "text": "IDT-ILMN Nextera DNA UD Indexes Set A",
+                "children": tempI7List.slice(0,96)
+            })
+
+            idtILMNNexteraDNAUDIndexesSetA.i5Barcodes.push({
+                "text": "IDT-ILMN Nextera DNA UD Indexes Set A",
+                "children": tempI5List.slice(0,96)
+            })
+
+            idtILMNNexteraDNAUDIndexesSetB.i7Barcodes.push({
+                "text": "IDT-ILMN Nextera DNA UD Indexes Set B",
+                "children": tempI7List.slice(96,192)
+            })
+
+            idtILMNNexteraDNAUDIndexesSetB.i5Barcodes.push({
+                "text": "IDT-ILMN Nextera DNA UD Indexes Set B",
+                "children": tempI5List.slice(96,192)
+            })
+
+            idtILMNNexteraDNAUDIndexesSetC.i7Barcodes.push({
+                "text": "IDT-ILMN Nextera DNA UD Indexes Set C",
+                "children": tempI7List.slice(192,288)
+            })
+
+            idtILMNNexteraDNAUDIndexesSetC.i5Barcodes.push({
+                "text": "IDT-ILMN Nextera DNA UD Indexes Set C",
+                "children": tempI5List.slice(192,288)
+            })
+            idtILMNNexteraDNAUDIndexesSetD.i7Barcodes.push({
+                "text": "IDT-ILMN Nextera DNA UD Indexes Set D",
+                "children": tempI7List.slice(288,384)
+            })
+
+            idtILMNNexteraDNAUDIndexesSetD.i5Barcodes.push({
+                "text": "IDT-ILMN Nextera DNA UD Indexes Set D",
+                "children": tempI5List.slice(288,384)
+            })
         })
 }
 getNexteraXT()
