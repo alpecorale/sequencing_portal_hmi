@@ -41,99 +41,99 @@ const truSeqSingleIndexSetABI7 = {
     "children": [
         {
             "id": "ATCACG", // 1
-            "text": "ATCACG"
+            "text": "AD001"
         },
         {
             "id": "CGATGT", // 2
-            "text": "CGATGT"
+            "text": "AD002"
         },
         {
             "id": "TTAGGC", // 3
-            "text": "TTAGGC"
+            "text": "AD003"
         },
         {
             "id": "TGACCA", // 4
-            "text": "TGACCA"
+            "text": "AD004"
         },
         {
             "id": "ACAGTG", // 5
-            "text": "ACAGTG"
+            "text": "AD005"
         },
         {
             "id": "GCCAAT", // 6
-            "text": "GCCAAT"
+            "text": "AD006"
         },
         {
             "id": "CAGATC", // 7
-            "text": "CAGATC"
+            "text": "AD007"
         },
         {
             "id": "ACTTGA", // 8
-            "text": "ACTTGA"
+            "text": "AD008"
         },
         {
             "id": "GATCAG", // 9
-            "text": "GATCAG"
+            "text": "AD008"
         },
         {
             "id": "TAGCTT", // 10
-            "text": "TAGCTT"
+            "text": "AD010"
         },
         {
             "id": "GGCTAC", // 11
-            "text": "GGCTAC"
+            "text": "AD011"
         },
         {
             "id": "CTTGTA", // 12
-            "text": "CTTGTA"
+            "text": "AD012"
         },
         {
             "id": "AGTCAA", // 13
-            "text": "AGTCAA"
+            "text": "AD013"
         },
         {
             "id": "AGTTCC", // 14
-            "text": "AGTTCC"
+            "text": "AD014"
         },
         {
             "id": "ATGTCA", // 15
-            "text": "ATGTCA"
+            "text": "AD015"
         },
         {
             "id": "CCGTCC", // 16
-            "text": "CCGTCC"
+            "text": "AD016"
         },
         {
             "id": "GTCCGC", // 18
-            "text": "GTCCGC"
+            "text": "AD018"
         },
         {
             "id": "GTGAAA", // 19
-            "text": "GTGAAA"
+            "text": "AD019"
         },
         {
             "id": "GTGGCC", // 20
-            "text": "GTGGCC"
+            "text": "AD020"
         },
         {
             "id": "GTTTCG", // 21
-            "text": "GTTTCG"
+            "text": "AD021"
         },
         {
             "id": "CGTACG", // 22
-            "text": "CGTACG"
+            "text": "AD022"
         },
         {
             "id": "GAGTGG", // 23
-            "text": "GAGTGG"
+            "text": "AD023"
         },
         {
             "id": "ACTGAT", // 25
-            "text": "ACTGAT"
+            "text": "AD025"
         },
         {
             "id": "ATTCCT", // 27
-            "text": "ATTCCT"
+            "text": "AD027"
         }
     ]
 }
@@ -144,51 +144,51 @@ const truSeqSingleIndexSetAI7 = {
 
         {
             "id": "CGATGT", // 2
-            "text": "CGATGT"
+            "text": "AD002"
         },
         {
             "id": "TGACCA", // 4
-            "text": "TGACCA"
+            "text": "AD004"
         },
         {
             "id": "ACAGTG", // 5
-            "text": "ACAGTG"
+            "text": "AD005"
         },
         {
             "id": "GCCAAT", // 6
-            "text": "GCCAAT"
+            "text": "AD006"
         },
         {
             "id": "CAGATC", // 7
-            "text": "CAGATC"
+            "text": "AD007"
         },
         {
             "id": "CTTGTA", // 12
-            "text": "CTTGTA"
+            "text": "AD012"
         },
         {
             "id": "AGTCAA", // 13
-            "text": "AGTCAA"
+            "text": "AD013"
         },
         {
             "id": "AGTTCC", // 14
-            "text": "AGTTCC"
+            "text": "AD014"
         },
         {
             "id": "ATGTCA", // 15
-            "text": "ATGTCA"
+            "text": "AD015"
         },
         {
             "id": "CCGTCC", // 16
-            "text": "CCGTCC"
+            "text": "AD016"
         },
         {
             "id": "GTCCGC", // 18
-            "text": "GTCCGC"
+            "text": "AD018"
         },
         {
             "id": "GTGAAA", // 19
-            "text": "GTGAAA"
+            "text": "AD019"
         }
     ]
 }
@@ -198,51 +198,51 @@ const truSeqSingleIndexSetBI7 = {
     "children": [
         {
             "id": "ATCACG", // 1
-            "text": "ATCACG"
+            "text": "AD001"
         },
         {
             "id": "TTAGGC", // 3
-            "text": "TTAGGC"
+            "text": "AD003"
         },
         {
             "id": "ACTTGA", // 8
-            "text": "ACTTGA"
+            "text": "AD008"
         },
         {
             "id": "GATCAG", // 9
-            "text": "GATCAG"
+            "text": "AD009"
         },
         {
             "id": "TAGCTT", // 10
-            "text": "TAGCTT"
+            "text": "AD010"
         },
         {
             "id": "GGCTAC", // 11
-            "text": "GGCTAC"
+            "text": "AD011"
         },
         {
             "id": "GTGGCC", // 20
-            "text": "GTGGCC"
+            "text": "AD020"
         },
         {
             "id": "GTTTCG", // 21
-            "text": "GTTTCG"
+            "text": "AD021"
         },
         {
             "id": "CGTACG", // 22
-            "text": "CGTACG"
+            "text": "AD022"
         },
         {
             "id": "GAGTGG", // 23
-            "text": "GAGTGG"
+            "text": "AD023"
         },
         {
             "id": "ACTGAT", // 25
-            "text": "ACTGAT"
+            "text": "AD025"
         },
         {
             "id": "ATTCCT", // 27
-            "text": "ATTCCT"
+            "text": "AD027"
         }
     ]
 }
@@ -685,6 +685,15 @@ export const truSeqSingleIndexSetAKit = {
         truSeqSingleIndexSetAI7,
         otherKit
     ],
+    // "indexWellPairs": [
+    //     {
+    //         'id': x[0],
+    //         'text': x[0],
+    //         'i7_well': i7Dict[x[3].split('-')[0]],
+    //         'i5_well': i5Dict[x[3].split('-')[1]]
+    //     }
+    // ],
+
 
     "sequence_length": 6,
     "validReadTypes": 'single',
