@@ -3,6 +3,8 @@ import { CustomKit, TruSeqKit } from '/prepKits.js';
 
 
 let hotKit = new CustomKit() // prepKits.js Class for Custom Kit
+let currentKit // barcode kit // clean this up
+let indexWellGlobalPairs = {} // index well global pairs // clean this up
 
 $(document).ready(function () {
 
@@ -38,6 +40,9 @@ $(document).ready(function () {
     $('.select2ClassAddMiSeqRef').select2({
         data: selectReferenceData.results
     })
+    $('.select2ClassIndexWell').select2({
+        data: [{ "id": "", "text": "None" }]
+    })
 
     // load available kits from hotKit
     $('#indexKitDrop').select2({
@@ -59,7 +64,7 @@ $(document).ready(function () {
     document.getElementById('inputReads1').addEventListener('input', numbersOnly)
     document.getElementById('inputReads2').addEventListener('input', numbersOnly)
 
-    // clean this up at some point
+
     $('#readTypeSwitch').on('select2:select', (e) => {
         const value = e.params.data.id
 
@@ -132,8 +137,10 @@ $(document).ready(function () {
     // Handle switching between index kits 
     // loads appropriate i7 and i5 kits into dropdowns to remove clutter
     // does empty out all dropdown so if items are created they will be removed
+
     $('#indexKitDrop').on('select2:select', (e) => {
 
+        // clean this up
         const value = e.params.data.id
         let kitData
         let foundKit = false
@@ -141,6 +148,7 @@ $(document).ready(function () {
             if (foundKit) { return }
             if (x.id === value) {
                 kitData = x.kit
+                currentKit = x.kit
             }
         })
 
@@ -156,6 +164,7 @@ $(document).ready(function () {
 
 
     })
+
 
 
     // hey its not pretty but it works
@@ -447,6 +456,8 @@ function getSamplesErrors(samplesIn, metaData, callback) {
 function create_tr() {
 
     $('.select2ClassAddMiSeq').select2('destroy')
+    $('.select2ClassIndexWell').select2('destroy')
+
 
     let table_body = document.getElementById('miseq_table_body'),
         first_tr = table_body.lastElementChild,
@@ -455,6 +466,10 @@ function create_tr() {
     table_body.append(tr_clone);
 
     clean_last_tr(table_body.lastElementChild);
+
+    $('.select2ClassIndexWell').select2({
+        // might need to intialize event listener again?
+    })
 
     $('.select2ClassAddMiSeq').select2({
         placeholder: 'None',
@@ -473,6 +488,9 @@ function create_tr() {
         createTag: (params) => indexCreateTag(params)
     })
 
+    addOptionI7Helper()
+    addOptionI5Helper()
+    handleIndexWell()
     // Re add event listeners everywhere
     let rm_row_btns = document.querySelectorAll('.rm-row-btn')
     Array.from(rm_row_btns).forEach(x => {
@@ -535,15 +553,55 @@ function remove_tr() {
 $('.select2ClassAddMiSeqI7').on('select2:select', function (e) {
     let item = e.params.data.id
     addOptionI7(item)
+    addOptionI7Helper()
 });
 $('.select2ClassAddMiSeqI5').on('select2:select', function (e) {
     let item = e.params.data.id
     addOptionI5(item)
+    addOptionI5Helper()
 });
 $('.select2ClassAddMiSeqRef').on('select2:select', function (e) {
     let item = e.params.data.id
     addOptionRef(item)
 });
+
+// Event handler for index_plate_well that selects and 
+// disables i7 and i5 indexes on selection
+$('.select2ClassIndexWell').on('select2:select', function (e) {
+    let item = e.params.data
+    indexWellHandlerFxn(this, item)
+    handleIndexWell()
+});
+
+
+function indexWellHandlerFxn(thisThing, item) {
+    // console.log('this', thisThing)
+    // console.log('item', item)
+    // get values to select on indexes
+    // console.log('indexWelGlobalPairs', indexWellGlobalPairs)
+    // console.log(item)
+    let i7Val = indexWellGlobalPairs[item.id].i7_well
+    let i5Val = indexWellGlobalPairs[item.id].i5_well
+
+    // select and disable input
+    let i7Select = $(thisThing).closest('tr').children('td.sampI7Col').children('select').eq(0)
+    let i5Select = $(thisThing).closest('tr').children('td.sampI5Col').children('select').eq(0)
+
+    i7Select.val(i7Val)
+    i7Select.trigger('change')
+    i7Select.prop('disabled', true)
+
+    i5Select.val(i5Val)
+    i5Select.trigger('change')
+    i5Select.prop('disabled', true)
+
+    // add logic so when changed to 'None' it clears and undisables indexes
+    // nvm... 
+
+    // add logic so index_plate_well disables already selected wells
+    // eh... can just add logic to check later
+}
+
 
 // code for adding new tags to data in samplesheet table
 let addedI7List = []
@@ -559,12 +617,16 @@ function addOptionI7(term) {
         createTag: (params) => indexCreateTag(params)
     })
     addedI7List.push(term)
+
+}
+
+function addOptionI7Helper() {
     // idk why this is needed her but it works
     $('.select2ClassAddMiSeqI7').on('select2:select', function (e) {
         let item = e.params.data.id
         addOptionI7(item)
+        addOptionI7Helper()
     });
-    // return { "id": term, "text": term }
 }
 
 let addedI5List = []
@@ -581,16 +643,24 @@ function addOptionI5(term) {
     })
     addedI5List.push(term)
 
+}
+function addOptionI5Helper() {
     // idk why this is needed her but it works
     $('.select2ClassAddMiSeqI5').on('select2:select', function (e) {
         let item = e.params.data.id
         addOptionI5(item)
+        addOptionI5Helper()
     });
 }
 
 function indexCreateTag(params) {
+
     params.term = params.term.toUpperCase()
     let currSeqLen = hotKit.indexKits[0].kit.sequence_length
+    if (currentKit) {
+        currSeqLen = currentKit.sequence_length // ahh
+    }
+
     let regex = /^[ATGCN]+$/;
     // let regex = /^([ATGCN]{6,8})$/;
     let regexPass = regex.test(params.term)
@@ -619,6 +689,16 @@ function addOptionRef(term) {
     $('.select2ClassAddMiSeqRef').on('select2:select', function (e) {
         let item = e.params.data.id
         addOptionRef(item)
+    });
+}
+
+function handleIndexWell() {
+
+    // idk why this is needed her but it works
+    $('.select2ClassIndexWell').on('select2:select', function (e) {
+        let item = e.params.data
+        indexWellHandlerFxn(this, item)
+        handleIndexWell()
     });
 }
 
@@ -684,6 +764,8 @@ async function getAllMiSeqTableVals(callback) {
         let ex2 = $(this).find(".sampEx2").val()
         let ex3 = $(this).find(".sampEx3").val()
 
+        // console.log('i7', $(this).find(".sampi7"))
+
         // if everything (important) is empty then just skip row
         if (!id && !i7 && !i5) { return }
 
@@ -729,6 +811,7 @@ async function getAllMiSeqTableVals(callback) {
 // reloads indexes with values from kits
 function reloadIndexes(kitData) {
 
+    // reload I7 index column
     $('.select2ClassAddMiSeqI7').select2('destroy')
     $('.select2ClassAddMiSeqI7').empty()
     $('.select2ClassAddMiSeqI7').select2({
@@ -736,7 +819,8 @@ function reloadIndexes(kitData) {
         tags: true,
         createTag: (params) => indexCreateTag(params)
     })
-
+    addOptionI7()
+    // reload I5 index column when applicable
     if (kitData.i5Barcodes) {
         $('.select2ClassAddMiSeqI5').select2('destroy')
         $('.select2ClassAddMiSeqI5').empty()
@@ -745,7 +829,27 @@ function reloadIndexes(kitData) {
             tags: true,
             createTag: (params) => indexCreateTag(params)
         })
+        addOptionI5Helper()
     }
+
+    // load index well column when applicable
+    if (kitData.indexWellPairs) {
+        $('.select2ClassIndexWell').select2('destroy')
+        $('.select2ClassIndexWell').empty()
+        $('.select2ClassIndexWell').select2({
+            placeholder: 'None',
+            data: kitData.indexWellPairs
+        })
+
+        kitData.indexWellPairs.forEach(x => {
+            if (x.id === '') { return }
+            indexWellGlobalPairs[x.id] = x
+        })
+
+        handleIndexWell()
+    }
+
+
 
 }
 

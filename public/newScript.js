@@ -404,7 +404,7 @@ async function submitForm(e) {
 
 
     // testing mode switch to turn off jira tickets
-    let testingMode = false
+    let testingMode = true
     if (testingMode) {
         return
     }

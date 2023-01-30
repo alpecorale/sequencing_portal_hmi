@@ -843,25 +843,54 @@ function getNexteraXT() {
             // populate i7 and i5 list with barcodes
             let tempI7List = []
             let tempI5List = []
+            let i7Dict = {}
+            let i5Dict = {}
             indexesArr.forEach(x => {
                 if (x.length < 1) { return } // skip blank row in middle
 
                 if (x[2] == 1) {
                     tempI7List.push({
                         "id": x[1],
-                        "text": x[0]
+                        "text": x[0],
+                        "sequence": x[1]
                     })
+                    i7Dict[x[0]] = x[1] 
                 }
 
                 if (x[2] == 2) {
                     tempI5List.push({
                         "id": x[1],
-                        "text": x[0]
+                        "text": x[0],
+                        "sequence": x[1]
                     })
+                    i5Dict[x[0]] = x[1] 
                 }
 
             })
 
+            // make list of index well plates
+            resourcesArr.shift()  // ['Name', 'Type', 'Format', 'Resource']
+            resourcesArr.shift() // ['Adapter']
+            resourcesArr.shift() // ['Multiplate']
+            resourcesArr.shift() // ['FixedLayout']
+            // can also just do check to see if x[1] is 'FixedIndexPosition' and not remove items
+
+            let tempWellList = [{'id': '', 'text': 'None'}]
+            resourcesArr.forEach(x => {
+                if (x.length < 1) { return } // just in case
+
+                tempWellList.push({
+                    'id': x[0],
+                    'text': x[0],
+                    'i7_well': i7Dict[x[3].split('-')[0]],
+                    'i5_well': i5Dict[x[3].split('-')[1]]
+                })
+
+            })
+
+
+
+            // fill up objects
             idtILMNNexteraDNAUDIndexesSetABCD.i7Barcodes.push({
                 "text": "IDT-ILMN Nextera DNA UD Indexes Set A B C D",
                 "children": tempI7List
@@ -872,43 +901,45 @@ function getNexteraXT() {
                 "children": tempI5List
             })
 
+            idtILMNNexteraDNAUDIndexesSetABCD.indexWellPairs = tempWellList
+
             idtILMNNexteraDNAUDIndexesSetA.i7Barcodes.push({
                 "text": "IDT-ILMN Nextera DNA UD Indexes Set A",
-                "children": tempI7List.slice(0,96)
+                "children": tempI7List.slice(0, 96)
             })
 
             idtILMNNexteraDNAUDIndexesSetA.i5Barcodes.push({
                 "text": "IDT-ILMN Nextera DNA UD Indexes Set A",
-                "children": tempI5List.slice(0,96)
+                "children": tempI5List.slice(0, 96)
             })
 
             idtILMNNexteraDNAUDIndexesSetB.i7Barcodes.push({
                 "text": "IDT-ILMN Nextera DNA UD Indexes Set B",
-                "children": tempI7List.slice(96,192)
+                "children": tempI7List.slice(96, 192)
             })
 
             idtILMNNexteraDNAUDIndexesSetB.i5Barcodes.push({
                 "text": "IDT-ILMN Nextera DNA UD Indexes Set B",
-                "children": tempI5List.slice(96,192)
+                "children": tempI5List.slice(96, 192)
             })
 
             idtILMNNexteraDNAUDIndexesSetC.i7Barcodes.push({
                 "text": "IDT-ILMN Nextera DNA UD Indexes Set C",
-                "children": tempI7List.slice(192,288)
+                "children": tempI7List.slice(192, 288)
             })
 
             idtILMNNexteraDNAUDIndexesSetC.i5Barcodes.push({
                 "text": "IDT-ILMN Nextera DNA UD Indexes Set C",
-                "children": tempI5List.slice(192,288)
+                "children": tempI5List.slice(192, 288)
             })
             idtILMNNexteraDNAUDIndexesSetD.i7Barcodes.push({
                 "text": "IDT-ILMN Nextera DNA UD Indexes Set D",
-                "children": tempI7List.slice(288,384)
+                "children": tempI7List.slice(288, 384)
             })
 
             idtILMNNexteraDNAUDIndexesSetD.i5Barcodes.push({
                 "text": "IDT-ILMN Nextera DNA UD Indexes Set D",
-                "children": tempI5List.slice(288,384)
+                "children": tempI5List.slice(288, 384)
             })
         })
 }
