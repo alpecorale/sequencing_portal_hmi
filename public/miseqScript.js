@@ -132,6 +132,7 @@ $(document).ready(function () {
 
                 break;
         }
+
     })
 
     // Handle switching between index kits 
@@ -352,6 +353,7 @@ function getSamplesErrors(samplesIn, metaData, callback) {
     }
 
     let allSampleIds = []
+    let allIndexWells = []
     let i7andi5Pairs = [] // paired
     let i7list = [] // single
 
@@ -368,9 +370,13 @@ function getSamplesErrors(samplesIn, metaData, callback) {
             alert('Missing I7 Index in Sample ' + (i + 1), 'danger')
             internalErrors = true
         }
+        if (x[2] === 'None') {
+            x[2] = ''
+        }
 
         // add all ids to list
         allSampleIds.push(x[0])
+        allIndexWells.push(x[2])
 
         if (metaData.readType === "single") {
 
@@ -434,7 +440,11 @@ function getSamplesErrors(samplesIn, metaData, callback) {
 
     // check that all sample_Ids and names are unique
     if (allSampleIds.length !== _.uniq(allSampleIds).length) {
-        alert('Please make sure all sample Ids are unique', 'danger')
+        alert('Please make sure all Sample_IDs are unique', 'danger')
+        internalErrors = true
+    }
+    if (allIndexWells.length !== _.uniq(allIndexWells).length) {
+        alert('Please make sure all Index_Plate_Wells are unique', 'danger')
         internalErrors = true
     }
 
@@ -467,9 +477,7 @@ function create_tr() {
 
     clean_last_tr(table_body.lastElementChild);
 
-    $('.select2ClassIndexWell').select2({
-        // might need to intialize event listener again?
-    })
+    $('.select2ClassIndexWell').select2({})
 
     $('.select2ClassAddMiSeq').select2({
         placeholder: 'None',
@@ -488,9 +496,11 @@ function create_tr() {
         createTag: (params) => indexCreateTag(params)
     })
 
+    // initialize event listeners for new items
     addOptionI7Helper()
     addOptionI5Helper()
     handleIndexWell()
+
     // Re add event listeners everywhere
     let rm_row_btns = document.querySelectorAll('.rm-row-btn')
     Array.from(rm_row_btns).forEach(x => {
@@ -587,6 +597,7 @@ function indexWellHandlerFxn(thisThing, item) {
     let i7Select = $(thisThing).closest('tr').children('td.sampI7Col').children('select').eq(0)
     let i5Select = $(thisThing).closest('tr').children('td.sampI5Col').children('select').eq(0)
 
+
     i7Select.val(i7Val)
     i7Select.trigger('change')
     i7Select.prop('disabled', true)
@@ -596,7 +607,11 @@ function indexWellHandlerFxn(thisThing, item) {
     i5Select.prop('disabled', true)
 
     // add logic so when changed to 'None' it clears and undisables indexes
-    // nvm... 
+    if (item.id === 'None') {
+        i7Select.prop('disabled', false)
+        i5Select.prop('disabled', false)
+    }
+
 
     // add logic so index_plate_well disables already selected wells
     // eh... can just add logic to check later
@@ -811,6 +826,9 @@ async function getAllMiSeqTableVals(callback) {
 // reloads indexes with values from kits
 function reloadIndexes(kitData) {
 
+    $('.select2ClassAddMiSeqI5').prop('disabled', false)
+    $('.select2ClassAddMiSeqI7').prop('disabled', false)
+
     // reload I7 index column
     $('.select2ClassAddMiSeqI7').select2('destroy')
     $('.select2ClassAddMiSeqI7').empty()
@@ -847,11 +865,18 @@ function reloadIndexes(kitData) {
         })
 
         handleIndexWell()
+    } else {
+        $('.select2ClassIndexWell').select2('destroy')
+        $('.select2ClassIndexWell').empty()
+        $('.select2ClassIndexWell').select2({
+            placeholder: 'None'
+        })
     }
 
 
 
 }
+
 
 function swapReadType(value) {
     // change options in select to reflect options of hotKit

@@ -875,7 +875,7 @@ function getNexteraXT() {
             resourcesArr.shift() // ['FixedLayout']
             // can also just do check to see if x[1] is 'FixedIndexPosition' and not remove items
 
-            let tempWellList = [{'id': '', 'text': 'None'}]
+            let tempWellList = [{'id': 'None', 'text': 'None'}]
             resourcesArr.forEach(x => {
                 if (x.length < 1) { return } // just in case
 
@@ -913,6 +913,8 @@ function getNexteraXT() {
                 "children": tempI5List.slice(0, 96)
             })
 
+            idtILMNNexteraDNAUDIndexesSetA.indexWellPairs = tempWellList.slice(0, 96)
+
             idtILMNNexteraDNAUDIndexesSetB.i7Barcodes.push({
                 "text": "IDT-ILMN Nextera DNA UD Indexes Set B",
                 "children": tempI7List.slice(96, 192)
@@ -923,6 +925,8 @@ function getNexteraXT() {
                 "children": tempI5List.slice(96, 192)
             })
 
+            idtILMNNexteraDNAUDIndexesSetB.indexWellPairs = tempWellList.slice(96, 192)
+
             idtILMNNexteraDNAUDIndexesSetC.i7Barcodes.push({
                 "text": "IDT-ILMN Nextera DNA UD Indexes Set C",
                 "children": tempI7List.slice(192, 288)
@@ -932,6 +936,9 @@ function getNexteraXT() {
                 "text": "IDT-ILMN Nextera DNA UD Indexes Set C",
                 "children": tempI5List.slice(192, 288)
             })
+
+            idtILMNNexteraDNAUDIndexesSetC.indexWellPairs = tempWellList.slice(192, 288)
+
             idtILMNNexteraDNAUDIndexesSetD.i7Barcodes.push({
                 "text": "IDT-ILMN Nextera DNA UD Indexes Set D",
                 "children": tempI7List.slice(288, 384)
@@ -941,6 +948,9 @@ function getNexteraXT() {
                 "text": "IDT-ILMN Nextera DNA UD Indexes Set D",
                 "children": tempI5List.slice(288, 384)
             })
+
+            idtILMNNexteraDNAUDIndexesSetD.indexWellPairs = tempWellList.slice(288, 384)
+
         })
 }
 getNexteraXT()
