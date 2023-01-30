@@ -891,8 +891,8 @@ function getNexteraXT() {
                 tempWellList.push({
                     'id': x[0],
                     'text': x[0],
-                    'i7_well': i7Dict[x[3].split('-')[0]],
-                    'i5_well': i5Dict[x[3].split('-')[1]]
+                    'i7_well': i7Dict[x[3].split('-')[0]], // this gets actual sequence
+                    'i5_well': i5Dict[x[3].split('-')[1]] // this gets actuall sequence
                 })
 
             })
@@ -963,3 +963,235 @@ function getNexteraXT() {
         })
 }
 getNexteraXT()
+
+const ampliSeqCDIndexesSetABCDi7 = {
+    "text": "AmpliSeq CD Indexes Set A B C D",
+    "children": [
+        {
+            "id": "GTGAATAT",
+            "text": "Q7005"
+        },
+        {
+            "id": "ACAGGCGC",
+            "text": "Q7006"
+        },
+        {
+            "id": "CATAGAGT",
+            "text": "Q7007"
+        },
+        {
+            "id": "TGCGAGAC",
+            "text": "Q7008"
+        },
+        {
+            "id": "TCTCTACT",
+            "text": "Q7015"
+        },
+        {
+            "id": "CTCTCGTC",
+            "text": "Q7016"
+        },
+        {
+            "id": "CCAAGTCT",
+            "text": "Q7017"
+        },
+        {
+            "id": "TTGGACTC",
+            "text": "Q7018"
+        },
+        {
+            "id": "GCAGAATT",
+            "text": "Q7023"
+        },
+        {
+            "id": "ATGAGGCC",
+            "text": "Q7024"
+        },
+        {
+            "id": "ACTAAGAT",
+            "text": "Q7025"
+        },
+        {
+            "id": "GTCGGAGC",
+            "text": "Q7026"
+        },
+        {
+            "id": "AGCCTCAT",
+            "text": "Q7027"
+        },
+        {
+            "id": "GATTCTGC",
+            "text": "Q7028"
+        },
+        {
+            "id": "TCGTAGTG",
+            "text": "Q7029"
+        },
+        {
+            "id": "CTACGACA",
+            "text": "Q7030"
+        },
+        {
+            "id": "ATGGCATG",
+            "text": "Q7035"
+        },
+        {
+            "id": "GCAATGCA",
+            "text": "Q7036"
+        },
+        {
+            "id": "CTTATCGG",
+            "text": "Q7039"
+        },
+        {
+            "id": "TCCGCTAA",
+            "text": "Q7040"
+        },
+        {
+            "id": "GATCTATC",
+            "text": "Q7041"
+        },
+        {
+            "id": "AGCTCGCT",
+            "text": "Q7042"
+        },
+        {
+            "id": "ACACTAAG",
+            "text": "Q7047"
+        },
+        {
+            "id": "GTGTCGGA",
+            "text": "Q7048"
+        }
+    ]
+}
+
+const ampliSeqCDIndexesSetABCDi5 = {
+    "text": "AmpliSeq CD Indexes Set A B C D",
+    "children": [
+        {
+            "id": "AGCGCTAG",
+            "text": "Q5001"
+        },
+        {
+            "id": "GATATCGA",
+            "text": "Q5002"
+        },
+        {
+            "id": "CGCAGACG",
+            "text": "Q5003"
+        },
+        {
+            "id": "TATGAGTA",
+            "text": "Q5004"
+        },
+        {
+            "id": "ACATAGCG",
+            "text": "Q5007"
+        },
+        {
+            "id": "GTGCGATA",
+            "text": "Q5008"
+        },
+        {
+            "id": "CCAACAGA",
+            "text": "Q5009"
+        },
+        {
+            "id": "TTGGTGAG",
+            "text": "Q5010"
+        },
+        {
+            "id": "AACCGCGG",
+            "text": "Q5013"
+        },
+        {
+            "id": "GGTTATAA",
+            "text": "Q5014"
+        },
+        {
+            "id": "CTAGCTTG",
+            "text": "Q5017"
+        },
+        {
+            "id": "TCGATCCA",
+            "text": "Q5018"
+        },
+        {
+            "id": "ATACCAAG",
+            "text": "Q5025"
+        },
+        {
+            "id": "GCGTTGGA",
+            "text": "Q5026"
+        },
+        {
+            "id": "CTTCACGG",
+            "text": "Q5027"
+        },
+        {
+            "id": "TCCTGTAA",
+            "text": "Q5028"
+        },
+        {
+            "id": "CCTCGGTA",
+            "text": "Q5029"
+        },
+        {
+            "id": "TTCTAACG",
+            "text": "Q5030"
+        },
+        {
+            "id": "CGCTCGTG",
+            "text": "Q5031"
+        },
+        {
+            "id": "TATCTACA",
+            "text": "Q5032"
+        },
+        {
+            "id": "CATTGTTG",
+            "text": "Q5035"
+        },
+        {
+            "id": "TGCCACCA",
+            "text": "Q5036"
+        },
+        {
+            "id": "ACGCCGCA",
+            "text": "Q5039"
+        },
+        {
+            "id": "GTATTATG",
+            "text": "Q5040"
+        }
+    ]
+}
+export let ampliSeqCDIndexesSetABCD = {
+    "i7Barcodes": [blankKit, ampliSeqCDIndexesSetABCDi7],
+    "i5Barcodes": [blankKit, ampliSeqCDIndexesSetABCDi5],
+    // "indexWellPairs": [
+    //     {'id': 'None', 'text': 'None'},
+    //     {
+    //         'id': 'A-A001',
+    //         'text': 'A-A001',
+    //         'i7_well': 'Q7005', // need actual sequence here
+    //         'i5_well': 'Q5001'
+    //     },
+    //     {
+    //         'id': 'A-A002',
+    //         'text': 'A-A002',
+    //         'i7_well': 'Q7015',
+    //         'i5_well': 'Q5002'
+    //     },
+    //     {
+    //         'id': 'A-A003',
+    //         'text': 'A-A003',
+    //         'i7_well': 'Q7006',
+    //         'i5_well': 'Q5007'
+    //     }
+    // ],
+    "sequence_length": 8,
+    "validReadTypes": 'both',
+    "adapter": "CTGTCTCTTATACACATCT"
+}

@@ -1,5 +1,5 @@
 import { selectReferenceData } from '/barcodeKits.js'
-import { CustomKit, TruSeqKit } from '/prepKits.js';
+import { CustomKit, TruSeqKit, AmpliSeqKit } from '/prepKits.js';
 
 
 let hotKit = new CustomKit() // prepKits.js Class for Custom Kit
@@ -95,20 +95,6 @@ $(document).ready(function () {
                 document.querySelectorAll('.indexWellCol').forEach(x => x.style.display = 'none')
                 // document.querySelectorAll('.laneCol').forEach(x => x.style.display = 'none')
 
-                // swap read type
-                swapReadType(hotKit.indexKits[0].kit.validReadTypes)
-
-                document.getElementById('inputReads1').value = "151"
-                document.getElementById('inputReads2').value = "151"
-
-                $('#indexKitDrop').select2('destroy')
-                $('#indexKitDrop').empty()
-                $('#indexKitDrop').select2({
-                    data: hotKit.indexKits
-                })
-
-                reloadIndexes(hotKit.indexKits[0].kit)
-
                 break;
 
             case 'TruSeq Stranded mRNA':
@@ -116,23 +102,28 @@ $(document).ready(function () {
                 document.querySelectorAll('.indexWellCol').forEach(x => x.style.display = 'block')
                 // document.querySelectorAll('.laneCol').forEach(x => x.style.display = 'block')
 
-                // swap read type
-                swapReadType(hotKit.indexKits[0].kit.validReadTypes)
+                break;
 
-                document.getElementById('inputReads1').value = "300"
-                document.getElementById('inputReads2').value = "300"
-
-                $('#indexKitDrop').select2('destroy')
-                $('#indexKitDrop').empty()
-                $('#indexKitDrop').select2({
-                    data: hotKit.indexKits
-                })
-
-                reloadIndexes(hotKit.indexKits[0].kit)
+            case 'AmpliSeq Library PLUS for Illumina':
+                hotKit = new AmpliSeqKit();
+                document.querySelectorAll('.indexWellCol').forEach(x => x.style.display = 'block')
 
                 break;
         }
 
+        // swap read type
+        swapReadType(hotKit.indexKits[0].kit.validReadTypes)
+
+        document.getElementById('inputReads1').value = hotKit.defaultReads[0]
+        document.getElementById('inputReads2').value = hotKit.defaultReads[1]
+
+        $('#indexKitDrop').select2('destroy')
+        $('#indexKitDrop').empty()
+        $('#indexKitDrop').select2({
+            data: hotKit.indexKits
+        })
+
+        reloadIndexes(hotKit.indexKits[0].kit)
     })
 
     // Handle switching between index kits 
@@ -588,7 +579,7 @@ function indexWellHandlerFxn(thisThing, item) {
     // console.log('this', thisThing)
     // console.log('item', item)
     // get values to select on indexes
-    // console.log('indexWelGlobalPairs', indexWellGlobalPairs)
+    console.log('indexWelGlobalPairs', indexWellGlobalPairs)
     // console.log(item)
     let i7Val = indexWellGlobalPairs[item.id].i7_well
     let i5Val = indexWellGlobalPairs[item.id].i5_well
