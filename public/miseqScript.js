@@ -614,7 +614,7 @@ function indexWellHandlerFxn(thisThing, item) {
 
 
     // add logic so index_plate_well disables already selected wells
-    // eh... can just add logic to check later
+    // eh... can just add logic to check later -- done
 }
 
 

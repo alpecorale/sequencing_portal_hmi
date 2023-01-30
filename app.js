@@ -1,7 +1,7 @@
 const http = require('http');
 
-// const hostname = 'srv-hpc01';
-const hostname = 'localhost';
+const hostname = 'srv-hpc01';
+// const hostname = 'localhost';
 
 
 const port = 3001;
