@@ -92,22 +92,14 @@ $(document).ready(function () {
         switch (value) {
             case 'Custom':
                 hotKit = new CustomKit();
-                document.querySelectorAll('.indexWellCol').forEach(x => x.style.display = 'none')
-                // document.querySelectorAll('.laneCol').forEach(x => x.style.display = 'none')
-
                 break;
 
             case 'TruSeq Stranded mRNA':
                 hotKit = new TruSeqKit();
-                document.querySelectorAll('.indexWellCol').forEach(x => x.style.display = 'block')
-                // document.querySelectorAll('.laneCol').forEach(x => x.style.display = 'block')
-
                 break;
 
             case 'AmpliSeq Library PLUS for Illumina':
                 hotKit = new AmpliSeqKit();
-                document.querySelectorAll('.indexWellCol').forEach(x => x.style.display = 'block')
-
                 break;
         }
 
@@ -854,6 +846,10 @@ function reloadIndexes(kitData) {
 
     // load index well column when applicable
     if (kitData.indexWellPairs) {
+
+        document.querySelectorAll('.indexWellCol').forEach(x => x.style.display = 'block')
+        // document.querySelectorAll('.laneCol').forEach(x => x.style.display = 'block')
+
         $('.select2ClassIndexWell').select2('destroy')
         $('.select2ClassIndexWell').empty()
         $('.select2ClassIndexWell').select2({
@@ -868,6 +864,10 @@ function reloadIndexes(kitData) {
 
         handleIndexWell()
     } else {
+
+        document.querySelectorAll('.indexWellCol').forEach(x => x.style.display = 'none')
+        // document.querySelectorAll('.laneCol').forEach(x => x.style.display = 'none')
+
         $('.select2ClassIndexWell').select2('destroy')
         $('.select2ClassIndexWell').empty()
         $('.select2ClassIndexWell').select2({
