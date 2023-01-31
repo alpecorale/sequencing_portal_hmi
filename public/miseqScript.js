@@ -367,7 +367,7 @@ function getSamplesErrors(samplesIn, metaData, callback) {
 
         // add all ids to list
         allSampleIds.push(x[0])
-        allIndexWells.push(x[2])
+        if (x[2] !== '') { allIndexWells.push(x[2]) }
 
         if (metaData.readType === "single") {
 
@@ -434,7 +434,8 @@ function getSamplesErrors(samplesIn, metaData, callback) {
         alert('Please make sure all Sample_IDs are unique', 'danger')
         internalErrors = true
     }
-    if (allIndexWells.length !== _.uniq(allIndexWells).length) {
+
+    if (allIndexWells.length !== _.uniq(allIndexWells).length && allIndexWells.length !== 0) {
         alert('Please make sure all Index_Plate_Wells are unique', 'danger')
         internalErrors = true
     }
@@ -579,8 +580,9 @@ function indexWellHandlerFxn(thisThing, item) {
     // console.log('this', thisThing)
     // console.log('item', item)
     // get values to select on indexes
-    console.log('indexWelGlobalPairs', indexWellGlobalPairs)
+    // console.log('indexWelGlobalPairs', indexWellGlobalPairs)
     // console.log(item)
+
     let i7Val = indexWellGlobalPairs[item.id].i7_well
     let i5Val = indexWellGlobalPairs[item.id].i5_well
 
@@ -627,6 +629,9 @@ function addOptionI7(term) {
 }
 
 function addOptionI7Helper() {
+    // clear all preexisting event handlers from class
+    $('.select2ClassAddMiSeqI7').unbind('select2:select');
+
     // idk why this is needed her but it works
     $('.select2ClassAddMiSeqI7').on('select2:select', function (e) {
         let item = e.params.data.id
@@ -651,6 +656,9 @@ function addOptionI5(term) {
 
 }
 function addOptionI5Helper() {
+    // clear all preexisting event handlers from class
+    $('.select2ClassAddMiSeqI5').unbind('select2:select');
+
     // idk why this is needed her but it works
     $('.select2ClassAddMiSeqI5').on('select2:select', function (e) {
         let item = e.params.data.id
@@ -700,7 +708,10 @@ function addOptionRef(term) {
 
 function handleIndexWell() {
 
-    // idk why this is needed her but it works
+    // clear all preexisting event handlers from class
+    $('.select2ClassIndexWell').unbind('select2:select');
+
+    // reload the event listener on all elements in class
     $('.select2ClassIndexWell').on('select2:select', function (e) {
         let item = e.params.data
         indexWellHandlerFxn(this, item)
