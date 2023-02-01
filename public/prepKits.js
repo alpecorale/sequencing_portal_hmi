@@ -137,18 +137,18 @@ export class TruSeqKit extends BasicKit { // TruSeq Stranded mRNA
 
     indexKits = [
         {
-            "id": "TruSeq Single Index Set A",
-            "text": "TruSeq Single Index Set A",
+            "id": "TruSeq RNA Single Indexes Set A",
+            "text": "TruSeq RNA Single Indexes Set A",
             "kit": barcodeKit.truSeqSingleIndexSetAKit
         },
         {
-            "id": "TruSeq Single Index Set B",
-            "text": "TruSeq Single Index Set B",
+            "id": "TruSeq RNA Single Indexes Set B",
+            "text": "TruSeq RNA Single Indexes Set B",
             "kit": barcodeKit.truSeqSingleIndexSetBKit
         },
         {
-            "id": "TruSeq Single Index Set A B",
-            "text": "TruSeq Single Index Set A B",
+            "id": "TruSeq RNA Single Indexes Set A B",
+            "text": "TruSeq RNA Single Indexes Set A B",
             "kit": barcodeKit.truSeqSingleIndexSetABKit
         },
         {
@@ -200,17 +200,17 @@ export class TruSeqKit extends BasicKit { // TruSeq Stranded mRNA
 
 
         switch (metaData.indexKit) {
-            case 'TruSeq Single Index Set A':
+            case 'TruSeq RNA Single Indexes Set A':
                 csvSampleSheetMiSeq += "adapter," + barcodeKit.truSeqSingleIndexSetAKit.adapter + '\n'
                 csvSampleSheetMiSeq += "adapterRead2," + barcodeKit.truSeqSingleIndexSetAKit.adapterRead2 + '\n'
                 break;
 
-            case 'TruSeq Single Index Set B':
+            case 'TruSeq RNA Single Indexes Set B':
                 csvSampleSheetMiSeq += "adapter," + barcodeKit.truSeqSingleIndexSetBKit.adapter + '\n'
                 csvSampleSheetMiSeq += "adapterRead2," + barcodeKit.truSeqSingleIndexSetBKit.adapterRead2 + '\n'
                 break;
 
-            case 'TruSeq Single Index Set A B':
+            case 'TruSeq RNA Single Indexes Set A B':
                 csvSampleSheetMiSeq += "adapter," + barcodeKit.truSeqSingleIndexSetABKit.adapter + '\n'
                 csvSampleSheetMiSeq += "adapterRead2," + barcodeKit.truSeqSingleIndexSetABKit.adapterRead2 + '\n'
                 break;
