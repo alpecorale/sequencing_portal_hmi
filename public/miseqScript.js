@@ -820,6 +820,38 @@ async function getAllMiSeqTableVals(callback) {
 
 }
 
+// swap indexName and sequence in i7 and i5
+let showSeqName = false
+function swapIndexNameType() {
+
+    // need some fxn to only display button when valid
+
+    if (showSeqName) {
+        // document.querySelectorAll('.select2ClassAddMiSeqI7 option, .select2ClassAddMiSeqI5 option').forEach(x => {
+        document.querySelectorAll('.select2ClassAddMiSeqI7 option').forEach(x => {
+            if (x.value === '') { return }
+            x.setAttribute('indexName', x.innerText) // x.getAttribute('indexName')
+            x.innerText = x.value
+        })
+        document.querySelectorAll('.select2ClassAddMiSeqI5 option').forEach(x => {
+            if (x.value === '') { return }
+            x.setAttribute('indexName', x.innerText) // x.getAttribute('indexName')
+            x.innerText = x.value
+        })
+    } else {
+        // document.querySelectorAll('.select2ClassAddMiSeqI7 option, .select2ClassAddMiSeqI5 option').forEach(x => {
+            document.querySelectorAll('.select2ClassAddMiSeqI7 option').forEach(x => {
+                if (x.value === '') { return }
+                x.innerText = x.getAttribute('indexName')
+            })
+            document.querySelectorAll('.select2ClassAddMiSeqI5 option').forEach(x => {
+                if (x.value === '') { return }
+                x.innerText = x.getAttribute('indexName')
+            })
+    }
+
+}
+
 // reloads indexes with values from kits
 function reloadIndexes(kitData) {
 
@@ -834,6 +866,7 @@ function reloadIndexes(kitData) {
         tags: true,
         createTag: (params) => indexCreateTag(params)
     })
+
     addOptionI7()
     // reload I5 index column when applicable
     if (kitData.i5Barcodes) {

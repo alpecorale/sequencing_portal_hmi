@@ -37,7 +37,7 @@ const customI7 = {
 }
 
 const truSeqSingleIndexSetABI7 = {
-    "text": "TruSeq Single Index Set A B",
+    "text": "TruSeq RNA Single Indexes Set A B",
     "children": [
         {
             "id": "ATCACG", // 1
@@ -139,7 +139,7 @@ const truSeqSingleIndexSetABI7 = {
 }
 
 const truSeqSingleIndexSetAI7 = {
-    "text": "TruSeq Single Index Set A",
+    "text": "TruSeq RNA Single Indexes Set A",
     "children": [
 
         {
@@ -194,7 +194,7 @@ const truSeqSingleIndexSetAI7 = {
 }
 
 const truSeqSingleIndexSetBI7 = {
-    "text": "TruSeq Single Index Set B",
+    "text": "TruSeq RNA Single Indexes Set B",
     "children": [
         {
             "id": "ATCACG", // 1
