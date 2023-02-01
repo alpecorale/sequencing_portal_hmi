@@ -514,7 +514,10 @@ async function submitForm(e) {
     }
 
     // refresh everything to blank again
+    // await delay(6000)
     // location.reload()
+    // document.getElementsByClassName('table')[0].innerHTML = document.getElementsByClassName('table')[0].innerHTML
+    // ^ doesnt work bc it breaks all select2 boxes
 }
 
 

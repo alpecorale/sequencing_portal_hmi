@@ -875,8 +875,6 @@ function reloadIndexes(kitData) {
         })
     }
 
-
-
 }
 
 
@@ -889,6 +887,7 @@ function swapReadType(value) {
             $('#readTypeSwitch').select2({
                 data: [{ "id": 'single', 'text': 'Single' }, { "id": 'paired', 'text': 'Paired' }]
             })
+            value = 'paired' // default to paired on select
             break;
 
         case 'single':
@@ -904,10 +903,6 @@ function swapReadType(value) {
             break;
     }
 
-    if (value === 'both') { // default to paired when given choice
-        value = 'paired'
-    }
-
     $('#readTypeSwitch').val(value)
     $('#readTypeSwitch').trigger('change')
     $('#readTypeSwitch').trigger({
@@ -916,7 +911,6 @@ function swapReadType(value) {
             data: { 'id': value, 'text': value }
         }
     });
-
 
 }
 

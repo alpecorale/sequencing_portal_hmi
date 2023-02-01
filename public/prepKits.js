@@ -1,25 +1,10 @@
 import * as barcodeKit from '/barcodeKits.js'
 
-export class CustomKit { // Custom
-
+class BasicKit {
     sampleSheetToPass = new FormData();
     miSeqDynamicFile
 
-    defaultReads = [151, 151]
-
-    indexKits = [
-        {
-            "id": "Custom",
-            "text": "Custom",
-            "kit": barcodeKit.customIndexKit
-        },
-        {
-            "id": "Mission Bio",
-            "text": "Mission Bio",
-            "kit": barcodeKit.missionBioIndexKit
-        }
-    ]
-
+    defaultReads = [151, 151] // will probably be over written
 
     // make SampleSheet
     makeMiseqSampleSheet(samplesList, metaData, callback) {
@@ -28,7 +13,7 @@ export class CustomKit { // Custom
 
 
         // make header/settings/reads etc
-        csvSampleSheetMiSeq += this.#makeHeader(metaData)
+        csvSampleSheetMiSeq += this.makeHeader(metaData)
 
         csvSampleSheetMiSeq += "\n[Data]\n"
 
@@ -73,10 +58,54 @@ export class CustomKit { // Custom
         callback(true)
     }
 
-    #makeHeader(metaData) {
+    // generally overwritten per subclass
+    makeHeader(metaData) {
         let csvSampleSheetMiSeq = ''
         csvSampleSheetMiSeq += '[Header]\n';
-        csvSampleSheetMiSeq += "Local Run Manager Analysis Id," + metaData.lrmaId + '\n'
+        // csvSampleSheetMiSeq += "Local Run Manager Analysis Id," + metaData.lrmaId + '\n'
+        csvSampleSheetMiSeq += "Experiment Name," + metaData.miseqExpName + '\n'
+        csvSampleSheetMiSeq += "Date," + metaData.date + '\n'
+        csvSampleSheetMiSeq += "Module," + metaData.module + '\n'
+        csvSampleSheetMiSeq += "Workflow," + metaData.workflow + '\n'
+        csvSampleSheetMiSeq += "Library Prep Kit," + metaData.libPrepKit + '\n'
+        csvSampleSheetMiSeq += "Index Kit," + metaData.indexKit + '\n'
+        csvSampleSheetMiSeq += "Chemistry," + metaData.chemistry + '\n'
+        csvSampleSheetMiSeq += "\n[Reads]\n"
+        csvSampleSheetMiSeq += metaData.reads1 + '\n'
+        if (metaData.readType === 'paired') {
+            csvSampleSheetMiSeq += metaData.reads2 + '\n'
+        }
+        csvSampleSheetMiSeq += "\n[Settings]\n"
+
+        // add switch case here if elements have additional settings ie adapters
+
+        return csvSampleSheetMiSeq
+    }
+}
+
+export class CustomKit extends BasicKit { // Custom
+
+    defaultReads = [151, 151]
+
+    indexKits = [
+        {
+            "id": "Custom",
+            "text": "Custom",
+            "kit": barcodeKit.customIndexKit
+        },
+        {
+            "id": "Mission Bio",
+            "text": "Mission Bio",
+            "kit": barcodeKit.missionBioIndexKit
+        }
+    ]
+
+    // makeMiseqSampleSheet inherited from BasicKit
+
+    makeHeader(metaData) {
+        let csvSampleSheetMiSeq = ''
+        csvSampleSheetMiSeq += '[Header]\n';
+        // csvSampleSheetMiSeq += "Local Run Manager Analysis Id," + metaData.lrmaId + '\n'
         csvSampleSheetMiSeq += "Experiment Name," + metaData.miseqExpName + '\n'
         csvSampleSheetMiSeq += "Date," + metaData.date + '\n'
         csvSampleSheetMiSeq += "Module," + metaData.module + '\n'
@@ -98,10 +127,7 @@ export class CustomKit { // Custom
 
 }
 
-export class TruSeqKit { // TruSeq Stranded mRNA
-
-    sampleSheetToPass = new FormData();
-    miSeqDynamicFile
+export class TruSeqKit extends BasicKit { // TruSeq Stranded mRNA
 
     defaultReads = [300, 300]// [76, 76]
 
@@ -148,61 +174,12 @@ export class TruSeqKit { // TruSeq Stranded mRNA
         }
     ]
 
+    // makeMiseqSampleSheet inherited from BasicKit
 
-    // make SampleSheet
-    makeMiseqSampleSheet(samplesList, metaData, callback) {
-
-        let csvSampleSheetMiSeq = ''
-
-        // make header/settings/reads etc
-        csvSampleSheetMiSeq += this.#makeHeader(metaData)
-
-        csvSampleSheetMiSeq += "\n[Data]\n"
-
-        let csvSampleSheetMiSeqDynamic = csvSampleSheetMiSeq
-
-        // add samples
-        samplesList.forEach((x) => {
-            // dynamic 
-            csvSampleSheetMiSeqDynamic += x.join(',') + "\n"
-
-            if (metaData.readType === 'paired') {
-                x = x.slice(0, 8)
-            } else {
-                x = x.slice(0, 6)
-            }
-            csvSampleSheetMiSeq += x.join(',') + "\n"
-        })
-
-
-
-        let fileName = metaData.miseqExpName + '_' + metaData.date.split('-').join('_') + '_SampleSheet.csv'
-        let csvSampleSheetMiSeqData = new Blob([csvSampleSheetMiSeq], { type: 'text/csv' });
-
-        // need to grab this later
-        this.sampleSheetToPass.append('file', new File([csvSampleSheetMiSeqData], fileName))
-
-        // // old way of downloading sample sheet directly to user
-        let csvUrl = URL.createObjectURL(csvSampleSheetMiSeqData);
-        let hiddenElement = document.createElement('a');
-        hiddenElement.href = csvUrl;
-        hiddenElement.target = '_blank';
-        hiddenElement.download = fileName; // edit this to properly name the sample sheet
-        hiddenElement.click();
-
-        // handle dynamic
-        let fileNameDynamic = metaData.miseqExpName + '_' + metaData.date.split('-').join('_') + '_Additional_Info.csv'
-        let csvDataDynamic = new Blob([csvSampleSheetMiSeqDynamic], { type: 'text/csv' });
-
-        this.miSeqDynamicFile = new File([csvDataDynamic], fileNameDynamic)
-
-        callback(true)
-    }
-
-    #makeHeader(metaData) {
+    makeHeader(metaData) {
         let csvSampleSheetMiSeq = ''
         csvSampleSheetMiSeq += '[Header]\n';
-        csvSampleSheetMiSeq += "Local Run Manager Analysis Id," + metaData.lrmaId + '\n'
+        // csvSampleSheetMiSeq += "Local Run Manager Analysis Id," + metaData.lrmaId + '\n'
         csvSampleSheetMiSeq += "Experiment Name," + metaData.miseqExpName + '\n'
         csvSampleSheetMiSeq += "Date," + metaData.date + '\n'
         csvSampleSheetMiSeq += "Module," + metaData.module + '\n'
@@ -245,10 +222,7 @@ export class TruSeqKit { // TruSeq Stranded mRNA
 
 }
 
-export class AmpliSeqKit { // AmpliSeq Library PLUS for Illumina
-
-    sampleSheetToPass = new FormData();
-    miSeqDynamicFile
+export class AmpliSeqKit extends BasicKit { // AmpliSeq Library PLUS for Illumina
 
     defaultReads = [151, 151]
 
@@ -260,60 +234,12 @@ export class AmpliSeqKit { // AmpliSeq Library PLUS for Illumina
         }
     ]
 
-    // make SampleSheet
-    makeMiseqSampleSheet(samplesList, metaData, callback) {
+    // makeMiseqSampleSheet inherited from BasicKit
 
-        let csvSampleSheetMiSeq = ''
-
-        // make header/settings/reads etc
-        csvSampleSheetMiSeq += this.#makeHeader(metaData)
-
-        csvSampleSheetMiSeq += "\n[Data]\n"
-
-        let csvSampleSheetMiSeqDynamic = csvSampleSheetMiSeq
-
-        // add samples
-        samplesList.forEach((x) => {
-            // dynamic 
-            csvSampleSheetMiSeqDynamic += x.join(',') + "\n"
-
-            if (metaData.readType === 'paired') {
-                x = x.slice(0, 8)
-            } else {
-                x = x.slice(0, 6)
-            }
-            csvSampleSheetMiSeq += x.join(',') + "\n"
-        })
-
-
-
-        let fileName = metaData.miseqExpName + '_' + metaData.date.split('-').join('_') + '_SampleSheet.csv'
-        let csvSampleSheetMiSeqData = new Blob([csvSampleSheetMiSeq], { type: 'text/csv' });
-
-        // need to grab this later
-        this.sampleSheetToPass.append('file', new File([csvSampleSheetMiSeqData], fileName))
-
-        // // old way of downloading sample sheet directly to user
-        let csvUrl = URL.createObjectURL(csvSampleSheetMiSeqData);
-        let hiddenElement = document.createElement('a');
-        hiddenElement.href = csvUrl;
-        hiddenElement.target = '_blank';
-        hiddenElement.download = fileName; // edit this to properly name the sample sheet
-        hiddenElement.click();
-
-        // handle dynamic
-        let fileNameDynamic = metaData.miseqExpName + '_' + metaData.date.split('-').join('_') + '_Additional_Info.csv'
-        let csvDataDynamic = new Blob([csvSampleSheetMiSeqDynamic], { type: 'text/csv' });
-
-        this.miSeqDynamicFile = new File([csvDataDynamic], fileNameDynamic)
-
-        callback(true)
-    }
-
-    #makeHeader(metaData) {
+    makeHeader(metaData) {
         let csvSampleSheetMiSeq = ''
         csvSampleSheetMiSeq += '[Header]\n';
-        csvSampleSheetMiSeq += "Local Run Manager Analysis Id," + metaData.lrmaId + '\n'
+        // csvSampleSheetMiSeq += "Local Run Manager Analysis Id," + metaData.lrmaId + '\n'
         csvSampleSheetMiSeq += "Experiment Name," + metaData.miseqExpName + '\n'
         csvSampleSheetMiSeq += "Date," + metaData.date + '\n'
         csvSampleSheetMiSeq += "Module," + metaData.module + '\n'
