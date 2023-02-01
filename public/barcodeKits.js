@@ -41,99 +41,99 @@ const truSeqSingleIndexSetABI7 = {
     "children": [
         {
             "id": "ATCACG", // 1
-            "text": "AD001"
+            "text": "AR001"
         },
         {
             "id": "CGATGT", // 2
-            "text": "AD002"
+            "text": "AR002"
         },
         {
             "id": "TTAGGC", // 3
-            "text": "AD003"
+            "text": "AR003"
         },
         {
             "id": "TGACCA", // 4
-            "text": "AD004"
+            "text": "AR004"
         },
         {
             "id": "ACAGTG", // 5
-            "text": "AD005"
+            "text": "AR005"
         },
         {
             "id": "GCCAAT", // 6
-            "text": "AD006"
+            "text": "AR006"
         },
         {
             "id": "CAGATC", // 7
-            "text": "AD007"
+            "text": "AR007"
         },
         {
             "id": "ACTTGA", // 8
-            "text": "AD008"
+            "text": "AR008"
         },
         {
             "id": "GATCAG", // 9
-            "text": "AD008"
+            "text": "AR008"
         },
         {
             "id": "TAGCTT", // 10
-            "text": "AD010"
+            "text": "AR010"
         },
         {
             "id": "GGCTAC", // 11
-            "text": "AD011"
+            "text": "AR011"
         },
         {
             "id": "CTTGTA", // 12
-            "text": "AD012"
+            "text": "AR012"
         },
         {
             "id": "AGTCAA", // 13
-            "text": "AD013"
+            "text": "AR013"
         },
         {
             "id": "AGTTCC", // 14
-            "text": "AD014"
+            "text": "AR014"
         },
         {
             "id": "ATGTCA", // 15
-            "text": "AD015"
+            "text": "AR015"
         },
         {
             "id": "CCGTCC", // 16
-            "text": "AD016"
+            "text": "AR016"
         },
         {
             "id": "GTCCGC", // 18
-            "text": "AD018"
+            "text": "AR018"
         },
         {
             "id": "GTGAAA", // 19
-            "text": "AD019"
+            "text": "AR019"
         },
         {
             "id": "GTGGCC", // 20
-            "text": "AD020"
+            "text": "AR020"
         },
         {
             "id": "GTTTCG", // 21
-            "text": "AD021"
+            "text": "AR021"
         },
         {
             "id": "CGTACG", // 22
-            "text": "AD022"
+            "text": "AR022"
         },
         {
             "id": "GAGTGG", // 23
-            "text": "AD023"
+            "text": "AR023"
         },
         {
             "id": "ACTGAT", // 25
-            "text": "AD025"
+            "text": "AR025"
         },
         {
             "id": "ATTCCT", // 27
-            "text": "AD027"
+            "text": "AR027"
         }
     ]
 }
@@ -144,51 +144,51 @@ const truSeqSingleIndexSetAI7 = {
 
         {
             "id": "CGATGT", // 2
-            "text": "AD002"
+            "text": "AR002"
         },
         {
             "id": "TGACCA", // 4
-            "text": "AD004"
+            "text": "AR004"
         },
         {
             "id": "ACAGTG", // 5
-            "text": "AD005"
+            "text": "AR005"
         },
         {
             "id": "GCCAAT", // 6
-            "text": "AD006"
+            "text": "AR006"
         },
         {
             "id": "CAGATC", // 7
-            "text": "AD007"
+            "text": "AR007"
         },
         {
             "id": "CTTGTA", // 12
-            "text": "AD012"
+            "text": "AR012"
         },
         {
             "id": "AGTCAA", // 13
-            "text": "AD013"
+            "text": "AR013"
         },
         {
             "id": "AGTTCC", // 14
-            "text": "AD014"
+            "text": "AR014"
         },
         {
             "id": "ATGTCA", // 15
-            "text": "AD015"
+            "text": "AR015"
         },
         {
             "id": "CCGTCC", // 16
-            "text": "AD016"
+            "text": "AR016"
         },
         {
             "id": "GTCCGC", // 18
-            "text": "AD018"
+            "text": "AR018"
         },
         {
             "id": "GTGAAA", // 19
-            "text": "AD019"
+            "text": "AR019"
         }
     ]
 }
@@ -198,51 +198,51 @@ const truSeqSingleIndexSetBI7 = {
     "children": [
         {
             "id": "ATCACG", // 1
-            "text": "AD001"
+            "text": "AR001"
         },
         {
             "id": "TTAGGC", // 3
-            "text": "AD003"
+            "text": "AR003"
         },
         {
             "id": "ACTTGA", // 8
-            "text": "AD008"
+            "text": "AR008"
         },
         {
             "id": "GATCAG", // 9
-            "text": "AD009"
+            "text": "AR009"
         },
         {
             "id": "TAGCTT", // 10
-            "text": "AD010"
+            "text": "AR010"
         },
         {
             "id": "GGCTAC", // 11
-            "text": "AD011"
+            "text": "AR011"
         },
         {
             "id": "GTGGCC", // 20
-            "text": "AD020"
+            "text": "AR020"
         },
         {
             "id": "GTTTCG", // 21
-            "text": "AD021"
+            "text": "AR021"
         },
         {
             "id": "CGTACG", // 22
-            "text": "AD022"
+            "text": "AR022"
         },
         {
             "id": "GAGTGG", // 23
-            "text": "AD023"
+            "text": "AR023"
         },
         {
             "id": "ACTGAT", // 25
-            "text": "AD025"
+            "text": "AR025"
         },
         {
             "id": "ATTCCT", // 27
-            "text": "AD027"
+            "text": "AR027"
         }
     ]
 }
