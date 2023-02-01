@@ -180,9 +180,14 @@ app.post('/makeIssue', bodyParser.json(), (req, res) => {
     // add watchers seperatly after
 
     if (req.body.watchers) {
-      req.body.watchers.forEach(async (user) => {
-        await jira.addWatcher(resultKey2, user).then(result2 => { res.send(result2) })
-      })
+      try {
+        req.body.watchers.forEach(async (user) => {
+          await jira.addWatcher(resultKey2, user).then(result2 => { res.send(result2) })
+        })
+      } catch (err) {
+        console.log("Adding Watchers Error")
+        console.log(err)
+      }
     }
 
 
@@ -270,9 +275,14 @@ app.put('/updateIssue', bodyParser.json(), (req, res) => {
     // add watchers seperatly
     // cannot add watcher apparently
     if (req.body.watchers) {
-      req.body.watchers.forEach(async (user) => {
-        await jira.addWatcher(id, user).then(res3 => { res.send(res3) })
-      })
+      try {
+        req.body.watchers.forEach(async (user) => {
+          await jira.addWatcher(id, user).then(res3 => { res.send(res3) })
+        })
+      } catch (err) {
+        console.log("Adding Watchers Error")
+        console.log(err)
+      }
     }
 
     // add linked Issue stuff
@@ -349,7 +359,7 @@ app.post('/addAttachment2Issue', Data.any("files"), (req, res, next) => {
   if (req.files.length !== 0) {
     req.files.forEach(x => {
 
-      fs.mkdirSync("/grid/genomics/reference_genome/sequencing_portal/" + req.body.jiraId, {recursive: true})
+      fs.mkdirSync("/grid/genomics/reference_genome/sequencing_portal/" + req.body.jiraId, { recursive: true })
       fs.copyFile(x.path, "/grid/genomics/reference_genome/sequencing_portal/" + req.body.jiraId + "/" + x.path.split('/')[3], (err) => {
         if (err) {
           console.log("Error found: ", err)
@@ -371,7 +381,7 @@ app.post('/addAttachment2Issue', Data.any("files"), (req, res, next) => {
   if (req.body.arr) {
     req.body.arr.forEach(x => {
 
-      fs.mkdirSync("/grid/genomics/reference_genome/sequencing_portal/" + req.body.jiraId, {recursive: true})
+      fs.mkdirSync("/grid/genomics/reference_genome/sequencing_portal/" + req.body.jiraId, { recursive: true })
       fs.copyFile("./References/" + x, "/grid/genomics/reference_genome/sequencing_portal/" + req.body.jiraId + "/" + x, (err) => {
         if (err) {
           console.log("Error found: ", err)
@@ -439,6 +449,9 @@ app.post('/downloadSampleSheet', SampleSheetData.any('files'), (req, res, next) 
     // use exec() or cron job to move file around cluster
 
 
+  } else {
+    console.log('/downloadSampleSheet failed')
+    console.log(res)
   }
 
 })
@@ -492,6 +505,9 @@ app.post('/downloadReference', refUpload, (req, res, next) => {
 
     // use exec() or cron job to move file around cluster
 
+  } else {
+    console.log('/downloadSampleSheet failed')
+    console.log(res)
   }
 
 })
