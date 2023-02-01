@@ -661,16 +661,19 @@ function addOptionI5Helper() {
 
 function indexCreateTag(params) {
 
-    params.term = params.term.toUpperCase()
-    let currSeqLen = hotKit.indexKits[0].kit.sequence_length
-    if (currentKit) {
-        currSeqLen = currentKit.sequence_length // ahh
-    }
+    if (!hotKit.isCustom) { return null } // dont make custom indexes outside of custom
 
-    let regex = /^[ATGCN]+$/;
+    params.term = params.term.toUpperCase()
+    // let currSeqLen = hotKit.indexKits[0].kit.sequence_length
+    // if (currentKit) {
+    //     currSeqLen = currentKit.sequence_length // ahh
+    // }
+
+    let regex = /^[ATGCN]+$/; // Not checking sequence length bc hypothetically it could be of any length
     // let regex = /^([ATGCN]{6,8})$/;
     let regexPass = regex.test(params.term)
-    if ((regexPass && libPrepKit === "Custom") || (regexPass && params.term.length == currSeqLen)) {
+    // if ((regexPass && libPrepKit === "Custom") || (regexPass && params.term.length == currSeqLen)) {
+    if (regexPass) { // Not checking sequence length bc hypothetically it could be of any length
         return {
             id: params.term,
             text: params.term

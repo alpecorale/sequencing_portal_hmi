@@ -6,6 +6,8 @@ class BasicKit {
 
     defaultReads = [151, 151] // will probably be over written
 
+    isCustom = false
+
     // make SampleSheet
     makeMiseqSampleSheet(samplesList, metaData, callback) {
 
@@ -84,6 +86,8 @@ class BasicKit {
 }
 
 export class CustomKit extends BasicKit { // Custom
+
+    isCustom = true
 
     defaultReads = [151, 151]
 
