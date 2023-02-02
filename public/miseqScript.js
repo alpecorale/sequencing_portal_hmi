@@ -52,7 +52,7 @@ $(document).ready(function () {
 
 
     // event listeners onto buttons and inputs
-    document.querySelectorAll('.extraCol1, .extraCol2, .extraCol3').forEach(x => x.style = 'display: none')
+    $(".extraCol1, .extraCol2, .extraCol3").hide()
     document.getElementById('addMiseqCol').addEventListener('click', addMiSeqCol)
     document.getElementById('swapIndexText').addEventListener('click', swapIndexNameType)
 
@@ -974,13 +974,13 @@ function addMiSeqCol() {
     addMiSeqColCounter++
     console.log('counter', addMiSeqColCounter)
     if (addMiSeqColCounter === 1) {
-        document.querySelectorAll(".extraCol1").forEach(a => a.style.display = "initial");
+        $('.extraCol1').show()
     }
     if (addMiSeqColCounter === 2) {
-        document.querySelectorAll(".extraCol2").forEach(a => a.style.display = "initial");
+        $('.extraCol2').show()
     }
     if (addMiSeqColCounter === 3) {
-        document.querySelectorAll(".extraCol3").forEach(a => a.style.display = "initial");
+        $('.extraCol3').show()
     }
 }
 
