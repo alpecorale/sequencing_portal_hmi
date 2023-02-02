@@ -178,12 +178,6 @@
                 </div>
 
                 <div class="container-lg overflow-auto" style="height: 400px; background-color: floralwhite;">
-                    <div style="display: flex; height: auto;">
-                        <button class="btn btn-sm btn-primary" id="add1MiseqRow" style="margin-left: 10%;">Add 1 Row</button>
-                        <button class="btn btn-sm btn-primary" id="add5MiseqRow" style="margin-left: 10%;">Add 5 Rows</button>
-                        <button class="btn btn-sm btn-primary" id="addMiseqCol" style="margin-left: 10%;">Add 1 Column</button>
-                        <button class="btn btn-sm btn-primary" id="swapIndexText" style="margin-left: 10%;" disabled>Swap Index Text</button>
-                    </div>
                     <table class="table">
                         <thead class="thead-light">
                             <tr>
@@ -193,7 +187,7 @@
                                 <!-- <th class="required-field">Sample_Name</th> -->
                                 <th>Description</th>
 
-                                <th class="required-field indexWellCol" style="display: none">Index_Plate_Well
+                                <th class="required-field indexWellCol">Index_Plate_Well
                                     <!-- <i class="bi bi-info-circle indexInfo" data-toggle="popover"
                                         title="Common I7 Indexes"></i> -->
                                 </th>
@@ -210,7 +204,7 @@
                                         title="References"></i>
                                 </th>
                                 <th class="extraCol1">
-                                    <div  style="display: flex;">
+                                    <div style="display: flex;">
                                         <input type="text" class="form-control" id="miseq_extra_1" placeholder="Extra 1"
                                             style="width: 100px">
                                         <i class="bi bi-info-circle extraInfo" data-toggle="popover"
@@ -218,7 +212,7 @@
                                     </div>
                                 </th>
                                 <th class="extraCol2">
-                                    <div  style="display: flex;">
+                                    <div style="display: flex;">
                                         <input type="text" class="form-control" id="miseq_extra_2" placeholder="Extra 2"
                                             style="width: 100px">
                                         <i class="bi bi-info-circle extraInfo" data-toggle="popover"
@@ -250,7 +244,7 @@
                                     <textarea class="form-control sampDes"
                                         style="height: 40px; width: 150px;"></textarea>
                                 </td>
-                                <td class="indexWellCol" style="display: none">
+                                <td class="indexWellCol">
                                     <!-- <input class="form-control indexWellInput" type="text" style="width: 100%;" placeholder="A01"> -->
                                     <select class="select2ClassIndexWell indexWellInput" style="width: 100%;">
 
@@ -289,7 +283,7 @@
                                     <input type="text" class=" form-control sampEx3">
                                 </td>
                                 <td>
-                                    <div class="action_container" >
+                                    <div class="action_container">
                                         <button class="btn btn-danger rm-row-btn">
                                             <i class="bi bi-trash3" style="width: 10px"></i>
                                         </button>
@@ -298,6 +292,20 @@
                             </tr>
                         </tbody>
                     </table>
+                </div>
+                <div style="height: auto; background-color: floralwhite;">
+                    <!-- <br /> -->
+                    <hr style="margin-bottom: 5px;" />
+                    <div style="display: flex; height: auto; padding-bottom: 5px;">
+                        <button class="btn btn-sm btn-primary" id="add1MiseqRow" style="margin-left: 10%;">Add
+                            Sample</button>
+                        <button class="btn btn-sm btn-primary" id="add5MiseqRow" style="margin-left: 10%;">Add 5
+                            Samples</button>
+                        <button class="btn btn-sm btn-primary" id="addMiseqCol" style="margin-left: 10%;">Add a
+                            Column</button>
+                        <button class="btn btn-sm btn-primary" id="swapIndexText" style="margin-left: 10%;"
+                            disabled>Swap Index Text</button>
+                    </div>
                 </div>
                 <br>
 

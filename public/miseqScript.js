@@ -53,6 +53,8 @@ $(document).ready(function () {
 
     // event listeners onto buttons and inputs
     $(".extraCol1, .extraCol2, .extraCol3").hide()
+    $('.indexWellCol').hide()
+    // $('.laneCol').hide()
     document.getElementById('addMiseqCol').addEventListener('click', addMiSeqCol)
     document.getElementById('swapIndexText').addEventListener('click', swapIndexNameType)
 
@@ -77,13 +79,13 @@ $(document).ready(function () {
         // toggle read2 and i5 col
         switch (value) {
             case 'paired':
-                document.querySelectorAll('.read2Div').forEach(a => a.style.display = "block")
-                document.querySelectorAll('.sampI5Col').forEach(a => a.style.display = "block")
+                $('.read2Div').show()
+                $('.sampI5Col').show()
                 break;
 
             case 'single':
-                document.querySelectorAll('.read2Div').forEach(a => a.style.display = "none")
-                document.querySelectorAll('.sampI5Col').forEach(a => a.style.display = "none")
+                $('.read2Div').hide()
+                $('.sampI5Col').hide()
                 break;
         }
 
@@ -898,9 +900,8 @@ function reloadIndexes(kitData) {
 
     // load index well column when applicable
     if (kitData.indexWellPairs) {
-
-        document.querySelectorAll('.indexWellCol').forEach(x => x.style.display = 'block')
-        // document.querySelectorAll('.laneCol').forEach(x => x.style.display = 'block')
+        $('.indexWellCol').show()
+        // $('.laneCol').show()
 
         $('.select2ClassIndexWell').select2('destroy')
         $('.select2ClassIndexWell').empty()
@@ -917,8 +918,8 @@ function reloadIndexes(kitData) {
         handleIndexWell()
     } else {
 
-        document.querySelectorAll('.indexWellCol').forEach(x => x.style.display = 'none')
-        // document.querySelectorAll('.laneCol').forEach(x => x.style.display = 'none')
+        $('.indexWellCol').hide()
+        // $('.laneCol').hide()
 
         $('.select2ClassIndexWell').select2('destroy')
         $('.select2ClassIndexWell').empty()
