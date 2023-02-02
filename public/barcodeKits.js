@@ -682,18 +682,8 @@ export const customIndexKit = {
 export const truSeqSingleIndexSetAKit = {
     "i7Barcodes": [
         blankKit,
-        truSeqSingleIndexSetAI7,
-        otherKit
+        truSeqSingleIndexSetAI7
     ],
-    // "indexWellPairs": [
-    //     {
-    //         'id': x[0],
-    //         'text': x[0],
-    //         'i7_well': i7Dict[x[3].split('-')[0]],
-    //         'i5_well': i5Dict[x[3].split('-')[1]]
-    //     }
-    // ],
-
 
     "sequence_length": 6,
     "validReadTypes": 'single',
@@ -705,8 +695,7 @@ export const truSeqSingleIndexSetAKit = {
 export const truSeqSingleIndexSetBKit = {
     "i7Barcodes": [
         blankKit,
-        truSeqSingleIndexSetBI7,
-        otherKit
+        truSeqSingleIndexSetBI7
     ],
 
     "sequence_length": 6,
@@ -719,8 +708,7 @@ export const truSeqSingleIndexSetBKit = {
 export const truSeqSingleIndexSetABKit = {
     "i7Barcodes": [
         blankKit,
-        truSeqSingleIndexSetABI7,
-        otherKit
+        truSeqSingleIndexSetABI7
     ],
 
     "sequence_length": 6,

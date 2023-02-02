@@ -545,6 +545,11 @@ app.get('/getTicket', (req, res) => {
 })
 
 
+// Add a health check route in express
+app.get('/_health', (req, res) => {
+  res.status(200).send('ok')
+})
+
 
 app.listen(process.env.PORT || port, hostname, () => console.log("listening on port ", port));
 
