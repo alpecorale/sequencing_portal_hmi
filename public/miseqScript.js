@@ -5,6 +5,7 @@ import { CustomKit, TruSeqKit, AmpliSeqKit } from '/prepKits.js';
 let hotKit = new CustomKit() // prepKits.js Class for Custom Kit
 let currentKit // barcode kit // clean this up
 let indexWellGlobalPairs = {} // index well global pairs // clean this up
+let addMiSeqColCounter = 0
 
 $(document).ready(function () {
 
@@ -51,6 +52,11 @@ $(document).ready(function () {
 
 
     // event listeners onto buttons and inputs
+    document.querySelectorAll('.extraCol1, .extraCol2, .extraCol3').forEach(x => x.style = 'display: none')
+    document.getElementById('addMiseqCol').addEventListener('click', addMiSeqCol)
+    document.getElementById('swapIndexText').addEventListener('click', swapIndexNameType)
+
+
     document.getElementById('miseqExperimentName').addEventListener('input', noSpecialChars)
     let rm_row_btns = document.querySelectorAll('.rm-row-btn')
     Array.from(rm_row_btns).forEach(x => {
@@ -825,29 +831,39 @@ let showSeqName = false
 function swapIndexNameType() {
 
     // need some fxn to only display button when valid
+    showSeqName = !showSeqName
 
     if (showSeqName) {
-        // document.querySelectorAll('.select2ClassAddMiSeqI7 option, .select2ClassAddMiSeqI5 option').forEach(x => {
-        document.querySelectorAll('.select2ClassAddMiSeqI7 option').forEach(x => {
-            if (x.value === '') { return }
-            x.setAttribute('indexName', x.innerText) // x.getAttribute('indexName')
-            x.innerText = x.value
+        $(".select2ClassAddMiSeqI7 option").each(() => {
+            console.log('this', $(this))
+            let val = $(this).val()
+            $(this).html(`<option value="test"> test </option>`)
+
         })
-        document.querySelectorAll('.select2ClassAddMiSeqI5 option').forEach(x => {
-            if (x.value === '') { return }
-            x.setAttribute('indexName', x.innerText) // x.getAttribute('indexName')
-            x.innerText = x.value
-        })
+        // console.log('hello')
+        // // document.querySelectorAll('.select2ClassAddMiSeqI7 option, .select2ClassAddMiSeqI5 option').forEach(x => {
+        // document.querySelectorAll('.select2ClassAddMiSeqI7 option').forEach(x => {
+        //     if (x.value === '') { return }
+        //     x.setAttribute('indexName', x.innerHTML) // x.getAttribute('indexName')
+        //     x.innerHTML = x.value
+        // })
+        // document.querySelectorAll('.select2ClassAddMiSeqI5 option').forEach(x => {
+        //     if (x.value === '') { return }
+        //     x.setAttribute('indexName', x.innerHTML) // x.getAttribute('indexName')
+        //     x.innerHTML = x.value
+        // })
     } else {
-        // document.querySelectorAll('.select2ClassAddMiSeqI7 option, .select2ClassAddMiSeqI5 option').forEach(x => {
-            document.querySelectorAll('.select2ClassAddMiSeqI7 option').forEach(x => {
-                if (x.value === '') { return }
-                x.innerText = x.getAttribute('indexName')
-            })
-            document.querySelectorAll('.select2ClassAddMiSeqI5 option').forEach(x => {
-                if (x.value === '') { return }
-                x.innerText = x.getAttribute('indexName')
-            })
+        // // document.querySelectorAll('.select2ClassAddMiSeqI7 option, .select2ClassAddMiSeqI5 option').forEach(x => {
+        //     document.querySelectorAll('.select2ClassAddMiSeqI7 option').forEach(x => {
+        //         if (x.value === '') { return }
+        //         x.innerHTML = x.getAttribute('indexName')
+        //     })
+        //     document.querySelectorAll('.select2ClassAddMiSeqI5 option').forEach(x => {
+        //         if (x.value === '') { return }
+        //         x.innerHTML = x.getAttribute('indexName')
+        //         if (x.getAttribute('indexName') === '') { x.innerHTML = 'broken'}
+
+        //     })
     }
 
 }
@@ -948,6 +964,24 @@ function swapReadType(value) {
         }
     });
 
+}
+
+function addMiSeqCol() {
+    if (addMiSeqColCounter === 3) {
+        alert('Sorry you can not add more than 3 extra columns at this moment', 'warning')
+        return;
+    }
+    addMiSeqColCounter++
+    console.log('counter', addMiSeqColCounter)
+    if (addMiSeqColCounter === 1) {
+        document.querySelectorAll(".extraCol1").forEach(a => a.style.display = "initial");
+    }
+    if (addMiSeqColCounter === 2) {
+        document.querySelectorAll(".extraCol2").forEach(a => a.style.display = "initial");
+    }
+    if (addMiSeqColCounter === 3) {
+        document.querySelectorAll(".extraCol3").forEach(a => a.style.display = "initial");
+    }
 }
 
 // no special characters

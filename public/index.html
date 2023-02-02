@@ -127,7 +127,8 @@
                         <select class="form-select select2Class" name="libraryInputs" id="libraryDrop">
                             <option value="Custom" selected="selected">Custom</option>
                             <option value="TruSeq Stranded mRNA">TruSeq Stranded mRNA</option>
-                            <option value="AmpliSeq Library PLUS for Illumina">AmpliSeq Library PLUS for Illumina</option>
+                            <option value="AmpliSeq Library PLUS for Illumina">AmpliSeq Library PLUS for Illumina
+                            </option>
                         </select>
                     </div>
                     <div class="col-sm-1"></div>
@@ -165,7 +166,8 @@
                 <div class="mb-3 row">
                     <label class="col-sm-2 col-form-label bold required-field" for="inputReads1">Reads 1:</label>
                     <div class="col-sm-1">
-                        <input class="form-control" type="text" id="inputReads1" value="151" style="text-align: right; min-width: 50px;">
+                        <input class="form-control" type="text" id="inputReads1" value="151"
+                            style="text-align: right; min-width: 50px;">
                     </div>
                     <div class="col-sm-3"></div>
                     <label class="col-sm-2 col-form-label required-field read2Div" for="inputReads2">Reads 2:</label>
@@ -176,6 +178,12 @@
                 </div>
 
                 <div class="container-lg overflow-auto" style="height: 400px; background-color: floralwhite;">
+                    <div style="display: flex; height: auto;">
+                        <button class="btn btn-sm btn-primary" id="add1MiseqRow" style="margin-left: 10%;">Add 1 Row</button>
+                        <button class="btn btn-sm btn-primary" id="add5MiseqRow" style="margin-left: 10%;">Add 5 Rows</button>
+                        <button class="btn btn-sm btn-primary" id="addMiseqCol" style="margin-left: 10%;">Add 1 Column</button>
+                        <button class="btn btn-sm btn-primary" id="swapIndexText" style="margin-left: 10%;">Swap Index Text</button>
+                    </div>
                     <table class="table">
                         <thead class="thead-light">
                             <tr>
@@ -201,23 +209,23 @@
                                 <th>Reference <i class="bi bi-info-circle sampleSheetRefInfo" data-toggle="popover"
                                         title="References"></i>
                                 </th>
-                                <th>
-                                    <div style="display: flex;">
+                                <th class="extraCol1">
+                                    <div  style="display: flex;">
                                         <input type="text" class="form-control" id="miseq_extra_1" placeholder="Extra 1"
                                             style="width: 100px">
                                         <i class="bi bi-info-circle extraInfo" data-toggle="popover"
                                             title="Extra Info"></i>
                                     </div>
                                 </th>
-                                <th>
-                                    <div style="display: flex;">
+                                <th class="extraCol2">
+                                    <div  style="display: flex;">
                                         <input type="text" class="form-control" id="miseq_extra_2" placeholder="Extra 2"
                                             style="width: 100px">
                                         <i class="bi bi-info-circle extraInfo" data-toggle="popover"
                                             title="Extra Info"></i>
                                     </div>
                                 </th>
-                                <th>
+                                <th class="extraCol3">
                                     <div style="display: flex;">
                                         <input type="text" class="form-control" id="miseq_extra_3" placeholder="Extra 3"
                                             style="width: 100px">
@@ -225,14 +233,7 @@
                                             title="Extra Info"></i>
                                     </div>
                                 </th>
-                                <th width="50px">
-                                    <div class="action_container row">
-                                        <button class="btn btn-sm btn-primary col" id="add1MiseqRow"
-                                            style="margin: 5%">+1</button>
-                                        <button class="btn btn-sm btn-primary col" id="add5MiseqRow"
-                                            style="margin: 5%">+5</button>
-                                    </div>
-                                </th>
+                                <th></th>
                             </tr>
                         </thead>
                         <tbody id="miseq_table_body">
@@ -242,7 +243,8 @@
                                     <input class="laneNum" type="text" class="form-control" value="1">
                                 </td>
                                 <td>
-                                    <input class="sampId" type="text" class="form-control" style="width: 140px;" placeholder="sample_id">
+                                    <input class="sampId" type="text" class="form-control" style="width: 140px;"
+                                        placeholder="sample_id">
                                 </td>
                                 <td>
                                     <textarea class="form-control sampDes"
@@ -250,8 +252,7 @@
                                 </td>
                                 <td class="indexWellCol" style="display: none">
                                     <!-- <input class="form-control indexWellInput" type="text" style="width: 100%;" placeholder="A01"> -->
-                                    <select class="select2ClassIndexWell indexWellInput"
-                                        style="width: 100%;">
+                                    <select class="select2ClassIndexWell indexWellInput" style="width: 100%;">
 
                                     </select>
                                 </td>
@@ -278,17 +279,17 @@
 
                                     </select>
                                 </td>
-                                <td>
-                                    <input type="text" class="form-control sampEx1">
+                                <td class="extraCol1">
+                                    <input type="text" class=" form-control sampEx1">
+                                </td>
+                                <td class="extraCol2">
+                                    <input type="text" class=" form-control sampEx2">
+                                </td>
+                                <td class="extraCol3">
+                                    <input type="text" class=" form-control sampEx3">
                                 </td>
                                 <td>
-                                    <input type="text" class="form-control sampEx2">
-                                </td>
-                                <td>
-                                    <input type="text" class="form-control sampEx3">
-                                </td>
-                                <td>
-                                    <div class="action_container" style="width: 70px">
+                                    <div class="action_container" >
                                         <button class="btn btn-danger rm-row-btn">
                                             <i class="bi bi-trash3" style="width: 10px"></i>
                                         </button>
