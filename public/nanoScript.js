@@ -161,7 +161,7 @@ async function handleNanoporeSampleSheet(callback) {
 /*
 * Fxn makes table row
 */
-function create_tr() {
+function create_tr_nano() {
 
     $('.select2ClassNano').select2('destroy')
 
@@ -171,7 +171,7 @@ function create_tr() {
 
     table_body.append(tr_clone);
 
-    clean_last_tr(table_body.lastElementChild);
+    clean_last_tr_nano(table_body.lastElementChild);
 
     $('.select2ClassNano').select2({
         placeholder: 'None' // ,
@@ -197,7 +197,7 @@ function create_tr() {
 /*
 * Helper fxn to clean the newly created row
 */
-function clean_last_tr(lastTr) {
+function clean_last_tr_nano(lastTr) {
     let children = lastTr.children;
 
     children = Array.isArray(children) ? children : Object.values(children);
@@ -219,7 +219,7 @@ function clean_last_tr(lastTr) {
 /*
 * Fxn to delete table row
 */
-function remove_tr() {
+function remove_tr_nano() {
 
     if (this === undefined) { return }
     if (this.closest('tbody').childElementCount == 1) {

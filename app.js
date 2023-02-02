@@ -180,14 +180,16 @@ app.post('/makeIssue', bodyParser.json(), (req, res) => {
     // add watchers seperatly after
 
     if (req.body.watchers) {
-      try {
-        req.body.watchers.forEach(async (user) => {
+
+      req.body.watchers.forEach(async (user) => {
+        try {
           await jira.addWatcher(resultKey2, user).then(result2 => { res.send(result2) })
-        })
-      } catch (err) {
-        console.log("Adding Watchers Error")
-        console.log(err)
-      }
+        } catch (err) {
+          console.log("Adding Watchers Error")
+          console.log(err)
+        }
+      })
+
     }
 
 
@@ -270,19 +272,27 @@ app.put('/updateIssue', bodyParser.json(), (req, res) => {
     console.log('Result', result)
 
     // add comments seperatly
-    await jira.addComment(id, req.body.info).then(res2 => res.send(res2))
+    try {
+      await jira.addComment(id, req.body.info).then(res2 => res.send(res2))
+    } catch (err) {
+      console.log('Add Comment Error')
+      console.log('err')
+    }
+    
 
     // add watchers seperatly
     // cannot add watcher apparently
     if (req.body.watchers) {
-      try {
-        req.body.watchers.forEach(async (user) => {
+
+      req.body.watchers.forEach(async (user) => {
+        try {
           await jira.addWatcher(id, user).then(res3 => { res.send(res3) })
-        })
-      } catch (err) {
-        console.log("Adding Watchers Error")
-        console.log(err)
-      }
+        } catch (err) {
+          console.log("Adding Watchers Error")
+          console.log(err)
+        }
+      })
+
     }
 
     // add linked Issue stuff

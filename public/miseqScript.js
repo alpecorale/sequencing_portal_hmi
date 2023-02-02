@@ -534,11 +534,17 @@ function clean_last_tr(lastTr) {
 /*
 * Fxn to delete table row
 */
+let firstKill = true
 function remove_tr() {
 
     if (this === undefined) { return }
     if (this.closest('tbody').childElementCount == 1) {
-        alert("You don't have permission to delete this", "warning");
+        if (firstKill) {
+            alert("Please don't kill me", "warning");
+            firstKill = !firstKill
+        } else {
+            alert("Haha nice try... I will never die", "warning");
+        }
     } else {
         this.closest('tr').remove();
 
@@ -973,7 +979,6 @@ function addMiSeqCol() {
         return;
     }
     addMiSeqColCounter++
-    console.log('counter', addMiSeqColCounter)
     if (addMiSeqColCounter === 1) {
         $('.extraCol1').show()
     }

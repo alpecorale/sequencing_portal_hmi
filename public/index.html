@@ -31,7 +31,7 @@
     <script type="module" src="barcodeKits.js"></script>
     <script type="module" src="prepKits.js"></script>
     <script type="module" src="miseqScript.js"></script>
-    <script type="module" src="nanoScript.js"></script>
+    <!-- <script type="module" src="nanoScript.js"></script> -->
     <script type="module" src="newScript.js" defer></script>
     <style>
         /* Style Sheet */
@@ -115,11 +115,9 @@
                     <div class="col-sm-3">
                         <select class="form-select select2Class" name="workflowInputs" id="workflowDrop">
                             <option value="GenerateFASTQ" selected="selected">GenerateFASTQ</option>
-
                         </select>
                     </div>
                 </div>
-
 
                 <div class="mb-3 row">
                     <label class="col-sm-2 col-form-label required-field" for="libraryDrop">Library Prep Kit:</label>
@@ -135,14 +133,10 @@
                     <label class="col-sm-2 col-form-label required-field" for="indexKitDrop">Index Kit:</label>
                     <div class="col-sm-3">
                         <select class="form-select select2Class" name="indexKitInputs" id="indexKitDrop">
-                            <!-- <option value="Custom" selected="selected">Custom</option>
-                            <option value="TruSeq RNA Single Indexes Set A">TruSeq RNA Single Indexes Set A</option> -->
-                            <!-- <option value="IDT-ILMN TruSeq DNA-RNA UD 24 Indexes">IDT-ILMN TruSeq DNA-RNA UD 24 Indexes
-                            </option> -->
+
                         </select>
                     </div>
                 </div>
-
 
                 <div class="mb-3 row">
                     <label class="col-sm-2 col-form-label required-field" for="chemistryDrop">Chemistry:</label>
@@ -294,7 +288,6 @@
                     </table>
                 </div>
                 <div style="height: auto; background-color: floralwhite;">
-                    <!-- <br /> -->
                     <hr style="margin-bottom: 5px;" />
                     <div style="display: flex; height: auto; padding-bottom: 5px;">
                         <button class="btn btn-sm btn-primary" id="add1MiseqRow" style="margin-left: 10%;">Add
