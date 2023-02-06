@@ -6,6 +6,7 @@ let hotKit = new CustomKit() // prepKits.js Class for Custom Kit
 let currentKit // barcode kit // clean this up
 let indexWellGlobalPairs = {} // index well global pairs // clean this up
 let addMiSeqColCounter = 0
+export let bypassRef = false
 
 $(document).ready(function () {
 
@@ -111,11 +112,8 @@ $(document).ready(function () {
                 break;
         }
 
-        // swap read type
-        swapReadType(hotKit.indexKits[0].kit.validReadTypes)
-
-        document.getElementById('inputReads1').value = hotKit.defaultReads[0]
-        document.getElementById('inputReads2').value = hotKit.defaultReads[1]
+        // swap read type and set default reads
+        swapReadType(hotKit.indexKits[0].kit.validReadTypes, hotKit.indexKits[0].kit.defaultReads)
 
         $('#indexKitDrop').select2('destroy')
         $('#indexKitDrop').empty()
@@ -124,6 +122,17 @@ $(document).ready(function () {
         })
 
         reloadIndexes(hotKit.indexKits[0].kit)
+
+        // set default reference for TruSeq
+        if (hotKit.defaultReference) {
+            $('.select2ClassAddMiSeqRef').val(hotKit.defaultReference)
+            $('.select2ClassAddMiSeqRef').change()
+            bypassRef = true
+        } else {
+            $('.select2ClassAddMiSeqRef').val('')
+            $('.select2ClassAddMiSeqRef').change()
+            bypassRef = false
+        }
     })
 
     // Handle switching between index kits 
@@ -145,7 +154,8 @@ $(document).ready(function () {
         })
 
         // clears and reloads data in i7 and i5 index columns
-        swapReadType(kitData.validReadTypes)
+        swapReadType(kitData.validReadTypes, kitData.defaultReads)
+
         reloadIndexes(kitData)
 
         // added incase lists were full and someone tried to 
@@ -505,6 +515,13 @@ function create_tr() {
         x.addEventListener('input', noSpecialChars)
         // x.oninput = 'noSpecialChars(this)'
     })
+
+
+    // autofill selected fields?
+    if (hotKit.defaultReference) { // set default reference for TruSeq
+        $('.select2ClassAddMiSeqRef').val(hotKit.defaultReference)
+        $('.select2ClassAddMiSeqRef').change()
+    }
 
 
 }
@@ -937,7 +954,7 @@ function reloadIndexes(kitData) {
 }
 
 
-function swapReadType(value) {
+function swapReadType(value, valDefaultReads) {
     // change options in select to reflect options of hotKit
     $('#readTypeSwitch').select2('destroy')
     $('#readTypeSwitch').empty()
@@ -970,6 +987,10 @@ function swapReadType(value) {
             data: { 'id': value, 'text': value }
         }
     });
+
+    // set read values to their defaults
+    document.getElementById('inputReads1').value = valDefaultReads[0]
+    if (value === 'paired') { document.getElementById('inputReads2').value = valDefaultReads[1] }
 
 }
 

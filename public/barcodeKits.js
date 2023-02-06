@@ -10,27 +10,27 @@ const customI7 = {
     "children": [
         {
             "id": "CGATCATG",
-            "text": "CGATCATG"
+            "text": "I7_1"
         },
         {
             "id": "TAGATCCT",
-            "text": "TAGATCCT"
+            "text": "I7_2"
         },
         {
             "id": "TTACTGTC",
-            "text": "TTACTGTC"
+            "text": "I7_3"
         },
         {
             "id": "GGCATAGG",
-            "text": "GGCATAGG"
+            "text": "I7_4"
         },
         {
             "id": "CAAGGCGA",
-            "text": "CAAGGCGA"
+            "text": "I7_5"
         },
         {
             "id": "GACGCTAT",
-            "text": "GACGCTAT"
+            "text": "I7_6"
         }
 
     ]
@@ -437,31 +437,27 @@ const customI5 = {
     "children": [
         {
             "id": "AAGTAGAG",
-            "text": "AAGTAGAG"
+            "text": "I5_1"
         },
         {
             "id": "CATGCTTA",
-            "text": "CATGCTTA"
-        },
-        {
-            "id": "AGTTGCTT",
-            "text": "AGTTGCTT"
+            "text": "I5_2"
         },
         {
             "id": "GCACATCT",
-            "text": "GCACATCT"
+            "text": "I5_3"
         },
         {
             "id": "TGCTCGAC",
-            "text": "TGCTCGAC"
+            "text": "I5_4"
         },
         {
             "id": "AGCAATTC",
-            "text": "AGCAATTC"
+            "text": "I5_5"
         },
         {
             "id": "AGTTGCTT",
-            "text": "AGTTGCTT"
+            "text": "I5_6"
         }
     ]
 }
@@ -675,7 +671,8 @@ export const customIndexKit = {
     ],
 
     "sequence_length": 8,
-    "validReadTypes": 'both'
+    "validReadTypes": 'both',
+    "defaultReads": [151,151]
 
 }
 
@@ -684,12 +681,11 @@ export const truSeqSingleIndexSetAKit = {
         blankKit,
         truSeqSingleIndexSetAI7
     ],
-
     "sequence_length": 6,
     "validReadTypes": 'single',
     "adapter": "AGATCGGAAGAGCACACGTCTGAACTCCAGTCA",
-    "adapterRead2": "AGATCGGAAGAGCGTCGTGTAGGGAAAGAGTGT"
-
+    "adapterRead2": "AGATCGGAAGAGCGTCGTGTAGGGAAAGAGTGT",
+    "defaultReads": [300]
 }
 
 export const truSeqSingleIndexSetBKit = {
@@ -697,12 +693,11 @@ export const truSeqSingleIndexSetBKit = {
         blankKit,
         truSeqSingleIndexSetBI7
     ],
-
     "sequence_length": 6,
     "validReadTypes": 'single',
     "adapter": "AGATCGGAAGAGCACACGTCTGAACTCCAGTCA",
-    "adapterRead2": "AGATCGGAAGAGCGTCGTGTAGGGAAAGAGTGT"
-
+    "adapterRead2": "AGATCGGAAGAGCGTCGTGTAGGGAAAGAGTGT",
+    "defaultReads": [300]
 }
 
 export const truSeqSingleIndexSetABKit = {
@@ -710,12 +705,11 @@ export const truSeqSingleIndexSetABKit = {
         blankKit,
         truSeqSingleIndexSetABI7
     ],
-
     "sequence_length": 6,
     "validReadTypes": 'single',
     "adapter": "AGATCGGAAGAGCACACGTCTGAACTCCAGTCA",
-    "adapterRead2": "AGATCGGAAGAGCGTCGTGTAGGGAAAGAGTGT"
-
+    "adapterRead2": "AGATCGGAAGAGCGTCGTGTAGGGAAAGAGTGT",
+    "defaultReads": [300]
 }
 
 export const missionBioIndexKit = {
@@ -730,10 +724,9 @@ export const missionBioIndexKit = {
         missionBioI5,
         otherKit
     ],
-
     "sequence_length": 8,
-    "validReadTypes": 'both'
-    
+    "validReadTypes": 'both',
+    "defaultReads": [151, 151]
 }
 
 export let selectReferenceData = {
@@ -744,12 +737,8 @@ export let selectReferenceData = {
             "text": "Ref Group",
             "children": [
                 {
-                    "id": "Reference1",
-                    "text": "Reference 1"
-                },
-                {
-                    "id": "Reference2",
-                    "text": "Reference 2"
+                    "id": "hg38",
+                    "text": "hg38"
                 }
             ]
         },
@@ -764,8 +753,8 @@ export let idtILMNNexteraDNAUDIndexesSetABCD = {
     "i5Barcodes": [blankKit],
     "sequence_length": 10,
     "validReadTypes": 'both',
-    "adapter": "CTGTCTCTTATACACATCT"
-
+    "adapter": "CTGTCTCTTATACACATCT",
+    "defaultReads": [151,151]
 }
 
 export let idtILMNNexteraDNAUDIndexesSetA = {
@@ -773,8 +762,8 @@ export let idtILMNNexteraDNAUDIndexesSetA = {
     "i5Barcodes": [blankKit],
     "sequence_length": 10,
     "validReadTypes": 'both',
-    "adapter": "CTGTCTCTTATACACATCT"
-
+    "adapter": "CTGTCTCTTATACACATCT",
+    "defaultReads": [151,151]
 }
 
 export let idtILMNNexteraDNAUDIndexesSetB = {
@@ -782,8 +771,8 @@ export let idtILMNNexteraDNAUDIndexesSetB = {
     "i5Barcodes": [blankKit],
     "sequence_length": 10,
     "validReadTypes": 'both',
-    "adapter": "CTGTCTCTTATACACATCT"
-
+    "adapter": "CTGTCTCTTATACACATCT",
+    "defaultReads": [151,151]
 }
 
 export let idtILMNNexteraDNAUDIndexesSetC = {
@@ -791,8 +780,8 @@ export let idtILMNNexteraDNAUDIndexesSetC = {
     "i5Barcodes": [blankKit],
     "sequence_length": 10,
     "validReadTypes": 'both',
-    "adapter": "CTGTCTCTTATACACATCT"
-
+    "adapter": "CTGTCTCTTATACACATCT",
+    "defaultReads": [151,151]
 }
 
 export let idtILMNNexteraDNAUDIndexesSetD = {
@@ -800,8 +789,8 @@ export let idtILMNNexteraDNAUDIndexesSetD = {
     "i5Barcodes": [blankKit],
     "sequence_length": 10,
     "validReadTypes": 'both',
-    "adapter": "CTGTCTCTTATACACATCT"
-
+    "adapter": "CTGTCTCTTATACACATCT",
+    "defaultReads": [151,151]
 }
 
 
@@ -3512,5 +3501,6 @@ export let ampliSeqCDIndexesSetABCD = {
     "indexWellPairs": ampliSeqCDIndexesSetABCDPairs,
     "sequence_length": 8,
     "validReadTypes": 'both',
-    "adapter": "CTGTCTCTTATACACATCT"
+    "adapter": "CTGTCTCTTATACACATCT",
+    "defualtReads": [151, 151]
 }

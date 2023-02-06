@@ -37,10 +37,10 @@ $(document).ready(function () {
     //     container: 'body',
     //     content: "Does this ticket have any relationship with other tickets? Ex: Is it blocked by another?"
     // })
-    // $('.referenceInfo').popover({
-    //     container: 'body',
-    //     content: "Be a pal and upload your references. Select from file system or from previously uploaded list."
-    // })
+    $('.referenceInfo').popover({
+        container: 'body',
+        content: "Be a pal and upload your references. Select from file system or from previously uploaded list. Please do not upload large references like hg38 here."
+    })
     $('.otherAttachmentsInfo').popover({
         container: 'body',
         content: "Any other helpful files or data you want to attach to ticket, add it here"
@@ -342,11 +342,14 @@ async function submitForm(e) {
     // check if any references have been attached in either location
     if (addXXXFile.length === 0 && addXXXFileAlt.length === 0) {
 
-        // can replace with bootbox/bootstrap in future if desired
-        if (!confirm("You are submitting without attaching a reference, this is not recommended")) {
-            return;
-        }
+        // if bypassRef is true then don't throw error
+        if (!miseqMod.bypassRef) {
 
+            // can replace with bootbox/bootstrap in future if desired
+            if (!confirm("You are submitting without attaching a reference, this is not recommended")) {
+                return;
+            }
+        }
     }
 
     // check formating of fields

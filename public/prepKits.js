@@ -4,8 +4,6 @@ class BasicKit {
     sampleSheetToPass = new FormData();
     miSeqDynamicFile
 
-    defaultReads = [151, 151] // will probably be over written
-
     isCustom = false
 
     // make SampleSheet
@@ -89,8 +87,6 @@ export class CustomKit extends BasicKit { // Custom
 
     isCustom = true
 
-    defaultReads = [151, 151]
-
     indexKits = [
         {
             "id": "Custom",
@@ -133,7 +129,7 @@ export class CustomKit extends BasicKit { // Custom
 
 export class TruSeqKit extends BasicKit { // TruSeq Stranded mRNA
 
-    defaultReads = [300, 300]// [76, 76]
+    defaultReference = "hg38"
 
     indexKits = [
         {
@@ -227,8 +223,6 @@ export class TruSeqKit extends BasicKit { // TruSeq Stranded mRNA
 }
 
 export class AmpliSeqKit extends BasicKit { // AmpliSeq Library PLUS for Illumina
-
-    defaultReads = [151, 151]
 
     indexKits = [
         {
