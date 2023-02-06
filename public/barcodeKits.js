@@ -672,7 +672,7 @@ export const customIndexKit = {
 
     "sequence_length": 8,
     "validReadTypes": 'both',
-    "defaultReads": [151,151]
+    "defaultReads": [151, 151]
 
 }
 
@@ -753,8 +753,14 @@ export let idtILMNNexteraDNAUDIndexesSetABCD = {
     "i5Barcodes": [blankKit],
     "sequence_length": 10,
     "validReadTypes": 'both',
-    "adapter": "CTGTCTCTTATACACATCT",
-    "defaultReads": [151,151]
+    "adapter": "CTGTCTCTTATACACATCT", // used for read 1 and 2 adapter trimming
+    "adapterRead2": "CTGTCTCTTATACACATCT",
+    "matePairAdaper": "CTGTCTCTTATACACATCT+AGATGTGTATAAGAGACAG", //Nextera Mate Pair Adapter Trimming
+    // The following sequence includes two adapter sequences joined by a plus sign. When performing adapter
+    // trimming, the software independently assesses each adapter for trimming.
+    "tagmentationAdapter1": "TCGTCGGCAGCGTCAGATGTGTATAAGAGACAG", // The transposase adapters are used for Nextera tagmentation
+    "tagmentationAdapter2": "GTCTCGTGGGCTCGGAGATGTGTATAAGAGACAG",
+    "defaultReads": [151, 151]
 }
 
 export let idtILMNNexteraDNAUDIndexesSetA = {
@@ -762,8 +768,14 @@ export let idtILMNNexteraDNAUDIndexesSetA = {
     "i5Barcodes": [blankKit],
     "sequence_length": 10,
     "validReadTypes": 'both',
-    "adapter": "CTGTCTCTTATACACATCT",
-    "defaultReads": [151,151]
+    "adapter": "CTGTCTCTTATACACATCT", // used for read 1 and 2 adapter trimming
+    "adapterRead2": "CTGTCTCTTATACACATCT",
+    "matePairAdaper": "CTGTCTCTTATACACATCT+AGATGTGTATAAGAGACAG", //Nextera Mate Pair Adapter Trimming
+    // The following sequence includes two adapter sequences joined by a plus sign. When performing adapter
+    // trimming, the software independently assesses each adapter for trimming.
+    "tagmentationAdapter1": "TCGTCGGCAGCGTCAGATGTGTATAAGAGACAG", // The transposase adapters are used for Nextera tagmentation
+    "tagmentationAdapter2": "GTCTCGTGGGCTCGGAGATGTGTATAAGAGACAG",
+    "defaultReads": [151, 151]
 }
 
 export let idtILMNNexteraDNAUDIndexesSetB = {
@@ -771,8 +783,14 @@ export let idtILMNNexteraDNAUDIndexesSetB = {
     "i5Barcodes": [blankKit],
     "sequence_length": 10,
     "validReadTypes": 'both',
-    "adapter": "CTGTCTCTTATACACATCT",
-    "defaultReads": [151,151]
+    "adapter": "CTGTCTCTTATACACATCT", // used for read 1 and 2 adapter trimming
+    "adapterRead2": "CTGTCTCTTATACACATCT",
+    "matePairAdaper": "CTGTCTCTTATACACATCT+AGATGTGTATAAGAGACAG", //Nextera Mate Pair Adapter Trimming
+    // The following sequence includes two adapter sequences joined by a plus sign. When performing adapter
+    // trimming, the software independently assesses each adapter for trimming.
+    "tagmentationAdapter1": "TCGTCGGCAGCGTCAGATGTGTATAAGAGACAG", // The transposase adapters are used for Nextera tagmentation
+    "tagmentationAdapter2": "GTCTCGTGGGCTCGGAGATGTGTATAAGAGACAG",
+    "defaultReads": [151, 151]
 }
 
 export let idtILMNNexteraDNAUDIndexesSetC = {
@@ -780,8 +798,14 @@ export let idtILMNNexteraDNAUDIndexesSetC = {
     "i5Barcodes": [blankKit],
     "sequence_length": 10,
     "validReadTypes": 'both',
-    "adapter": "CTGTCTCTTATACACATCT",
-    "defaultReads": [151,151]
+    "adapter": "CTGTCTCTTATACACATCT", // used for read 1 and 2 adapter trimming
+    "adapterRead2": "CTGTCTCTTATACACATCT",
+    "matePairAdaper": "CTGTCTCTTATACACATCT+AGATGTGTATAAGAGACAG", //Nextera Mate Pair Adapter Trimming
+    // The following sequence includes two adapter sequences joined by a plus sign. When performing adapter
+    // trimming, the software independently assesses each adapter for trimming.
+    "tagmentationAdapter1": "TCGTCGGCAGCGTCAGATGTGTATAAGAGACAG", // The transposase adapters are used for Nextera tagmentation
+    "tagmentationAdapter2": "GTCTCGTGGGCTCGGAGATGTGTATAAGAGACAG",
+    "defaultReads": [151, 151]
 }
 
 export let idtILMNNexteraDNAUDIndexesSetD = {
@@ -789,8 +813,14 @@ export let idtILMNNexteraDNAUDIndexesSetD = {
     "i5Barcodes": [blankKit],
     "sequence_length": 10,
     "validReadTypes": 'both',
-    "adapter": "CTGTCTCTTATACACATCT",
-    "defaultReads": [151,151]
+    "adapter": "CTGTCTCTTATACACATCT", // used for read 1 and 2 adapter trimming
+    "adapterRead2": "CTGTCTCTTATACACATCT",
+    "matePairAdaper": "CTGTCTCTTATACACATCT+AGATGTGTATAAGAGACAG", //Nextera Mate Pair Adapter Trimming
+    // The following sequence includes two adapter sequences joined by a plus sign. When performing adapter
+    // trimming, the software independently assesses each adapter for trimming.
+    "tagmentationAdapter1": "TCGTCGGCAGCGTCAGATGTGTATAAGAGACAG", // The transposase adapters are used for Nextera tagmentation
+    "tagmentationAdapter2": "GTCTCGTGGGCTCGGAGATGTGTATAAGAGACAG",
+    "defaultReads": [151, 151]
 }
 
 
@@ -840,7 +870,7 @@ function getNexteraXT() {
                         "text": x[0],
                         "sequence": x[1]
                     })
-                    i7Dict[x[0]] = x[1] 
+                    i7Dict[x[0]] = x[1]
                 }
 
                 if (x[2] == 2) {
@@ -849,7 +879,7 @@ function getNexteraXT() {
                         "text": x[0],
                         "sequence": x[1]
                     })
-                    i5Dict[x[0]] = x[1] 
+                    i5Dict[x[0]] = x[1]
                 }
 
             })
@@ -861,7 +891,7 @@ function getNexteraXT() {
             resourcesArr.shift() // ['FixedLayout']
             // can also just do check to see if x[1] is 'FixedIndexPosition' and not remove items
 
-            let tempWellList = [{'id': 'None', 'text': 'None'}]
+            let tempWellList = [{ 'id': 'None', 'text': 'None' }]
             resourcesArr.forEach(x => {
                 if (x.length < 1) { return } // just in case
 
@@ -1145,8 +1175,375 @@ const ampliSeqCDIndexesSetABCDi5 = {
     ]
 }
 
+const ampliSeqCDIndexesSetAi7 = {
+    "text": "AmpliSeq CD Indexes Set A",
+    "children": [
+        {
+            "id": "GTGAATAT",
+            "text": "Q7005"
+        },
+        {
+            "id": "ACAGGCGC",
+            "text": "Q7006"
+        },
+        {
+            "id": "CATAGAGT",
+            "text": "Q7007"
+        },
+        {
+            "id": "TGCGAGAC",
+            "text": "Q7008"
+        },
+        {
+            "id": "TCTCTACT",
+            "text": "Q7015"
+        },
+        {
+            "id": "CTCTCGTC",
+            "text": "Q7016"
+        },
+        {
+            "id": "CCAAGTCT",
+            "text": "Q7017"
+        },
+        {
+            "id": "TTGGACTC",
+            "text": "Q7018"
+        },
+        {
+            "id": "GCAGAATT",
+            "text": "Q7023"
+        },
+        {
+            "id": "ATGAGGCC",
+            "text": "Q7024"
+        },
+        {
+            "id": "ACTAAGAT",
+            "text": "Q7025"
+        },
+        {
+            "id": "GTCGGAGC",
+            "text": "Q7026"
+        }
+    ]
+}
+
+const ampliSeqCDIndexesSetAi5 = {
+    "text": "AmpliSeq CD Indexes Set A",
+    "children": [
+        {
+            "id": "AGCGCTAG",
+            "text": "Q5001"
+        },
+        {
+            "id": "GATATCGA",
+            "text": "Q5002"
+        },
+        {
+            "id": "ACATAGCG",
+            "text": "Q5007"
+        },
+        {
+            "id": "GTGCGATA",
+            "text": "Q5008"
+        },
+        {
+            "id": "CCAACAGA",
+            "text": "Q5009"
+        },
+        {
+            "id": "TTGGTGAG",
+            "text": "Q5010"
+        },
+        {
+            "id": "AACCGCGG",
+            "text": "Q5013"
+        },
+        {
+            "id": "GGTTATAA",
+            "text": "Q5014"
+        }
+    ]
+}
+
+const ampliSeqCDIndexesSetBi7 = {
+    "text": "AmpliSeq CD Indexes Set B",
+    "children": [
+        {
+            "id": "AGCCTCAT",
+            "text": "Q7027"
+        },
+        {
+            "id": "GATTCTGC",
+            "text": "Q7028"
+        },
+        {
+            "id": "TCGTAGTG",
+            "text": "Q7029"
+        },
+        {
+            "id": "CTACGACA",
+            "text": "Q7030"
+        },
+        {
+            "id": "ATGGCATG",
+            "text": "Q7035"
+        },
+        {
+            "id": "GCAATGCA",
+            "text": "Q7036"
+        },
+        {
+            "id": "CTTATCGG",
+            "text": "Q7039"
+        },
+        {
+            "id": "TCCGCTAA",
+            "text": "Q7040"
+        },
+        {
+            "id": "GATCTATC",
+            "text": "Q7041"
+        },
+        {
+            "id": "AGCTCGCT",
+            "text": "Q7042"
+        },
+        {
+            "id": "ACACTAAG",
+            "text": "Q7047"
+        },
+        {
+            "id": "GTGTCGGA",
+            "text": "Q7048"
+        }
+    ]
+}
+
+const ampliSeqCDIndexesSetBi5 = {
+    "text": "AmpliSeq CD Indexes Set B",
+    "children": [
+        {
+            "id": "AGCGCTAG",
+            "text": "Q5001"
+        },
+        {
+            "id": "GATATCGA",
+            "text": "Q5002"
+        },
+        {
+            "id": "ACATAGCG",
+            "text": "Q5007"
+        },
+        {
+            "id": "GTGCGATA",
+            "text": "Q5008"
+        },
+        {
+            "id": "CCAACAGA",
+            "text": "Q5009"
+        },
+        {
+            "id": "TTGGTGAG",
+            "text": "Q5010"
+        },
+        {
+            "id": "AACCGCGG",
+            "text": "Q5013"
+        },
+        {
+            "id": "GGTTATAA",
+            "text": "Q5014"
+        }
+    ]
+}
+
+const ampliSeqCDIndexesSetCi7 = {
+    "text": "AmpliSeq CD Indexes Set C",
+    "children": [
+        {
+            "id": "GTGAATAT",
+            "text": "Q7005"
+        },
+        {
+            "id": "ACAGGCGC",
+            "text": "Q7006"
+        },
+        {
+            "id": "CATAGAGT",
+            "text": "Q7007"
+        },
+        {
+            "id": "TGCGAGAC",
+            "text": "Q7008"
+        },
+        {
+            "id": "TCTCTACT",
+            "text": "Q7015"
+        },
+        {
+            "id": "CTCTCGTC",
+            "text": "Q7016"
+        },
+        {
+            "id": "CCAAGTCT",
+            "text": "Q7017"
+        },
+        {
+            "id": "TTGGACTC",
+            "text": "Q7018"
+        },
+        {
+            "id": "GCAGAATT",
+            "text": "Q7023"
+        },
+        {
+            "id": "ATGAGGCC",
+            "text": "Q7024"
+        },
+        {
+            "id": "ACTAAGAT",
+            "text": "Q7025"
+        },
+        {
+            "id": "GTCGGAGC",
+            "text": "Q7026"
+        },
+        {
+            "id": "AGCCTCAT",
+            "text": "Q7027"
+        }
+    ]
+}
+
+const ampliSeqCDIndexesSetCi5 = {
+    "text": "AmpliSeq CD Indexes Set C",
+    "children": [
+        {
+            "id": "CTAGCTTG",
+            "text": "Q5017"
+        },
+        {
+            "id": "TCGATCCA",
+            "text": "Q5018"
+        },
+        {
+            "id": "ATACCAAG",
+            "text": "Q5025"
+        },
+        {
+            "id": "GCGTTGGA",
+            "text": "Q5026"
+        },
+        {
+            "id": "CTTCACGG",
+            "text": "Q5027"
+        },
+        {
+            "id": "TCCTGTAA",
+            "text": "Q5028"
+        },
+        {
+            "id": "CGCTCGTG",
+            "text": "Q5031"
+        }
+    ]
+}
+
+const ampliSeqCDIndexesSetDi7 = {
+    "text": "AmpliSeq CD Indexes Set A B C D",
+    "children": [
+        {
+            "id": "AGCCTCAT",
+            "text": "Q7027"
+        },
+        {
+            "id": "GATTCTGC",
+            "text": "Q7028"
+        },
+        {
+            "id": "TCGTAGTG",
+            "text": "Q7029"
+        },
+        {
+            "id": "CTACGACA",
+            "text": "Q7030"
+        },
+        {
+            "id": "ATGGCATG",
+            "text": "Q7035"
+        },
+        {
+            "id": "GCAATGCA",
+            "text": "Q7036"
+        },
+        {
+            "id": "CTTATCGG",
+            "text": "Q7039"
+        },
+        {
+            "id": "TCCGCTAA",
+            "text": "Q7040"
+        },
+        {
+            "id": "GATCTATC",
+            "text": "Q7041"
+        },
+        {
+            "id": "AGCTCGCT",
+            "text": "Q7042"
+        },
+        {
+            "id": "ACACTAAG",
+            "text": "Q7047"
+        },
+        {
+            "id": "GTGTCGGA",
+            "text": "Q7048"
+        }
+    ]
+}
+
+const ampliSeqCDIndexesSetDi5 = {
+    "text": "AmpliSeq CD Indexes Set D",
+    "children": [
+        {
+            "id": "CTAGCTTG",
+            "text": "Q5017"
+        },
+        {
+            "id": "TCGATCCA",
+            "text": "Q5018"
+        },
+        {
+            "id": "ATACCAAG",
+            "text": "Q5025"
+        },
+        {
+            "id": "GCGTTGGA",
+            "text": "Q5026"
+        },
+        {
+            "id": "CTTCACGG",
+            "text": "Q5027"
+        },
+        {
+            "id": "TCCTGTAA",
+            "text": "Q5028"
+        },
+        {
+            "id": "CGCTCGTG",
+            "text": "Q5031"
+        },
+        {
+            "id": "TATCTACA",
+            "text": "Q5032"
+        }
+    ]
+}
+
 const ampliSeqCDIndexesSetABCDPairs = [
-    {'id': 'None', 'text': 'None'},
     {
         'id': 'A-A001',
         'text': 'A-A001',
@@ -3498,9 +3895,395 @@ const ampliSeqCDIndexesSetABCDPairs = [
 export let ampliSeqCDIndexesSetABCD = {
     "i7Barcodes": [blankKit, ampliSeqCDIndexesSetABCDi7],
     "i5Barcodes": [blankKit, ampliSeqCDIndexesSetABCDi5],
-    "indexWellPairs": ampliSeqCDIndexesSetABCDPairs,
+    "indexWellPairs": [{ 'id': 'None', 'text': 'None' }].concat(ampliSeqCDIndexesSetABCDPairs),
     "sequence_length": 8,
     "validReadTypes": 'both',
-    "adapter": "CTGTCTCTTATACACATCT",
-    "defualtReads": [151, 151]
+    "adapter": "CTGTCTCTTATACACATCT", // adapter read1 and 2 are same
+    "adapterRead2": "CTGTCTCTTATACACATCT",
+    "defaultReads": [151, 151]
+}
+
+export let ampliSeqCDIndexesSetA = {
+    "i7Barcodes": [blankKit, ampliSeqCDIndexesSetAi7],
+    "i5Barcodes": [blankKit, ampliSeqCDIndexesSetAi5],
+    "indexWellPairs": [{ 'id': 'None', 'text': 'None' }].concat(ampliSeqCDIndexesSetABCDPairs.slice(0,96)),
+    "sequence_length": 8,
+    "validReadTypes": 'both',
+    "adapter": "CTGTCTCTTATACACATCT", // adapter read1 and 2 are same
+    "adapterRead2": "CTGTCTCTTATACACATCT",
+    "defaultReads": [151, 151]
+}
+export let ampliSeqCDIndexesSetB = {
+    "i7Barcodes": [blankKit, ampliSeqCDIndexesSetBi7],
+    "i5Barcodes": [blankKit, ampliSeqCDIndexesSetBi5],
+    "indexWellPairs": [{ 'id': 'None', 'text': 'None' }].concat(ampliSeqCDIndexesSetABCDPairs.slice(96,192)),
+    "sequence_length": 8,
+    "validReadTypes": 'both',
+    "adapter": "CTGTCTCTTATACACATCT", // adapter read1 and 2 are same
+    "adapterRead2": "CTGTCTCTTATACACATCT",
+    "defaultReads": [151, 151]
+}
+export let ampliSeqCDIndexesSetC = {
+    "i7Barcodes": [blankKit, ampliSeqCDIndexesSetCi7],
+    "i5Barcodes": [blankKit, ampliSeqCDIndexesSetCi5],
+    "indexWellPairs":[{ 'id': 'None', 'text': 'None' }].concat(ampliSeqCDIndexesSetABCDPairs.slice(192,288)),
+    "sequence_length": 8,
+    "validReadTypes": 'both',
+    "adapter": "CTGTCTCTTATACACATCT", // adapter read1 and 2 are same
+    "adapterRead2": "CTGTCTCTTATACACATCT",
+    "defaultReads": [151, 151]
+}
+
+export let ampliSeqCDIndexesSetD = {
+    "i7Barcodes": [blankKit, ampliSeqCDIndexesSetDi7],
+    "i5Barcodes": [blankKit, ampliSeqCDIndexesSetDi5],
+    "indexWellPairs": [{ 'id': 'None', 'text': 'None' }].concat(ampliSeqCDIndexesSetABCDPairs.slice(288,384)),
+    "sequence_length": 8,
+    "validReadTypes": 'both',
+    "adapter": "CTGTCTCTTATACACATCT", // adapter read1 and 2 are same
+    "adapterRead2": "CTGTCTCTTATACACATCT",
+    "defaultReads": [151, 151]
+}
+
+const truSightAmpliconi7 = {
+    "text": "TruSight Amplicon",
+    "children": [
+        {
+            "id": "ATCACGAC",
+            "text": "A701"
+        },
+        {
+            "id": "ACAGTGGT",
+            "text": "A702"
+        },
+        {
+            "id": "CAGATCCA",
+            "text": "A703"
+        },
+        {
+            "id": "ACAAACGG",
+            "text": "A704"
+        },
+        {
+            "id": "ACCCAGCA",
+            "text": "A705"
+        },
+        {
+            "id": "AACCCCTC",
+            "text": "A706"
+        },
+        {
+            "id": "CCCAACCT",
+            "text": "A707"
+        },
+        {
+            "id": "CACCACAC",
+            "text": "A708"
+        },
+        {
+            "id": "GAAACCCA",
+            "text": "A709"
+        },
+        {
+            "id": "TGTGACCA",
+            "text": "A710"
+        },
+        {
+            "id": "AGGGTCAA",
+            "text": "A711"
+        },
+        {
+            "id": "AGGAGTGG",
+            "text": "A712"
+        }
+    ]
+}
+
+const truSightAmpliconi5 = {
+    "text": "TruSight Amplicon",
+    "children": [
+        {
+            "id": "TGAACCTT",
+            "text": "A501"
+        },
+        {
+            "id": "TGCTAAGT",
+            "text": "A502"
+        },
+        {
+            "id": "TGTTCTCT",
+            "text": "A503"
+        },
+        {
+            "id": "TAAGACAC",
+            "text": "A504"
+        },
+        {
+            "id": "CTAATCGA",
+            "text": "A505"
+        },
+        {
+            "id": "CTAGAACA",
+            "text": "A506"
+        },
+        {
+            "id": "TAAGTTCC",
+            "text": "A507"
+        },
+        {
+            "id": "TAGACCTA",
+            "text": "A508"
+        }
+    ]
+}
+
+const truSightAmpliconPairs = [
+    { 'id': 'None', 'text': 'None' },
+    {
+        'id': 'A001',
+        'text': 'A001',
+        'i7_well': 'GTGAATAT', // need actual sequence here
+        'i5_well': 'AGCGCTAG'
+    }
+]
+
+export let truSightAmplicon = {
+    "i7Barcodes": [blankKit, truSightAmpliconi7],
+    "i5Barcodes": [blankKit, truSightAmpliconi5],
+    // "indexWellPairs": truSightAmpliconPairs,
+    "sequence_length": 8,
+    "validReadTypes": 'both',
+    // "adapter": "CTGTCTCTTATACACATCT", // adapter read1 and 2 are same
+    // "adapterRead2": "CTGTCTCTTATACACATCT",
+    "defaultReads": [151, 151]
+}
+
+const truSightDNAEnrichmenti7 = {
+    "text": "TruSight DNA Enrichment",
+    "children": [
+        {
+            "id": "TAAGGCGA",
+            "text": "N701"
+        },
+        {
+            "id": "CGTACTAG",
+            "text": "N702"
+        },
+        {
+            "id": "AGGCAGAA",
+            "text": "N703"
+        },
+        {
+            "id": "TCCTGAGC",
+            "text": "N704"
+        },
+        {
+            "id": "GGACTCCT",
+            "text": "N705"
+        },
+        {
+            "id": "TAGGCATG",
+            "text": "N706"
+        },
+        {
+            "id": "CTCTCTAC",
+            "text": "N707"
+        },
+        {
+            "id": "CAGAGAGG",
+            "text": "N708"
+        },
+        {
+            "id": "GCTACGCT",
+            "text": "N709"
+        },
+        {
+            "id": "CGAGGCTG",
+            "text": "N710"
+        },
+        {
+            "id": "AAGAGGCA",
+            "text": "N711"
+        },
+        {
+            "id": "GTAGAGGA",
+            "text": "N712"
+        }
+    ]
+}
+
+const truSightDNAEnrichmenti5 = {
+    "text": "TruSeq DNA Enrichment",
+    "children": [
+        {
+            "id": "TAGATCGC",
+            "text": "E501"
+        },
+        {
+            "id": "CTCTCTAT",
+            "text": "E502"
+        },
+        {
+            "id": "TATCCTCT",
+            "text": "E503"
+        },
+        {
+            "id": "AGAGTAGA",
+            "text": "E504"
+        },
+        {
+            "id": "GTAAGGAG",
+            "text": "E505"
+        },
+        {
+            "id": "ACTGCATA",
+            "text": "E506"
+        },
+        {
+            "id": "AAGGAGTA",
+            "text": "E507"
+        },
+        {
+            "id": "CTAAGCCT",
+            "text": "E508"
+        },
+        {
+            "id": "GCGTAAGA",
+            "text": "E517"
+        }
+    ]
+}
+
+const truSightDNAEnrichmentPairs = [
+    { 'id': 'None', 'text': 'None' },
+    {
+        'id': 'A001',
+        'text': 'A001',
+        'i7_well': 'GTGAATAT', // need actual sequence here
+        'i5_well': 'AGCGCTAG'
+    }
+]
+
+export let truSightDNAEnrichment = {
+    "i7Barcodes": [blankKit, truSightDNAEnrichmenti7],
+    "i5Barcodes": [blankKit, truSightDNAEnrichmenti5],
+    // "indexWellPairs": truSightDNAEnrichmentPairs,
+    "sequence_length": 8,
+    "validReadTypes": 'both',
+    // "adapter": "CTGTCTCTTATACACATCT", // adapter read1 and 2 are same
+    // "adapterRead2": "CTGTCTCTTATACACATCT",
+    "defaultReads": [151, 151]
+}
+
+const truSeqCDi7 = {
+    "text": "TruSeq DNA and RNA CD Indexes",
+    "children": [
+        {
+            "id": "ATTACTCG",
+            "text": "D701"
+        },
+        {
+            "id": "TCCGGAGA",
+            "text": "D702"
+        },
+        {
+            "id": "CGCTCATT",
+            "text": "D703"
+        },
+        {
+            "id": "GAGATTCC",
+            "text": "D704"
+        },
+        {
+            "id": "ATTCAGAA",
+            "text": "D705"
+        },
+        {
+            "id": "GAATTCGT",
+            "text": "D706"
+        },
+        {
+            "id": "CTGAAGCT",
+            "text": "D707"
+        },
+        {
+            "id": "TAATGCGC",
+            "text": "D708"
+        },
+        {
+            "id": "CGGCTATG",
+            "text": "D709"
+        },
+        {
+            "id": "TCCGCGAA",
+            "text": "D710"
+        },
+        {
+            "id": "TCTCGCGC",
+            "text": "D711"
+        },
+        {
+            "id": "AGCGATAG",
+            "text": "D712"
+        }
+    ]
+}
+
+const truSeqCDi5 = {
+    "text": "TruSeq DNA and RNA CD Indexes",
+    "children": [
+        {
+            "id": "TATAGCCT",
+            "text": "D501"
+        },
+        {
+            "id": "ATAGAGGC",
+            "text": "D502"
+        },
+        {
+            "id": "CCTATCCT",
+            "text": "D503"
+        },
+        {
+            "id": "GGCTCTGA",
+            "text": "D504"
+        },
+        {
+            "id": "AGGCGAAG",
+            "text": "D505"
+        },
+        {
+            "id": "TAATCTTA",
+            "text": "D506"
+        },
+        {
+            "id": "CAGGACGT",
+            "text": "D507"
+        },
+        {
+            "id": "GTACTGAC",
+            "text": "D508"
+        }
+    ]
+}
+
+const truSeqCDPairs = [
+    { 'id': 'None', 'text': 'None' },
+    {
+        'id': 'A001',
+        'text': 'A001',
+        'i7_well': 'GTGAATAT', // need actual sequence here
+        'i5_well': 'AGCGCTAG'
+    }
+]
+
+export let truSeqCD = {
+    "i7Barcodes": [blankKit, truSeqCDi7],
+    "i5Barcodes": [blankKit, truSeqCDi5],
+    // "indexWellPairs": truSeqCDPairs,
+    "sequence_length": 8,
+    "validReadTypes": 'both',
+    "adapter": "AGATCGGAAGAGCACACGTCTGAACTCCAGTCA",
+    "adapterRead2": "AGATCGGAAGAGCGTCGTGTAGGGAAAGAGTGT",
+    "defaultReads": [151, 151]
 }

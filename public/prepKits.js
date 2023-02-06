@@ -213,8 +213,25 @@ export class TruSeqKit extends BasicKit { // TruSeq Stranded mRNA
 
             case 'IDT-ILMN Nextera DNA UD Indexes Set A B C D':
                 csvSampleSheetMiSeq += "adapter," + barcodeKit.idtILMNNexteraDNAUDIndexesSetABCD.adapter + '\n'
+                csvSampleSheetMiSeq += "adapterRead2," + barcodeKit.idtILMNNexteraDNAUDIndexesSetABCD.adapter + '\n'
+                break;
+            case 'IDT-ILMN Nextera DNA UD Indexes Set A':
+                csvSampleSheetMiSeq += "adapter," + barcodeKit.idtILMNNexteraDNAUDIndexesSetA.adapter + '\n'
+                csvSampleSheetMiSeq += "adapterRead2," + barcodeKit.idtILMNNexteraDNAUDIndexesSetA.adapter + '\n'
+                break;
+            case 'IDT-ILMN Nextera DNA UD Indexes Set B':
+                csvSampleSheetMiSeq += "adapter," + barcodeKit.idtILMNNexteraDNAUDIndexesSetB.adapter + '\n'
+                csvSampleSheetMiSeq += "adapterRead2," + barcodeKit.idtILMNNexteraDNAUDIndexesSetB.adapter + '\n'
                 break;
 
+            case 'IDT-ILMN Nextera DNA UD Indexes Set C':
+                csvSampleSheetMiSeq += "adapter," + barcodeKit.idtILMNNexteraDNAUDIndexesSetC.adapter + '\n'
+                csvSampleSheetMiSeq += "adapterRead2," + barcodeKit.idtILMNNexteraDNAUDIndexesSetC.adapter + '\n'
+                break;
+            case 'IDT-ILMN Nextera DNA UD Indexes Set D':
+                csvSampleSheetMiSeq += "adapter," + barcodeKit.idtILMNNexteraDNAUDIndexesSetD.adapter + '\n'
+                csvSampleSheetMiSeq += "adapterRead2," + barcodeKit.idtILMNNexteraDNAUDIndexesSetD.adapter + '\n'
+                break;
         }
 
         return csvSampleSheetMiSeq
@@ -229,6 +246,26 @@ export class AmpliSeqKit extends BasicKit { // AmpliSeq Library PLUS for Illumin
             "id": "AmpliSeq CD Indexes Set A B C D",
             "text": "AmpliSeq CD Indexes Set A B C D",
             "kit": barcodeKit.ampliSeqCDIndexesSetABCD
+        },
+        {
+            "id": "AmpliSeq CD Indexes Set A",
+            "text": "AmpliSeq CD Indexes Set A",
+            "kit": barcodeKit.ampliSeqCDIndexesSetA
+        },
+        {
+            "id": "AmpliSeq CD Indexes Set B",
+            "text": "AmpliSeq CD Indexes Set B",
+            "kit": barcodeKit.ampliSeqCDIndexesSetB
+        },
+        {
+            "id": "AmpliSeq CD Indexes Set C",
+            "text": "AmpliSeq CD Indexes Set C",
+            "kit": barcodeKit.ampliSeqCDIndexesSetC
+        },
+        {
+            "id": "AmpliSeq CD Indexes Set D",
+            "text": "AmpliSeq CD Indexes Set D",
+            "kit": barcodeKit.ampliSeqCDIndexesSetD
         }
     ]
 
@@ -277,6 +314,85 @@ export class AmpliSeqKit extends BasicKit { // AmpliSeq Library PLUS for Illumin
         //         break;
 
         // }
+
+        return csvSampleSheetMiSeq
+    }
+
+}
+
+export class NexteraXTKit extends BasicKit { // TruSeq Stranded mRNA
+
+    // defaultReference = "hg38"
+
+    indexKits = [
+
+        {
+            "id": "IDT-ILMN Nextera DNA UD Indexes Set A B C D",
+            "text": "IDT-ILMN Nextera DNA UD Indexes Set A B C D",
+            "kit": barcodeKit.idtILMNNexteraDNAUDIndexesSetABCD
+        },
+        {
+            "id": "IDT-ILMN Nextera DNA UD Indexes Set A",
+            "text": "IDT-ILMN Nextera DNA UD Indexes Set A",
+            "kit": barcodeKit.idtILMNNexteraDNAUDIndexesSetA
+        },
+        {
+            "id": "IDT-ILMN Nextera DNA UD Indexes Set B",
+            "text": "IDT-ILMN Nextera DNA UD Indexes Set B",
+            "kit": barcodeKit.idtILMNNexteraDNAUDIndexesSetB
+        },
+        {
+            "id": "IDT-ILMN Nextera DNA UD Indexes Set C",
+            "text": "IDT-ILMN Nextera DNA UD Indexes Set C",
+            "kit": barcodeKit.idtILMNNexteraDNAUDIndexesSetC
+        },
+        {
+            "id": "IDT-ILMN Nextera DNA UD Indexes Set D",
+            "text": "IDT-ILMN Nextera DNA UD Indexes Set D",
+            "kit": barcodeKit.idtILMNNexteraDNAUDIndexesSetD
+        }
+    ]
+
+    // makeMiseqSampleSheet inherited from BasicKit
+
+    makeHeader(metaData) {
+        let csvSampleSheetMiSeq = ''
+        csvSampleSheetMiSeq += '[Header]\n';
+        // csvSampleSheetMiSeq += "Local Run Manager Analysis Id," + metaData.lrmaId + '\n'
+        csvSampleSheetMiSeq += "Experiment Name," + metaData.miseqExpName + '\n'
+        csvSampleSheetMiSeq += "Date," + metaData.date + '\n'
+        csvSampleSheetMiSeq += "Module," + metaData.module + '\n'
+        csvSampleSheetMiSeq += "Workflow," + metaData.workflow + '\n'
+        csvSampleSheetMiSeq += "Library Prep Kit," + metaData.libPrepKit + '\n'
+        csvSampleSheetMiSeq += "Index Kit," + metaData.indexKit + '\n'
+        csvSampleSheetMiSeq += "Chemistry," + metaData.chemistry + '\n'
+        csvSampleSheetMiSeq += "\n[Reads]\n"
+        csvSampleSheetMiSeq += metaData.reads1 + '\n'
+        if (metaData.readType === 'paired') {
+            csvSampleSheetMiSeq += metaData.reads2 + '\n'
+        }
+        csvSampleSheetMiSeq += "\n[Settings]\n"
+
+
+        switch (metaData.indexKit) {
+            case 'IDT-ILMN Nextera DNA UD Indexes Set A B C D':
+                csvSampleSheetMiSeq += "adapter," + barcodeKit.idtILMNNexteraDNAUDIndexesSetABCD.adapter + '\n'
+                break;
+            case 'IDT-ILMN Nextera DNA UD Indexes Set A':
+                csvSampleSheetMiSeq += "adapter," + barcodeKit.idtILMNNexteraDNAUDIndexesSetA.adapter + '\n'
+                break;
+            case 'IDT-ILMN Nextera DNA UD Indexes Set B':
+                csvSampleSheetMiSeq += "adapter," + barcodeKit.idtILMNNexteraDNAUDIndexesSetB.adapter + '\n'
+                break;
+
+            case 'IDT-ILMN Nextera DNA UD Indexes Set C':
+                csvSampleSheetMiSeq += "adapter," + barcodeKit.idtILMNNexteraDNAUDIndexesSetC.adapter + '\n'
+                break;
+            case 'IDT-ILMN Nextera DNA UD Indexes Set D':
+                csvSampleSheetMiSeq += "adapter," + barcodeKit.idtILMNNexteraDNAUDIndexesSetD.adapter + '\n'
+                break;
+
+        }
 
         return csvSampleSheetMiSeq
     }

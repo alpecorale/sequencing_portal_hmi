@@ -1,5 +1,5 @@
 import { selectReferenceData } from '/barcodeKits.js'
-import { CustomKit, TruSeqKit, AmpliSeqKit } from '/prepKits.js';
+import { CustomKit, TruSeqKit, AmpliSeqKit, NexteraXTKit } from '/prepKits.js';
 
 
 let hotKit = new CustomKit() // prepKits.js Class for Custom Kit
@@ -109,6 +109,10 @@ $(document).ready(function () {
 
             case 'AmpliSeq Library PLUS for Illumina':
                 hotKit = new AmpliSeqKit();
+                break;
+
+            case 'Nextera XT':
+                hotKit = new NexteraXTKit();
                 break;
         }
 
