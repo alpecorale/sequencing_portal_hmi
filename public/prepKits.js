@@ -25,9 +25,9 @@ class BasicKit {
 
             // slice to get original rows
             if (metaData.readType === 'paired') {
-                x = x.slice(0, 8)
+                x = x.slice(0, 7)
             } else {
-                x = x.slice(0, 6)
+                x = x.slice(0, 5)
             }
 
             csvSampleSheetMiSeq += x.join(',') + "\n"

@@ -764,11 +764,16 @@ async function getAllMiSeqTableVals(callback) {
     let miSeqTableHeaders = []
 
     if (readType === 'paired') {
-        miSeqTableHeaders = ['Sample_ID', 'Sample_Name', 'Description', 'I7_Index_ID', 'index', 'I5_Index_ID', 'index2', 'Sample_Project', 'Index_Plate_Well', 'Reference']
+        // miSeqTableHeaders = ['Sample_ID', 'Sample_Name', 'Description', 'I7_Index_ID', 'index', 'I5_Index_ID', 'index2', 'Sample_Project', 'Index_Plate_Well', 'Reference']
+        miSeqTableHeaders = ['Sample_ID', 'Sample_Name', 'Description', 'I7_Index_ID', 'index', 'I5_Index_ID', 'index2', 'Sample_Project', 'Reference']
     } else {
-        miSeqTableHeaders = ['Sample_ID', 'Sample_Name', 'Description', 'I7_Index_ID', 'index', 'Sample_Project', 'Index_Plate_Well', 'Reference']
-
+        // miSeqTableHeaders = ['Sample_ID', 'Sample_Name', 'Description', 'I7_Index_ID', 'index', 'Sample_Project', 'Index_Plate_Well', 'Reference']
+        miSeqTableHeaders = ['Sample_ID', 'Sample_Name', 'Description', 'I7_Index_ID', 'index', 'Sample_Project', 'Reference']
     }
+
+    // if (libPrepKit === "Custom") {
+    //     miSeqTableHeaders.splice(-2, 1)
+    // }
 
     // see if any of the extra fields were filled in
     let miseqExtra1Col = $('#miseq_extra_1').val().split(' ').join('_').split('-').join('_')
@@ -834,9 +839,9 @@ async function getAllMiSeqTableVals(callback) {
             rowVals.push(i5)
         }
         rowVals.push(proj)
-        if (libPrepKit !== "Custom") {
-            rowVals.push(indexWell)
-        }
+        // if (libPrepKit !== "Custom") {
+        //     rowVals.push(indexWell)
+        // }
         rowVals.push(ref)
 
         if (hasExtra1) { rowVals.push(ex1) }

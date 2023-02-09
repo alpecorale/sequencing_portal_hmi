@@ -755,7 +755,7 @@ export let idtILMNNexteraDNAUDIndexesSetABCD = {
     "validReadTypes": 'both',
     "adapter": "CTGTCTCTTATACACATCT", // used for read 1 and 2 adapter trimming
     "adapterRead2": "CTGTCTCTTATACACATCT",
-    "matePairAdaper": "CTGTCTCTTATACACATCT+AGATGTGTATAAGAGACAG", //Nextera Mate Pair Adapter Trimming
+    "matePairAdapter": "CTGTCTCTTATACACATCT+AGATGTGTATAAGAGACAG", //Nextera Mate Pair Adapter Trimming
     // The following sequence includes two adapter sequences joined by a plus sign. When performing adapter
     // trimming, the software independently assesses each adapter for trimming.
     "tagmentationAdapter1": "TCGTCGGCAGCGTCAGATGTGTATAAGAGACAG", // The transposase adapters are used for Nextera tagmentation
@@ -770,7 +770,7 @@ export let idtILMNNexteraDNAUDIndexesSetA = {
     "validReadTypes": 'both',
     "adapter": "CTGTCTCTTATACACATCT", // used for read 1 and 2 adapter trimming
     "adapterRead2": "CTGTCTCTTATACACATCT",
-    "matePairAdaper": "CTGTCTCTTATACACATCT+AGATGTGTATAAGAGACAG", //Nextera Mate Pair Adapter Trimming
+    "matePairAdapter": "CTGTCTCTTATACACATCT+AGATGTGTATAAGAGACAG", //Nextera Mate Pair Adapter Trimming
     // The following sequence includes two adapter sequences joined by a plus sign. When performing adapter
     // trimming, the software independently assesses each adapter for trimming.
     "tagmentationAdapter1": "TCGTCGGCAGCGTCAGATGTGTATAAGAGACAG", // The transposase adapters are used for Nextera tagmentation
@@ -785,7 +785,7 @@ export let idtILMNNexteraDNAUDIndexesSetB = {
     "validReadTypes": 'both',
     "adapter": "CTGTCTCTTATACACATCT", // used for read 1 and 2 adapter trimming
     "adapterRead2": "CTGTCTCTTATACACATCT",
-    "matePairAdaper": "CTGTCTCTTATACACATCT+AGATGTGTATAAGAGACAG", //Nextera Mate Pair Adapter Trimming
+    "matePairAdapter": "CTGTCTCTTATACACATCT+AGATGTGTATAAGAGACAG", //Nextera Mate Pair Adapter Trimming
     // The following sequence includes two adapter sequences joined by a plus sign. When performing adapter
     // trimming, the software independently assesses each adapter for trimming.
     "tagmentationAdapter1": "TCGTCGGCAGCGTCAGATGTGTATAAGAGACAG", // The transposase adapters are used for Nextera tagmentation
@@ -800,7 +800,7 @@ export let idtILMNNexteraDNAUDIndexesSetC = {
     "validReadTypes": 'both',
     "adapter": "CTGTCTCTTATACACATCT", // used for read 1 and 2 adapter trimming
     "adapterRead2": "CTGTCTCTTATACACATCT",
-    "matePairAdaper": "CTGTCTCTTATACACATCT+AGATGTGTATAAGAGACAG", //Nextera Mate Pair Adapter Trimming
+    "matePairAdapter": "CTGTCTCTTATACACATCT+AGATGTGTATAAGAGACAG", //Nextera Mate Pair Adapter Trimming
     // The following sequence includes two adapter sequences joined by a plus sign. When performing adapter
     // trimming, the software independently assesses each adapter for trimming.
     "tagmentationAdapter1": "TCGTCGGCAGCGTCAGATGTGTATAAGAGACAG", // The transposase adapters are used for Nextera tagmentation
@@ -815,7 +815,7 @@ export let idtILMNNexteraDNAUDIndexesSetD = {
     "validReadTypes": 'both',
     "adapter": "CTGTCTCTTATACACATCT", // used for read 1 and 2 adapter trimming
     "adapterRead2": "CTGTCTCTTATACACATCT",
-    "matePairAdaper": "CTGTCTCTTATACACATCT+AGATGTGTATAAGAGACAG", //Nextera Mate Pair Adapter Trimming
+    "matePairAdapter": "CTGTCTCTTATACACATCT+AGATGTGTATAAGAGACAG", //Nextera Mate Pair Adapter Trimming
     // The following sequence includes two adapter sequences joined by a plus sign. When performing adapter
     // trimming, the software independently assesses each adapter for trimming.
     "tagmentationAdapter1": "TCGTCGGCAGCGTCAGATGTGTATAAGAGACAG", // The transposase adapters are used for Nextera tagmentation
