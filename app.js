@@ -1,11 +1,12 @@
 const http = require('http');
 
-const hostname = 'srv-hpc01';
+// const hostname = 'srv-hpc01';
+const hostname = '10.72.20.80';
 // const hostname = 'localhost';
 
 
-const port = 3001;
-// const port = 3317;
+// const port = 3001;
+const port = 3317;
 
 
 const express = require('express'),
@@ -369,8 +370,8 @@ app.post('/addAttachment2Issue', Data.any("files"), (req, res, next) => {
   if (req.files.length !== 0) {
     req.files.forEach(x => {
 
-      fs.mkdirSync("/grid/genomics/reference_genome/sequencing_portal/" + req.body.jiraId, { recursive: true })
-      fs.copyFile(x.path, "/grid/genomics/reference_genome/sequencing_portal/" + req.body.jiraId + "/" + x.path.split('/')[3], (err) => {
+      fs.mkdirSync("/HPC/SAN-HPEMSA02/genomics/reference_genome/sequencing_portal/" + req.body.jiraId, { recursive: true })
+      fs.copyFile(x.path, "/HPC/SAN-HPEMSA02/genomics/reference_genome/sequencing_portal/" + req.body.jiraId + "/" + x.path.split('/')[3], (err) => {
         if (err) {
           console.log("Error found: ", err)
         }
@@ -391,8 +392,8 @@ app.post('/addAttachment2Issue', Data.any("files"), (req, res, next) => {
   if (req.body.arr) {
     req.body.arr.forEach(x => {
 
-      fs.mkdirSync("/grid/genomics/reference_genome/sequencing_portal/" + req.body.jiraId, { recursive: true })
-      fs.copyFile("./References/" + x, "/grid/genomics/reference_genome/sequencing_portal/" + req.body.jiraId + "/" + x, (err) => {
+      fs.mkdirSync("/HPC/SAN-HPEMSA02/genomics/reference_genome/sequencing_portal/" + req.body.jiraId, { recursive: true })
+      fs.copyFile("./References/" + x, "/HPC/SAN-HPEMSA02/genomics/reference_genome/sequencing_portal/" + req.body.jiraId + "/" + x, (err) => {
         if (err) {
           console.log("Error found: ", err)
         }
@@ -485,7 +486,7 @@ const ReferencesData = multer({ storage: storageReferences });
 function refUpload(req, res, next) {
   let storage2 = multer.diskStorage({
     destination: (req, file, cb) => {
-      let path = "/grid/genomics/reference_genome/sequencing_portal/" + req.body.jiraId
+      let path = "/HPC/SAN-HPEMSA02/genomics/reference_genome/sequencing_portal/" + req.body.jiraId
       fs.mkdirSync(path, { recursive: true })
       cb(null, path);
     },
