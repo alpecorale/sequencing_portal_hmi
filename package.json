@@ -1,5 +1,7 @@
 {
   "dependencies": {
+    "@keyvhq/core": "^2.0.0",
+    "@keyvhq/sqlite": "^2.0.0",
     "blob": "^0.1.0",
     "body-parser": "^1.20.0",
     "bootstrap": "^5.2.0",
@@ -7,7 +9,7 @@
     "child_process": "^1.0.2",
     "cors": "^2.8.5",
     "d3": "^7.6.1",
-    "dotenv": "^16.0.1",
+    "dotenv": "^16.0.3",
     "execSync": "^1.0.2",
     "express": "^4.18.1",
     "form-data": "^4.0.0",
@@ -19,7 +21,10 @@
     "morgan": "^1.10.0",
     "multer": "^1.4.5-lts.1",
     "parcel": "^2.6.2",
+    "sqlite3": "^5.1.6",
+    "ssh2": "^1.11.0",
     "stream": "0.0.2",
+    "util": "^0.12.5",
     "x-data-spreadsheet": "^1.1.9"
   },
   "name": "host",

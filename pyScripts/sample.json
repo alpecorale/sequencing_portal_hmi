@@ -1,0 +1,75 @@
+{
+    "expName": "Nanopore_0468",
+    "date": "2023-03-08",
+    "basecaller": "5.0.11",
+    "basecallerMode": "ACCURATE",
+    "flowcellID": "FAW51997",
+    "filterReadsMin": 800,
+    "filterReadsMinQual": 80,
+    "projects": {
+        "project1": {
+            "hmiProj": "Exp",
+            "program": "On Target",
+            "briefDes": "Nanopore_0468",
+            "des": "Nanopore_0468"
+        }
+    },
+    "samples": [
+        {
+            "id": "px601-PAH_V5_A",
+            "projNum": "Project 1",
+            "constructId": null,
+            "capsid": "None",
+            "mplxKit": "EXP-NBD104"
+        },
+        {
+            "id": "px601-PAH_V5_B",
+            "projNum": "Project 1",
+            "constructId": null,
+            "capsid": "None",
+            "mplxKit": "EXP-NBD104"
+        },
+        {
+            "id": "px601n-PAH_V5_A",
+            "projNum": "Project 1",
+            "constructId": null,
+            "capsid": "None",
+            "mplxKit": "EXP-NBD104"
+        },
+        {
+            "id": "px601n-PAH_V5_B",
+            "projNum": "Project 1",
+            "constructId": null,
+            "capsid": "None",
+            "mplxKit": "EXP-NBD104"
+        },
+        {
+            "id": "NTD",
+            "projNum": "Project 1",
+            "constructId": null,
+            "capsid": "None",
+            "mplxKit": "EXP-NBD104"
+        },
+        {
+            "id": "1pct_A11",
+            "projNum": "Project 1",
+            "constructId": null,
+            "capsid": "None",
+            "mplxKit": "EXP-NBD104"
+        },
+        {
+            "id": "PV1_cas9n_V5_2",
+            "projNum": "Project 1",
+            "constructId": null,
+            "capsid": "None",
+            "mplxKit": "EXP-NBD104"
+        },
+        {
+            "id": "PV1_xRBE_V5_1",
+            "projNum": "Project 1",
+            "constructId": null,
+            "capsid": "None",
+            "mplxKit": "EXP-NBD104"
+        }
+    ]
+}

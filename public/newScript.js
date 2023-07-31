@@ -63,6 +63,14 @@ $(document).ready(function () {
 
 });
 
+// change project to TES if assignee is TEST "jira_api"
+$('#inputExperimentalist').on('select2:select', () => {
+    if (document.getElementById('inputExperimentalist').value == "jira_api") {
+        $('#jiraProjectDrop').val("TES").trigger('change').trigger("select2:select")
+    }
+})
+
+
 console.log('lo', _.VERSION)
 
 
@@ -200,13 +208,13 @@ document.body.addEventListener('change', async function (e) {
         case 'miseq':
             document.getElementById("nanoporeSampleSheetDiv").style.display = "none";
             document.getElementById("miSeqSampleSheetDiv").style.display = "block";
-            // code to flip state to on and turn off nanopore
+            $('#jiraProjectDrop').val("MISEQ").trigger('change')
             break;
 
         case 'oxfordNanopore':
-            // code to flip state on and turn off miseq
-            document.getElementById("miSeqSampleSheetDiv").style.display = "none";
             document.getElementById("nanoporeSampleSheetDiv").style.display = "block";
+            document.getElementById("miSeqSampleSheetDiv").style.display = "none";
+            $('#jiraProjectDrop').val("NANOSEQ").trigger('change')
             break;
 
         case 'noSampleSheet':
@@ -380,12 +388,33 @@ async function submitForm(e) {
         expName = nanoMod.nanoExpName
 
         // add files to csvFileToPass
-        csvFileToPass.append('file', nanoMod.nanoDynamicFile)
+        csvFileToPass.append('file', nanoMod.nanoporeSampleSheetToPass)
 
         // check for creation success
         if (!nanoMod.nanoSampleSheetCreationSuccess) {
             return
         }
+
+        const json = {
+            cmd: nanoMod.startCmd
+        }
+        const body = JSON.stringify(json);
+
+        // // Kick off Dorado Live Basecalling
+        // await fetch("/startLiveBasecalling", {
+        //     method: "POST",
+        //     body,
+        //     headers: {
+        //         "Content-Type": "application/json"
+        //     }
+        // }).then(response => {
+        //     console.log('Response Start Live Basecalling: ', response)
+        //     return response.json();
+        // }).then(json => {
+        //     console.log('Response Start Basecalling Json: ', json)
+        // }).catch(error => {
+        //     console.log('Error:', error)
+        // })
     }
 
 
@@ -408,7 +437,10 @@ async function submitForm(e) {
 
     // testing mode switch to turn off jira tickets
     let testingMode = false
-    if (testingMode) {
+    if (testingMode & document.getElementById("oxfordNanopore").checked) {
+        console.log('helllooooooo')
+        console.log(expName)
+        console.log(jiraProject)
         return
     }
 
@@ -418,6 +450,10 @@ async function submitForm(e) {
 
         csvFileToPass.append('jiraId', jiraTicketID)
         refFilesToPass.append('jiraId', jiraTicketID)
+
+        if (document.getElementById("oxfordNanopore").checked) {
+            csvFileToPass.append('nanoSampURL', nanoMod.filePathSamp)
+        }
 
         // attach document to jira issue
         await fetch("/addAttachment2Issue", {
@@ -431,6 +467,7 @@ async function submitForm(e) {
             method: "POST",
             body: refFilesToPass,
         }).catch((error) => ("Something went wrong!", error));
+
 
         const json = {
             id: jiraTicketID,
@@ -502,6 +539,9 @@ async function submitForm(e) {
         csvFileToPass.append('jiraId', returnedIssueKey)
         refFilesToPass.append('jiraId', returnedIssueKey)
 
+        if (document.getElementById("oxfordNanopore").checked) {
+            csvFileToPass.append('nanoSampURL', nanoMod.filePathSamp)
+        }
 
         // attach document to jira issue
         await fetch("/addAttachment2Issue", {
@@ -509,16 +549,22 @@ async function submitForm(e) {
             body: csvFileToPass,
         }).catch((error) => ("Something went wrong!", error));
 
+
         await fetch("/downloadReference", {
             method: "POST",
             body: refFilesToPass,
         }).catch((error) => ("Something went wrong!", error));
 
+        let text = "Here is your Jira ticket #: " + returnedIssueKey + " \n If you are running Nanopore please start your run name with this id: " + returnedIssueKey
+        // Open up comfirmation page 
+        confirm(text)
     }
 
+
+
     // refresh everything to blank again
-    // await delay(6000)
-    // location.reload()
+    await delay(6000)
+    location.reload()
     // document.getElementsByClassName('table')[0].innerHTML = document.getElementsByClassName('table')[0].innerHTML
     // ^ doesnt work bc it breaks all select2 boxes
 }

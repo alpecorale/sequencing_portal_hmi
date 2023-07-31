@@ -1,0 +1,41 @@
+{
+    "expName": "err",
+    "date": "2023-03-27",
+    "basecaller": "dorado",
+    "basecallerMode": "ACCURATE",
+    "flowcellID": "err",
+    "filterReadsMin": "800",
+    "filterReadsMinQual": "80",
+    "projects": {
+        "project1": {
+            "hmiProj": "Exp",
+            "program": "SafeHarbor",
+            "briefDes": "aa",
+            "des": "",
+            "ref": ""
+        }
+    },
+    "samples": [
+        {
+            "id": "aa",
+            "mplxKit": "EXP-NBD103",
+            "projNum": "project1",
+            "constructId": "",
+            "capsid": ""
+        },
+        {
+            "id": "bb",
+            "mplxKit": "EXP-NBD103",
+            "projNum": "project1",
+            "constructId": "",
+            "capsid": ""
+        },
+        {
+            "id": "cc",
+            "mplxKit": "EXP-NBD103",
+            "projNum": "project1",
+            "constructId": "",
+            "capsid": ""
+        }
+    ]
+}
